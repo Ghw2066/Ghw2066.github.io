@@ -2,13 +2,32 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Haowen`s Blog</title>
-    <link>https://mogeko.github.io/tags/</link>
+    <link>https://Ghw2066.github.io/tags/</link>
     <description>Recent content in Tags on Haowen`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
+    <lastBuildDate>Sat, 12 Oct 2019 11:25:25 +1100</lastBuildDate>
     
-	<atom:link href="https://mogeko.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://Ghw2066.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Algorithm</title>
+      <link>https://Ghw2066.github.io/tags/algorithm/</link>
+      <pubDate>Sat, 12 Oct 2019 11:25:25 +1100</pubDate>
+      
+      <guid>https://Ghw2066.github.io/tags/algorithm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>leetcode</title>
+      <link>https://Ghw2066.github.io/tags/leetcode/</link>
+      <pubDate>Sat, 12 Oct 2019 11:25:25 +1100</pubDate>
+      
+      <guid>https://Ghw2066.github.io/tags/leetcode/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>
