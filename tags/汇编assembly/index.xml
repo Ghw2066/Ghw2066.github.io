@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>汇编Assembly on Haowen`s Blog</title>
+    <link>https://Ghw2066.github.io/tags/%E6%B1%87%E7%BC%96assembly/</link>
+    <description>Recent content in 汇编Assembly on Haowen`s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 13 Oct 2019 23:25:55 +1100</lastBuildDate>
+    
+	<atom:link href="https://Ghw2066.github.io/tags/%E6%B1%87%E7%BC%96assembly/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>汇编学习笔记（一）</title>
+      <link>https://Ghw2066.github.io/2019/003/</link>
+      <pubDate>Sun, 13 Oct 2019 23:25:55 +1100</pubDate>
+      
+      <guid>https://Ghw2066.github.io/2019/003/</guid>
+      <description>写在前面 这学期的COMP9032这门课是操作系统分支的入门课程，介绍了很多计算机系统偏底层的知识，同时lab都是以汇编语言实现的，本科没有选</description>
+    </item>
+    
+  </channel>
+</rss>
