@@ -9,9 +9,9 @@
   
   
   
-  <link rel="prev" href="https://Ghw2066.github.io/2019/002/" />
-  <link rel="next" href="https://Ghw2066.github.io/2019/004/" />
-  <link rel="canonical" href="https://Ghw2066.github.io/2019/003/" />
+  <link rel="prev" href="https://Ghw2066.github.io/2019/003/" />
+  
+  <link rel="canonical" href="https://Ghw2066.github.io/2019/004/" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -22,10 +22,10 @@
   <title>
        
        
-           汇编学习笔记（一） | Haowen`s Blog
+           汇编学习笔记（二）---进制转换 | Haowen`s Blog
        
   </title>
-  <meta name="title" content="汇编学习笔记（一） | Haowen`s Blog">
+  <meta name="title" content="汇编学习笔记（二）---进制转换 | Haowen`s Blog">
     
   
   <link rel="stylesheet" href="/font/iconfont.css">
@@ -44,9 +44,9 @@
          "@id": "https:\/\/Ghw2066.github.io"
     },
     "articleSection" : "posts",
-    "name" : "汇编学习笔记（一）",
-    "headline" : "汇编学习笔记（一）",
-    "description" : "写在前面 这学期的COMP9032这门课是操作系统分支的入门课程，介绍了很多计算机系统偏底层的知识，同时lab都是以汇编语言实现的，本科没有选",
+    "name" : "汇编学习笔记（二）---进制转换",
+    "headline" : "汇编学习笔记（二）---进制转换",
+    "description" : "问题描述 Write an assembly code that converts a given data of the string type into a binary number. The string can be a decimal or a hexadecimal number. For simplicity, here we assume the string data only contains two digits. Each digit in the string is represented by an ASCII code. For example, the decimal number string “78” is represented by 0x37 for ‘",
     "inLanguage" : "zh-cn",
     "author" : "Guo Haowen",
     "creator" : "Guo Haowen",
@@ -54,10 +54,10 @@
     "accountablePerson" : "Guo Haowen",
     "copyrightHolder" : "Guo Haowen",
     "copyrightYear" : "2019",
-    "datePublished": "2019-10-13 23:25:55 \x2b1100 AEDT",
-    "dateModified" : "2019-10-13 23:25:55 \x2b1100 AEDT",
-    "url" : "https:\/\/Ghw2066.github.io\/2019\/003\/",
-    "wordCount" : "413",
+    "datePublished": "2019-10-14 09:40:02 \x2b1100 AEDT",
+    "dateModified" : "2019-10-14 09:40:02 \x2b1100 AEDT",
+    "url" : "https:\/\/Ghw2066.github.io\/2019\/004\/",
+    "wordCount" : "919",
     "keywords" : [ "汇编Assembly", "Haowen`s Blog"]
 }
 </script>
@@ -116,11 +116,11 @@
       		
 <article class="post-warp" itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">汇编学习笔记（一）</h1>
+        <h1 class="post-title" itemprop="name headline">汇编学习笔记（二）---进制转换</h1>
         <div class="post-meta">
                 Written by <a itemprop="name" href="https://Ghw2066.github.io" rel="author">Guo Haowen</a> with ♥ 
                 <span class="post-time">
-                on <time datetime=2019-10-13 itemprop="datePublished">October 13, 2019</time>
+                on <time datetime=2019-10-14 itemprop="datePublished">October 14, 2019</time>
                 </span>
                 in
                 <i class="iconfont icon-folder"></i>
@@ -148,42 +148,105 @@
 
           
 
-<h2 id="写在前面">写在前面</h2>
+<h2 id="问题描述">问题描述</h2>
 
-<p>这学期的COMP9032这门课是操作系统分支的入门课程，介绍了很多计算机系统偏底层的知识，同时lab都是以汇编语言实现的，本科没有选修汇编这门课，正好现在补上，也能水几篇博客充充门面。</p>
+<blockquote>
+<p>Write an assembly code that converts a given data of the string type into a binary number. The string can be a decimal or a hexadecimal number.</p>
 
-<h2 id="lab-0">Lab 0</h2>
+<p>For simplicity, here we assume the string data only contains two digits. Each digit in the string is represented by an ASCII code. For example, the decimal number string “78” is represented by 0x37 for ‘7’ and 0x38 for ‘8’. (See the ASCII table shown at the end of this document).</p>
 
-<p>这个lab的目的就是熟悉熟悉编程环境，顺便写一个最简单的汇编程序，算是汇编的helloworld吧。</p>
+<p>We also assume that each ASCII code is stored in a register and the result of the conversion is also saved in a register. Since ASCII only uses 7 bits, you can use the leftmost bit to indicate the string is for decimal or hexadecimal, for example 0 for decimal and 1 for hexadecimal.</p>
+</blockquote>
 
-<p>对于不同的指令集有不同的汇编，但是大体上的思想还是相似的，这门课使用的是AVR Assembly，是一个8位Risc指令集，精简指令集的好处在于学习成本较低，其次一些稍显复杂的功能就需要自己想办法结合已有的指令集实现。</p>
+<p>简单来说，就是讲字符串类型数值转化为数值型，然后将2机制根据最左位的值确定转换为十进制或十六进制。</p>
 
-<h4 id="汇编实现-a-b">汇编实现 a+b</h4>
+<h2 id="解决方案">解决方案</h2>
 
-<pre><code class="language-assembly">; lab_0.asm
+<pre><code class="language-assembly">;
+; lab_1.asm
 ;
-; Created: 2019/9/19 11:32:22
-; Author : GHW
+; Created: 2019/9/23 16:24:24
+; Author : Haowen Guo
 ;
 
 
 ; Replace with your application code
 .include &quot;m2560def.inc&quot;
-.def a=r16				;define a to be register r16
-.def b=r17				;define b to be register r17
-.def c=r10				;define c to be register r10
 
-main:					;main is a label
-		ldi a, 11		;load value 10 into a
-		ldi b, -20		;load value -20 into b
-		lsl a			;2*a
-		add a,b			;2*a+b
-		mov c,a			;c = 2*a+b
-halt:	
-		rjmp halt		;halt the processor execution
+.def al = r18		;low digit 0x38
+.def ah = r19		;high digit decimal -&gt; 0x37 hex -&gt; 0xB7
+.def hl = r20		;store the high value
+.def hh = r21		;store the low value
+.def dl = r16		;for the purpose of comparing low
+.def dh = r17		;for the purpose of comparing high
+.def b = r22		;store the final binary result 
+
+.dseg
+.org 0x200
+
+
+.cseg
+	
+	sbrc ah,7		;if 7th digit is 1, then go to case2:hex, else jump to case1:decimal
+	jmp case2
+
+case1:				;calculate the decimal to binary
+	mov dh,ah		;copy the low value
+	mov dl,al		;copy the high value
+	subi dh,$30		;get the real value of decimal
+	subi dl,$30		;get the real value of decimal
+
+	ldi hl,10		;load 10 to hl
+	mul dh,hl		;calculate the real high decimal value
+	mov dh,r0		;get the mul result
+	
+	add dh,dl		;add high and low
+	mov b,dh		;get the result
+	jmp end
+
+case2:
+	subi ah,0b10000000		;remove flag bit
+
+	mov dh,ah		;copy the high value 
+	mov dl,al		;copy the low value
+
+	subi dh,$41		;compare the value of $41, which means &gt;= 'A' or not
+	brsh higherthanA1		;if higher or equal to 'A', then go to get the real value of high digit
+higherthanA1:
+	subi ah,$37		;get the real value of high digit
+	jmp secdigit	;jump to the low digit
+
+	subi ah,$30		;if not &gt;= 'A', get the real value of number
+
+secdigit:
+	subi dl,$41		;compare the value of $41, which means &gt;= 'A' or not
+	brsh higherthanA2		;if higher or equal to 'A', then go to get the real value of low digit
+higherthanA2:
+	subi al,$37		;get the real value of high digit
+	jmp next		;jump to the low digit
+
+	subi al,$30		;if not &gt;= 'A', get the real value of number
+
+next:
+	mov hh,ah		;copy the value of ah
+	mov hl,al		;copy the value of al
+	
+	swap hh					;swap digit to high position
+	mov b,hh				
+	add b,hl		;b binaty result for hex
+	;mov dh,hh		;nothing
+
+halt:	rjmp halt	
 </code></pre>
 
-<p>实现一个很简单的a+b程序，需要注意的是<code>.def</code>属于 directive 而不是 instruction（指令集），指令集是需要存放在<code>.cseg</code> code segment 代码空间中。</p>
+<p>几点说明：</p>
+
+<ul>
+<li>在判断是否转为十进制或十六进制时，使用了sbrc指令集，即skip if bit in register is cleared。指定ah寄存器第7位，用该指令集判断该位为1或0。为0时，即表示十进制，跳过下一条指令，进入case1，反之，jump到case2</li>
+<li>十进制计算较为简单，对照ASCII码表，字符型数值与真值相差0x30，所以对每一位减去0x30即可得到十进制真值。</li>
+<li>十六机制计算需要考虑是否大于等于A，因为A-F和0-9在ASCII中是不连续的，要减去不同的值才能得到对应的真实数值</li>
+<li>这里默认使用的都是无符号整数，过去在学c语言时也接触过补码反码原码以及无符号整数和有符号整数的概念，但是直到现在使用汇编了之后才更深刻理解。计算机中是没有有符号整数和无符号整数的区别的，这都是程序设计人员按照规则规定出来的，有符号整数是以补码实现，在没有规定的情况下就是无符号整数。</li>
+</ul>
 
     </div>
 
@@ -198,7 +261,7 @@ halt:
              
             <p class="copyright-item">
                     <span>Link:</span>
-                    <a href=https://Ghw2066.github.io/2019/003/>https://Ghw2066.github.io/2019/003/</span>
+                    <a href=https://Ghw2066.github.io/2019/004/>https://Ghw2066.github.io/2019/004/</span>
             </p>
             
              
@@ -227,10 +290,8 @@ halt:
 
     <div class="post-nav">
         
-        <a href="https://Ghw2066.github.io/2019/002/" class="prev" rel="prev" title="最大完美子序列"><i class="iconfont icon-left"></i>&nbsp;最大完美子序列</a>
+        <a href="https://Ghw2066.github.io/2019/003/" class="prev" rel="prev" title="汇编学习笔记（一）"><i class="iconfont icon-left"></i>&nbsp;汇编学习笔记（一）</a>
          
-        
-        <a href="https://Ghw2066.github.io/2019/004/" class="next" rel="next" title="汇编学习笔记（二）---进制转换">汇编学习笔记（二）---进制转换&nbsp;<i class="iconfont icon-right"></i></a>
         
     </div>
 
