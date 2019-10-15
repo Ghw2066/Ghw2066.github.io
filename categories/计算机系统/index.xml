@@ -6,10 +6,28 @@
     <description>Recent content in 计算机系统 on Haowen`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 14 Oct 2019 09:40:02 +1100</lastBuildDate>
+    <lastBuildDate>Mon, 14 Oct 2019 10:15:04 +1100</lastBuildDate>
     
 	<atom:link href="https://Ghw2066.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>汇编学习笔记（四）---栈、函数、递归</title>
+      <link>https://Ghw2066.github.io/2019/006/</link>
+      <pubDate>Mon, 14 Oct 2019 10:15:04 +1100</pubDate>
+      
+      <guid>https://Ghw2066.github.io/2019/006/</guid>
+      <description>先吐个槽 前面几个实验虽然或多或少碰到点小麻烦，但是编程的思路还是比较清晰，按照逻辑一步一步来就好了，无非就是相比高级编程语言麻烦一些，直到遇</description>
+    </item>
+    
+    <item>
+      <title>汇编学习笔记（三）---分支、循环实现辗转相除法</title>
+      <link>https://Ghw2066.github.io/2019/005/</link>
+      <pubDate>Mon, 14 Oct 2019 10:14:58 +1100</pubDate>
+      
+      <guid>https://Ghw2066.github.io/2019/005/</guid>
+      <description>任务说明 将下面的c代码用汇编表达 int main(void) { int a, b; /* Initialized elsewhere */ while (a!=b) { /* Assume a, b &amp;gt; 0 */ if (a&amp;gt;b) a = a - b; else b = b - a; } return 0; /* a and b both hold the result */ } 汇编程序 ; lab1_task2.asm ; ;</description>
+    </item>
     
     <item>
       <title>汇编学习笔记（二）---进制转换</title>

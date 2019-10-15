@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noodp"/>
+  <meta name="author" content="Guo Haowen">
+  
+  
+  
+  <link rel="prev" href="https://Ghw2066.github.io/2019/005/" />
+  
+  <link rel="canonical" href="https://Ghw2066.github.io/2019/006/" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <title>
+       
+       
+           汇编学习笔记（四）---栈、函数、递归 | Haowen`s Blog
+       
+  </title>
+  <meta name="title" content="汇编学习笔记（四）---栈、函数、递归 | Haowen`s Blog">
+    
+  
+  <link rel="stylesheet" href="/font/iconfont.css">
+  <link rel="stylesheet" href="/css/main.min.css">
+
+
+  
+  
+ 
+
+<script type="application/ld+json">
+ "@context" : "http://schema.org",
+    "@type" : "BlogPosting",
+    "mainEntityOfPage": {
+         "@type": "WebPage",
+         "@id": "https:\/\/Ghw2066.github.io"
+    },
+    "articleSection" : "posts",
+    "name" : "汇编学习笔记（四）---栈、函数、递归",
+    "headline" : "汇编学习笔记（四）---栈、函数、递归",
+    "description" : "先吐个槽 前面几个实验虽然或多或少碰到点小麻烦，但是编程的思路还是比较清晰，按照逻辑一步一步来就好了，无非就是相比高级编程语言麻烦一些，直到遇",
+    "inLanguage" : "zh-cn",
+    "author" : "Guo Haowen",
+    "creator" : "Guo Haowen",
+    "publisher": "Guo Haowen",
+    "accountablePerson" : "Guo Haowen",
+    "copyrightHolder" : "Guo Haowen",
+    "copyrightYear" : "2019",
+    "datePublished": "2019-10-14 10:15:04 \x2b1100 AEDT",
+    "dateModified" : "2019-10-14 10:15:04 \x2b1100 AEDT",
+    "url" : "https:\/\/Ghw2066.github.io\/2019\/006\/",
+    "wordCount" : "1617",
+    "keywords" : [ "汇编Assembly","递归", "Haowen`s Blog"]
+}
+</script>
+
+</head>
+
+  
+
+
+  <body class="">
+    <div class="wrapper">
+        <nav class="navbar">
+    <div class="container">
+        <div class="navbar-header header-logo">
+        	<a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-xihuan"></i></a>&nbsp;<a href="https://Ghw2066.github.io">Haowen`s Blog</a>
+        </div>
+        <div class="menu navbar-right">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/tags/" title="">Tags</a>
+                
+                <a class="menu-item" href="/about/" title="">About</a>
+                
+        </div>
+    </div>
+</nav>
+<nav class="navbar-mobile" id="nav-mobile" style="display: none">
+     <div class="container">
+        <div class="navbar-header">
+            <div>  <a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-xihuan"></i></a>&nbsp;<a href="https://Ghw2066.github.io">Haowen`s Blog</a></div>
+            <div class="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+     
+          <div class="menu" id="mobile-menu">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/tags/" title="">Tags</a>
+                
+                <a class="menu-item" href="/about/" title="">About</a>
+                
+        </div>
+    </div>
+</nav>
+    	 <main class="main">
+          <div class="container">
+      		
+<article class="post-warp" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">汇编学习笔记（四）---栈、函数、递归</h1>
+        <div class="post-meta">
+                Written by <a itemprop="name" href="https://Ghw2066.github.io" rel="author">Guo Haowen</a> with ♥ 
+                <span class="post-time">
+                on <time datetime=2019-10-14 itemprop="datePublished">October 14, 2019</time>
+                </span>
+                in
+                <i class="iconfont icon-folder"></i>
+                <span class="post-category">
+                        <a href="https://Ghw2066.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"> 计算机系统 </a>
+                        
+                </span>
+        </div>
+    </header>
+    <div class="post-content">
+        
+
+        
+
+        
+        
+     
+          
+          
+          
+
+          
+          
+          
+
+          
+
+<h2 id="先吐个槽">先吐个槽</h2>
+
+<p>前面几个实验虽然或多或少碰到点小麻烦，但是编程的思路还是比较清晰，按照逻辑一步一步来就好了，无非就是相比高级编程语言麻烦一些，直到遇到了本次lab。。</p>
+
+<p>在lecture上首先介绍了<code>栈(stack)</code>的概念，然后引入用<code>栈(stack)</code>实现的<code>函数(function)</code>，讲到这里我已经晕了，各种<code>pointer</code>满天飞，然后就开始用<code>rcall</code> <code>ret</code>开始实现递归了，心里一万头草泥马。。。</p>
+
+<p>吐槽归吐槽，lab还得做，日子还得过</p>
+
+<h2 id="任务描述">任务描述</h2>
+
+<blockquote>
+<p>GCD can be calculated in many ways. Figure 1 shows a different approach (as compared to the one used in Lab 1) to obtain GCD of two integers (written in C,  where, <code>a%b</code> is the remainder of <code>a</code> divided by <code>b</code>).</p>
+
+<p>Write an assembly recursive function to implement the C program. Here we assume the integer size is two bytes. For readability, use a macro for <code>n1%n2</code> in your assembly code.</p>
+
+<pre><code class="language-c">&gt; int gcd(int a, int b) 
+&gt; {    
+&gt;     if (b != 0)        
+&gt;         return gcd(b, a%b);       
+&gt;     else         
+&gt;         return a; 
+&gt; }
+&gt; ```
+&gt;
+&gt; Assemble your program using AVR Studio, and run it on the AVR Microcontroller Board. Demonstrate your working program to the lab assessor.  
+&gt;
+
+## 解题思路
+
+其实在课后仔细学习了lecture N+1遍后，终于顿悟。虽然各种指令集看起来花里胡哨的，但其实还是逻辑清晰，条例明确的，只要真正理解了栈用于函数的实现以及各个指令集的功能，这个问题也就迎刃而解了。
+
+#### 1. mod 求余的实现
+
+首先指令集中并没有求余指令，所以这里要自己实现一个，最后保存在一个macro中，方便调用，同时也增强了程序的可读性与健壮性。这里实现如下：
+
+</code></pre>
+
+<p>assembly
+.macro mod		;a%b a-&gt;@1:@0   b-&gt;@3@2	
+loop:
+	cp @0,@2	
+	cpc @1,@3
+	brsh sbtr
+	rjmp done
+sbtr:
+	sub @0,@2
+	sbc @1,@3	
+	rjmp loop
+done:
+.endmacro</p>
+
+<pre><code>
+
+
+#### 2. `gcd`函数的prologue
+
+这个prologue不知道怎么翻译合适，我理解的就是相当于c语言中的函数头部分，定义了与外界的接口，将值传递进入函数内部。
+
+</code></pre>
+
+<p>c
+int gcd(int a, int b)</p>
+
+<pre><code>
+因为汇编中也没有函数的实现，所以要使用栈这种结构实现一个函数。
+
+因此需要`stack pointer`以及`stack frame pointer`来实现一个栈，前者是汇编中已有的栈指针，为2字节，表示为`SPL`和`SPH`；后者是根据我们的需要，需要使用`Y`，即`R29:R28`寄存器对，作为`frame pointer`，用来分配内存以及指向栈顶。
+
+**Prologue**
+
+</code></pre>
+
+<p>assembly
+;prologue
+				;Y -&gt; r29:r28 will be used as the frame pointer
+	push YL		;save r29:r28 in the stack
+	push YH		
+	push r16
+	push r17
+	push zero
+	in YL,SPL
+	in YH,SPH
+	sbiw Y,4</p>
+</blockquote>
+
+<p>	out SPH,YH	;update the stack pointer to
+	out SPL,YL	;point to the new stack top</p>
+
+<p>	std Y+1,al	;pass a&rsquo;s value to local_a in the function
+	std Y+2,ah
+	std Y+3,bl	;pass b&rsquo;s value to local_b in the function
+	std Y+4,bh
+	;End of prologue</p>
+
+<pre><code>
+#### 3. `gcd`函数的`function body`
+
+函数主体部分就比较直观了，基本就是对c代码的汇编实现。
+
+**Function body**
+
+</code></pre>
+
+<p>assembly
+;function body
+	clr zero
+	cp r20,zero
+	cpc r21,zero
+	brne L1		;if(b!=0) branch to L1: gcd(b, a%b)</p>
+
+<p>	rjmp L2		;else jump to L2, return a
+L1:
+	ldd al,Y+3	;load b to a
+	ldd ah,Y+4
+	ldd bl,Y+1	;load a to b
+	ldd bh,Y+2
+	;swap the value of a,b
+	movw r16:r17,al:ah		;copy b_value to r16:r17
+	mod bl,bh,r16,r17		;calculate a%b and put the result in b
+	;now a is b, b is a%b
+	rcall gcd				;return gcd(b, a%b);</p>
+
+<pre><code>
+#### 4. `gcd`函数的`epilogue`
+
+这个epilogue我理解为将栈释放，返回值，所以这里的一系列操作几乎就是`Prologue`的反向操作。
+
+**Epilogue**
+
+</code></pre>
+
+<p>assembly
+L2:
+	adiw Y,4		;deallocate the reserved space
+	out SPH,YH
+	out SPL,YL
+	pop zero		
+	pop r17			;restore registers
+	pop r16
+	pop YH
+	pop YL
+	ret				;return to main()
+	;End of epilogue</p>
+
+<pre><code>
+## 完整代码
+
+</code></pre>
+
+<p>assembly
+;
+; task1_gcd_recursive.asm
+;
+; Created: 2019/10/10 11:43:21
+; Author : GHW
+;
+;int gcd(int a, int b)
+;{<br />
+;	if (b != 0)<br />
+;		return gcd(b, a%b);<br />
+;	else
+;       return a;
+;}</p>
+
+<p>; Replace with your application code
+.include &ldquo;m2560def.inc&rdquo;
+.def zero = r15			;to store constant value 0
+.def al = r22
+.def ah = r23
+.def bl = r20
+.def bh = r21</p>
+
+<p>.macro mod		;a%b a-&gt;@1:@0   b-&gt;@3@2	
+loop:
+	cp @0,@2	
+	cpc @1,@3
+	brsh sbtr
+	rjmp done
+sbtr:
+	sub @0,@2
+	sbc @1,@3	
+	rjmp loop
+done:
+.endmacro</p>
+
+<p>.CSEG			;start code segment</p>
+
+<p>main:
+	;mod ah,al,bh,bl,r25,r24
+	ldi al,low(3500)
+	ldi ah,high(3500)
+	ldi bl,low(500)
+	ldi bh,high(500)
+	rcall gcd
+	;movw r23:r22,r25:r24
+end:
+	rjmp end</p>
+
+<p>gcd:
+	;prologue
+				;Y -&gt; r29:r28 will be used as the frame pointer
+	push YL		;save r29:r28 in the stack
+	push YH		
+	push r16
+	push r17
+	push zero
+	in YL,SPL
+	in YH,SPH
+	sbiw Y,4</p>
+
+<p>	out SPH,YH	;update the stack pointer to
+	out SPL,YL	;point to the new stack top</p>
+
+<p>	std Y+1,al	;pass a&rsquo;s value to local_a in the function
+	std Y+2,ah
+	std Y+3,bl	;pass b&rsquo;s value to local_b in the function
+	std Y+4,bh
+	;End of prologue</p>
+
+<p>	;function body
+	clr zero
+	cp r20,zero
+	cpc r21,zero
+	brne L1		;if(b!=0) branch to L1: gcd(b, a%b)</p>
+
+<p>	rjmp L2		;else jump to L2, return a
+L1:
+	ldd al,Y+3	;load b to a
+	ldd ah,Y+4
+	ldd bl,Y+1	;load a to b
+	ldd bh,Y+2
+	;swap the value of a,b
+	movw r16:r17,al:ah		;copy b_value to r16:r17
+	mod bl,bh,r16,r17		;calculate a%b and put the result in b
+	;now a is b, b is a%b</p>
+
+<p>	rcall gcd				;return gcd(b, a%b);</p>
+
+<p>L2:
+	adiw Y,4		;deallocate the reserved space
+	out SPH,YH
+	out SPL,YL
+	pop zero		
+	pop r17			;restore registers
+	pop r16
+	pop YH
+	pop YL
+	ret				;return to main()
+	;End of epilogue
+```</p>
+
+<h2 id="小结">小结</h2>
+
+<p>并不是第一次接触递归，过去学<code>c/c++</code>,<code>java</code>, <code>python</code>都接触过递归，但是其实心里一直对递归有种知其然不知其所以然的感觉，直到这次用汇编手动操作内存，用栈实现一个函数，同时实现递归之后，才终于算是理解递归是一个什么样的过程，在每一次递归的过程中，函数都要在内存中申请新的空间，存放本次递归的结果，直到递归达到返回条件之后，再逐层返回，并释放内存。所以说递归其实是一个内存开销比较大的方法，但熟练掌握之后，确实是更符合编程逻辑的方式。</p>
+
+    </div>
+
+    <div class="post-copyright">
+             
+            <p class="copyright-item">
+                <span>Author:</span>
+                <span>Guo Haowen </span>
+                </p>
+            
+           
+             
+            <p class="copyright-item">
+                    <span>Link:</span>
+                    <a href=https://Ghw2066.github.io/2019/006/>https://Ghw2066.github.io/2019/006/</span>
+            </p>
+            
+             
+            <p class="copyright-item lincese">
+                本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可
+            </p>
+            
+    </div>
+
+  
+    <div class="post-tags">
+        
+            <section>
+            <i class="iconfont icon-tag"></i>Tag(s): 
+            
+            <span class="tag"><a href="https://Ghw2066.github.io/tags/%E6%B1%87%E7%BC%96assembly/">
+                    #汇编Assembly</a></span>
+            
+            <span class="tag"><a href="https://Ghw2066.github.io/tags/%E9%80%92%E5%BD%92/">
+                    #递归</a></span>
+            
+            </section>
+        
+        <section>
+                <a href="javascript:window.history.back();">back</a></span> · 
+                <span><a href="https://Ghw2066.github.io">home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+        
+        <a href="https://Ghw2066.github.io/2019/005/" class="prev" rel="prev" title="汇编学习笔记（三）---分支、循环实现辗转相除法"><i class="iconfont icon-left"></i>&nbsp;汇编学习笔记（三）---分支、循环实现辗转相除法</a>
+         
+        
+    </div>
+
+    <div class="post-comment">
+          
+                 
+          
+        
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: '8510a4b571a1b6ff8f97',
+    clientSecret: '00f7f86e2b4f27c3470ed3af9f1132efb1ce89d5',
+    repo: 'https:\/\/Ghw2066.github.io',
+    owner: 'Ghw2066',
+    admin: ['Ghw2066'],
+    id: location.pathname, 
+    distractionFreeMode: false 
+  });
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+      return;
+    }
+    gitalk.render('gitalk-container');
+  })();
+</script>
+
+    </div>
+</article>
+          </div>
+		   </main>
+      <footer class="footer">
+    <div class="copyright">
+        &copy;
+        
+        <span itemprop="copyrightYear">2019 - 2019</span>
+        
+        <span class="with-love">
+    	 <i class="iconfont icon-love"></i> 
+         </span>
+         
+            <span class="author" itemprop="copyrightHolder"><a href="https://Ghw2066.github.io">Guo Haowen</a> | </span> 
+         
+
+         
+		  <span>Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow">Hugo</a> & <a href="https://github.com/liuzc/leaveit" target="_blank" rel="external nofollow">LeaveIt</a></span> 
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    <script src="/js/vendor_no_gallery.min.js" async=""></script>
+    
+  
+
+
+
+     </div>
+  </body>
+</html>
