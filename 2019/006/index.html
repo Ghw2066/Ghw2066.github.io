@@ -57,7 +57,7 @@
     "datePublished": "2019-10-14 10:15:04 \x2b1100 AEDT",
     "dateModified" : "2019-10-14 10:15:04 \x2b1100 AEDT",
     "url" : "https:\/\/Ghw2066.github.io\/2019\/006\/",
-    "wordCount" : "1617",
+    "wordCount" : "1563",
     "keywords" : [ "汇编Assembly","递归", "Haowen`s Blog"]
 }
 </script>
@@ -163,29 +163,144 @@
 
 <p>Write an assembly recursive function to implement the C program. Here we assume the integer size is two bytes. For readability, use a macro for <code>n1%n2</code> in your assembly code.</p>
 
-<pre><code class="language-c">&gt; int gcd(int a, int b) 
-&gt; {    
-&gt;     if (b != 0)        
-&gt;         return gcd(b, a%b);       
-&gt;     else         
-&gt;         return a; 
-&gt; }
-&gt; ```
-&gt;
-&gt; Assemble your program using AVR Studio, and run it on the AVR Microcontroller Board. Demonstrate your working program to the lab assessor.  
-&gt;
+<blockquote>
+<p>int gcd(int a, int b)
+{<br />
+    if (b != 0)<br />
+     return gcd(b, a%b);<br />
+ else
+       return a;
+}</p>
+</blockquote>
 
-## 解题思路
+<p>Assemble your program using AVR Studio, and run it on the AVR Microcontroller Board. Demonstrate your working program to the lab assessor.</p>
+</blockquote>
 
-其实在课后仔细学习了lecture N+1遍后，终于顿悟。虽然各种指令集看起来花里胡哨的，但其实还是逻辑清晰，条例明确的，只要真正理解了栈用于函数的实现以及各个指令集的功能，这个问题也就迎刃而解了。
+<h2 id="解题思路">解题思路</h2>
 
-#### 1. mod 求余的实现
+<p>其实在课后仔细学习了lecture N+1遍后，终于顿悟。虽然各种指令集看起来花里胡哨的，但其实还是逻辑清晰，条例明确的，只要真正理解了栈用于函数的实现以及各个指令集的功能，这个问题也就迎刃而解了。</p>
 
-首先指令集中并没有求余指令，所以这里要自己实现一个，最后保存在一个macro中，方便调用，同时也增强了程序的可读性与健壮性。这里实现如下：
+<h4 id="mod-求余的实现">mod 求余的实现</h4>
 
+<p>首先指令集中并没有求余指令，所以这里要自己实现一个，最后保存在一个macro中，方便调用，同时也增强了程序的可读性与健壮性。这里实现如下：</p>
+
+<pre><code class="language-assembly">.macro mod		;a%b a-&gt;@1:@0   b-&gt;@3@2	
+loop:
+	cp @0,@2	
+	cpc @1,@3
+	brsh sbtr
+	rjmp done
+sbtr:
+	sub @0,@2
+	sbc @1,@3	
+	rjmp loop
+done:
+.endmacro
 </code></pre>
 
-<p>assembly
+<h4 id="gcd-函数的prologue"><code>gcd</code>函数的prologue</h4>
+
+<p>这个prologue不知道怎么翻译合适，我理解的就是相当于c语言中的函数头部分，定义了与外界的接口，将值传递进入函数内部。</p>
+
+<pre><code class="language-c">int gcd(int a, int b)
+</code></pre>
+
+<p>因为汇编中也没有函数的实现，所以要使用栈这种结构实现一个函数。</p>
+
+<p>因此需要<code>stack pointer</code>以及<code>stack frame pointer</code>来实现一个栈，前者是汇编中已有的栈指针，为2字节，表示为<code>SPL</code>和<code>SPH</code>；后者是根据我们的需要，需要使用<code>Y</code>，即<code>R29:R28</code>寄存器对，作为<code>frame pointer</code>，用来分配内存以及指向栈顶。</p>
+
+<p><strong>Prologue</strong></p>
+
+<pre><code class="language-assembly">;prologue
+				;Y -&gt; r29:r28 will be used as the frame pointer
+	push YL		;save r29:r28 in the stack
+	push YH		
+	push r16
+	push r17
+	push zero
+	in YL,SPL
+	in YH,SPH
+	sbiw Y,4
+
+	out SPH,YH	;update the stack pointer to 
+	out SPL,YL	;point to the new stack top
+
+	std Y+1,al	;pass a's value to local_a in the function
+	std Y+2,ah
+	std Y+3,bl	;pass b's value to local_b in the function
+	std Y+4,bh
+	;End of prologue
+</code></pre>
+
+<h4 id="gcd-函数的-function-body"><code>gcd</code>函数的<code>function body</code></h4>
+
+<p>函数主体部分就比较直观了，基本就是对c代码的汇编实现。</p>
+
+<p><strong>Function body</strong></p>
+
+<pre><code class="language-assembly">;function body
+	clr zero
+	cp r20,zero
+	cpc r21,zero
+	brne L1		;if(b!=0) branch to L1: gcd(b, a%b)
+
+	rjmp L2		;else jump to L2, return a
+L1:
+	ldd al,Y+3	;load b to a
+	ldd ah,Y+4
+	ldd bl,Y+1	;load a to b
+	ldd bh,Y+2
+	;swap the value of a,b
+	movw r16:r17,al:ah		;copy b_value to r16:r17
+	mod bl,bh,r16,r17		;calculate a%b and put the result in b
+	;now a is b, b is a%b
+	rcall gcd				;return gcd(b, a%b);
+</code></pre>
+
+<h4 id="gcd-函数的-epilogue"><code>gcd</code>函数的<code>epilogue</code></h4>
+
+<p>这个epilogue我理解为将栈释放，返回值，所以这里的一系列操作几乎就是<code>Prologue</code>的反向操作。</p>
+
+<p><strong>Epilogue</strong></p>
+
+<pre><code class="language-assembly">L2:
+	adiw Y,4		;deallocate the reserved space
+	out SPH,YH
+	out SPL,YL
+	pop zero		
+	pop r17			;restore registers
+	pop r16
+	pop YH
+	pop YL
+	ret				;return to main()
+	;End of epilogue
+</code></pre>
+
+<h2 id="完整代码">完整代码</h2>
+
+<pre><code class="language-assembly">;
+; task1_gcd_recursive.asm
+;
+; Created: 2019/10/10 11:43:21
+; Author : GHW
+;
+;int gcd(int a, int b) 
+;{    
+;	if (b != 0)        
+;		return gcd(b, a%b);   
+;	else
+;       return a;
+;} 
+ 
+
+; Replace with your application code
+.include &quot;m2560def.inc&quot;
+.def zero = r15			;to store constant value 0
+.def al = r22
+.def ah = r23
+.def bl = r20
+.def bh = r21
+
 .macro mod		;a%b a-&gt;@1:@0   b-&gt;@3@2	
 loop:
 	cp @0,@2	
@@ -197,31 +312,23 @@ sbtr:
 	sbc @1,@3	
 	rjmp loop
 done:
-.endmacro</p>
+.endmacro
 
-<pre><code>
+.CSEG			;start code segment
 
+main:
+	;mod ah,al,bh,bl,r25,r24
+	ldi al,low(3500)
+	ldi ah,high(3500)
+	ldi bl,low(500)
+	ldi bh,high(500)
+	rcall gcd
+	;movw r23:r22,r25:r24
+end:
+	rjmp end
 
-#### 2. `gcd`函数的prologue
-
-这个prologue不知道怎么翻译合适，我理解的就是相当于c语言中的函数头部分，定义了与外界的接口，将值传递进入函数内部。
-
-</code></pre>
-
-<p>c
-int gcd(int a, int b)</p>
-
-<pre><code>
-因为汇编中也没有函数的实现，所以要使用栈这种结构实现一个函数。
-
-因此需要`stack pointer`以及`stack frame pointer`来实现一个栈，前者是汇编中已有的栈指针，为2字节，表示为`SPL`和`SPH`；后者是根据我们的需要，需要使用`Y`，即`R29:R28`寄存器对，作为`frame pointer`，用来分配内存以及指向栈顶。
-
-**Prologue**
-
-</code></pre>
-
-<p>assembly
-;prologue
+gcd:
+	;prologue
 				;Y -&gt; r29:r28 will be used as the frame pointer
 	push YL		;save r29:r28 in the stack
 	push YH		
@@ -230,35 +337,24 @@ int gcd(int a, int b)</p>
 	push zero
 	in YL,SPL
 	in YH,SPH
-	sbiw Y,4</p>
-</blockquote>
+	sbiw Y,4
 
-<p>	out SPH,YH	;update the stack pointer to
-	out SPL,YL	;point to the new stack top</p>
+	out SPH,YH	;update the stack pointer to 
+	out SPL,YL	;point to the new stack top
 
-<p>	std Y+1,al	;pass a&rsquo;s value to local_a in the function
+	std Y+1,al	;pass a's value to local_a in the function
 	std Y+2,ah
-	std Y+3,bl	;pass b&rsquo;s value to local_b in the function
+	std Y+3,bl	;pass b's value to local_b in the function
 	std Y+4,bh
-	;End of prologue</p>
+	;End of prologue
 
-<pre><code>
-#### 3. `gcd`函数的`function body`
-
-函数主体部分就比较直观了，基本就是对c代码的汇编实现。
-
-**Function body**
-
-</code></pre>
-
-<p>assembly
-;function body
+	;function body
 	clr zero
 	cp r20,zero
 	cpc r21,zero
-	brne L1		;if(b!=0) branch to L1: gcd(b, a%b)</p>
+	brne L1		;if(b!=0) branch to L1: gcd(b, a%b)
 
-<p>	rjmp L2		;else jump to L2, return a
+	rjmp L2		;else jump to L2, return a
 L1:
 	ldd al,Y+3	;load b to a
 	ldd ah,Y+4
@@ -268,18 +364,9 @@ L1:
 	movw r16:r17,al:ah		;copy b_value to r16:r17
 	mod bl,bh,r16,r17		;calculate a%b and put the result in b
 	;now a is b, b is a%b
-	rcall gcd				;return gcd(b, a%b);</p>
 
-<pre><code>
-#### 4. `gcd`函数的`epilogue`
+	rcall gcd				;return gcd(b, a%b);
 
-这个epilogue我理解为将栈释放，返回值，所以这里的一系列操作几乎就是`Prologue`的反向操作。
-
-**Epilogue**
-
-</code></pre>
-
-<p>assembly
 L2:
 	adiw Y,4		;deallocate the reserved space
 	out SPH,YH
@@ -290,114 +377,8 @@ L2:
 	pop YH
 	pop YL
 	ret				;return to main()
-	;End of epilogue</p>
-
-<pre><code>
-## 完整代码
-
-</code></pre>
-
-<p>assembly
-;
-; task1_gcd_recursive.asm
-;
-; Created: 2019/10/10 11:43:21
-; Author : GHW
-;
-;int gcd(int a, int b)
-;{<br />
-;	if (b != 0)<br />
-;		return gcd(b, a%b);<br />
-;	else
-;       return a;
-;}</p>
-
-<p>; Replace with your application code
-.include &ldquo;m2560def.inc&rdquo;
-.def zero = r15			;to store constant value 0
-.def al = r22
-.def ah = r23
-.def bl = r20
-.def bh = r21</p>
-
-<p>.macro mod		;a%b a-&gt;@1:@0   b-&gt;@3@2	
-loop:
-	cp @0,@2	
-	cpc @1,@3
-	brsh sbtr
-	rjmp done
-sbtr:
-	sub @0,@2
-	sbc @1,@3	
-	rjmp loop
-done:
-.endmacro</p>
-
-<p>.CSEG			;start code segment</p>
-
-<p>main:
-	;mod ah,al,bh,bl,r25,r24
-	ldi al,low(3500)
-	ldi ah,high(3500)
-	ldi bl,low(500)
-	ldi bh,high(500)
-	rcall gcd
-	;movw r23:r22,r25:r24
-end:
-	rjmp end</p>
-
-<p>gcd:
-	;prologue
-				;Y -&gt; r29:r28 will be used as the frame pointer
-	push YL		;save r29:r28 in the stack
-	push YH		
-	push r16
-	push r17
-	push zero
-	in YL,SPL
-	in YH,SPH
-	sbiw Y,4</p>
-
-<p>	out SPH,YH	;update the stack pointer to
-	out SPL,YL	;point to the new stack top</p>
-
-<p>	std Y+1,al	;pass a&rsquo;s value to local_a in the function
-	std Y+2,ah
-	std Y+3,bl	;pass b&rsquo;s value to local_b in the function
-	std Y+4,bh
-	;End of prologue</p>
-
-<p>	;function body
-	clr zero
-	cp r20,zero
-	cpc r21,zero
-	brne L1		;if(b!=0) branch to L1: gcd(b, a%b)</p>
-
-<p>	rjmp L2		;else jump to L2, return a
-L1:
-	ldd al,Y+3	;load b to a
-	ldd ah,Y+4
-	ldd bl,Y+1	;load a to b
-	ldd bh,Y+2
-	;swap the value of a,b
-	movw r16:r17,al:ah		;copy b_value to r16:r17
-	mod bl,bh,r16,r17		;calculate a%b and put the result in b
-	;now a is b, b is a%b</p>
-
-<p>	rcall gcd				;return gcd(b, a%b);</p>
-
-<p>L2:
-	adiw Y,4		;deallocate the reserved space
-	out SPH,YH
-	out SPL,YL
-	pop zero		
-	pop r17			;restore registers
-	pop r16
-	pop YH
-	pop YL
-	ret				;return to main()
 	;End of epilogue
-```</p>
+</code></pre>
 
 <h2 id="小结">小结</h2>
 
