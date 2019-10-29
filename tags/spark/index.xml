@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Spark on Haowen`s Blog</title>
+    <link>https://Ghw2066.github.io/tags/spark/</link>
+    <description>Recent content in Spark on Haowen`s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 29 Oct 2019 17:04:28 +1100</lastBuildDate>
+    
+	<atom:link href="https://Ghw2066.github.io/tags/spark/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Spark概述及运行架构</title>
+      <link>https://Ghw2066.github.io/2019/009/</link>
+      <pubDate>Tue, 29 Oct 2019 17:04:28 +1100</pubDate>
+      
+      <guid>https://Ghw2066.github.io/2019/009/</guid>
+      <description>Spark概述 运行速度快：使用DAG执行引擎以支持循环数据流与内存计算，比MapReduce迭代式计算高效。 易用：Scala, Java, Python, R并且支持</description>
+    </item>
+    
+  </channel>
+</rss>

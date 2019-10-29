@@ -6,10 +6,46 @@
     <description>Recent content in Tags on Haowen`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 14 Oct 2019 10:15:04 +1100</lastBuildDate>
+    <lastBuildDate>Tue, 29 Oct 2019 17:04:28 +1100</lastBuildDate>
     
 	<atom:link href="https://Ghw2066.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Spark</title>
+      <link>https://Ghw2066.github.io/tags/spark/</link>
+      <pubDate>Tue, 29 Oct 2019 17:04:28 +1100</pubDate>
+      
+      <guid>https://Ghw2066.github.io/tags/spark/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>hadoop</title>
+      <link>https://Ghw2066.github.io/tags/hadoop/</link>
+      <pubDate>Mon, 28 Oct 2019 22:30:53 +1100</pubDate>
+      
+      <guid>https://Ghw2066.github.io/tags/hadoop/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>java</title>
+      <link>https://Ghw2066.github.io/tags/java/</link>
+      <pubDate>Mon, 28 Oct 2019 22:30:53 +1100</pubDate>
+      
+      <guid>https://Ghw2066.github.io/tags/java/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mapreduce</title>
+      <link>https://Ghw2066.github.io/tags/mapreduce/</link>
+      <pubDate>Mon, 28 Oct 2019 22:30:53 +1100</pubDate>
+      
+      <guid>https://Ghw2066.github.io/tags/mapreduce/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>汇编Assembly</title>
