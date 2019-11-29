@@ -146,29 +146,22 @@
           
           
 
-          
-
-<h2 id="任务说明">任务说明</h2>
-
+          <h2 id="heading">任务说明</h2>
 <p>将下面的c代码用汇编表达</p>
-
-<pre><code class="language-c">int main(void) 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">void</span>) 
 {  
-    int a, b;    /* Initialized elsewhere */ 
+    <span style="color:#66d9ef">int</span> a, b;    <span style="color:#75715e">/* Initialized elsewhere */</span> 
  
- 	while (a!=b)  
- 	{   /* Assume a, b &gt; 0 */   
-        if (a&gt;b)                  
-            a = a - b;   
-        else                  
-            b = b - a;  
+ 	<span style="color:#66d9ef">while</span> (a<span style="color:#f92672">!</span><span style="color:#f92672">=</span>b)  
+ 	{   <span style="color:#75715e">/* Assume a, b &gt; 0 */</span>   
+        <span style="color:#66d9ef">if</span> (a<span style="color:#f92672">&gt;</span>b)                  
+            a <span style="color:#f92672">=</span> a <span style="color:#f92672">-</span> b;   
+        <span style="color:#66d9ef">else</span>                  
+            b <span style="color:#f92672">=</span> b <span style="color:#f92672">-</span> a;  
     }  
-    return 0;   /* a and b both hold the result */ } 
-</code></pre>
-
-<h2 id="汇编程序">汇编程序</h2>
-
-<pre><code class="language-assembly">; lab1_task2.asm
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;   <span style="color:#75715e">/* a and b both hold the result */</span> } 
+</code></pre></div><h2 id="heading1">汇编程序</h2>
+<pre><code class="language-assembly" data-lang="assembly">; lab1_task2.asm
 ;
 ; Created: 2019/10/3 12:19:02
 ; Author : Haowen Guo
@@ -221,15 +214,10 @@ loop:
 
 end:
     rjmp end
-</code></pre>
-
-<p>这次实验比较直观，不是很复杂，按照c逻辑一步一步实现就好了。有一点要说明的是，最初的版本中进行了两次比较</p>
-
-<pre><code class="language-assembly">cp bl,al
+</code></pre><p>这次实验比较直观，不是很复杂，按照c逻辑一步一步实现就好了。有一点要说明的是，最初的版本中进行了两次比较</p>
+<pre><code class="language-assembly" data-lang="assembly">cp bl,al
 cpc bh,ah		;compare b , a
-</code></pre>
-
-<p>在tutor验收的时候，给出了优化意见，这时才发现对于后续的分支语句<code>breq</code>和<code>brlt</code>只需要一次对a，b的比较就可以了，因为a，b比较之后状态寄存器<code>SREG</code>状态位<code>C:Carry</code>并没有被改变，仍然可以表示a，b比较结果，所以可以执行正确的分支语句。</p>
+</code></pre><p>在tutor验收的时候，给出了优化意见，这时才发现对于后续的分支语句<code>breq</code>和<code>brlt</code>只需要一次对a，b的比较就可以了，因为a，b比较之后状态寄存器<code>SREG</code>状态位<code>C:Carry</code>并没有被改变，仍然可以表示a，b比较结果，所以可以执行正确的分支语句。</p>
 
     </div>
 

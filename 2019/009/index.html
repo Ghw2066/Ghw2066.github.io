@@ -57,7 +57,7 @@
     "datePublished": "2019-10-29 17:04:28 \x2b1100 AEDT",
     "dateModified" : "2019-10-29 17:04:28 \x2b1100 AEDT",
     "url" : "https:\/\/Ghw2066.github.io\/2019\/009\/",
-    "wordCount" : "780",
+    "wordCount" : "1545",
     "keywords" : [ "Spark", "Haowen`s Blog"]
 }
 </script>
@@ -148,51 +148,88 @@
           
           
 
-          
-
-<h2 id="spark概述">Spark概述</h2>
-
+          <h2 id="spark">Spark概述</h2>
 <ul>
 <li>运行速度快：使用DAG执行引擎以支持循环数据流与内存计算，比MapReduce迭代式计算高效。</li>
 <li>易用：Scala, Java, Python, R并且支持使用Spark Shell进行交互式编程</li>
 <li>通用性：SQL, 流式计算, ML，图算法组件</li>
 <li>运行模式多样：
-
 <ol>
 <li>独立集群模式</li>
 <li>可运行于Hadoop中，借助HDFS，YARN，Hbase，Hive等，同时得到了Hadoop安全性上的优势</li>
 <li>可运行于Amazon EC2等云环境</li>
-</ol></li>
+</ol>
+</li>
 </ul>
-
 <p>Spark由Scala编写，Scala是多范式编程语言，具备强大的并发性，支持函数式编程，可以更好地支持分布式系统。Scala语法简洁，能提供优雅的API。最重要的是，Scala兼容Java，运行在JVM之上，运行速度快，且能融合到Hadoop生态圈中。</p>
-
 <p>Scala提供REPL(Read-Eval-Print-Loop, 交互式解释器)，提高程序开发效率。</p>
-
-<h4 id="spark与hadoop对比">Spark与Hadoop对比</h4>
-
+<h4 id="sparkhadoop">Spark与Hadoop对比</h4>
 <ul>
-<li><p>Hadoop缺点：</p>
-
+<li>
+<p>Hadoop缺点：</p>
 <ol>
 <li>表达能力有限，并不是所有任务都可以用MR完成</li>
 <li>磁盘IO开销很大，要不断的读写磁盘，拖慢了速度</li>
 <li>延迟高，map与reduce之间通过读写磁盘通信，任务之间衔接涉及IO开销</li>
 <li>在前一个任务执行完成之前，其他任务就无法开始，难以胜任复杂、多阶段计算任务</li>
-</ol></li>
-
-<li><p>Spark相对Hadoop的优点</p>
-
+</ol>
+</li>
+<li>
+<p>Spark相对Hadoop的优点</p>
 <ol>
 <li>Spark的计算模式也属于MapReduce，但不局限与Map和Reduce操作，还提供了多种数据集操作类型， 编程模型比Hadoop MapReduce更灵活，更为适合数据挖掘、机器学习的任务。</li>
 <li>Spark提供了内存计算，可将中间结果放到内存中，对于迭代运算效率更高</li>
-<li>Spark基于DAG的任务调度执行机制，相对于Hadoop，虽然有Task框架也实现了DAG任务调度，但是仅是Task框架，不是MapReduce框架本身，所以Spark要由于Hadoop MapReduce的迭代执行机制。</li>
-</ol></li>
+<li>Spark基于DAG的任务调度执行机制，相对于Hadoop，虽然有Tez框架也实现了DAG任务调度，但是仅是Tez框架，不是MapReduce框架本身，所以Spark要由于Hadoop MapReduce的迭代执行机制。</li>
+</ol>
+</li>
 </ul>
-
-<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/spark/spark1.png" alt="Spark与Hadoop流程对比" class="lazyload"><figcaption class="image-caption">Spark与Hadoop流程对比</figcaption></figure></p>
-
-<h2 id="spark生态系统">Spark生态系统</h2>
+<p><img src="/images/spark/spark1.png" alt="Spark与Hadoop流程对比"></p>
+<h2 id="spark1">Spark生态系统</h2>
+<ul>
+<li>
+<p>Spark设计：遵循 “一个软件栈满足不同应用场景” 的理念，逐渐形成了一套完整的生态系统</p>
+</li>
+<li>
+<p>Spark可以部署在资源管理器YARN之上，提供一站式的大数据解决方案</p>
+</li>
+<li>
+<p>Spark所提供的生态系统同时支持<strong>批处理</strong>、<strong>交互式查询</strong>和<strong>流数据处理</strong></p>
+</li>
+<li>
+<p>Spark生态系统已经成为伯克利数据分析软件栈BDAS(Berkeley Data Analytics Stack)的重要组成部分</p>
+</li>
+<li>
+<p>生态系统组成：</p>
+<ol>
+<li>Spark Core 提供内存计算</li>
+<li>Spark SQL 提供交互式查询分析</li>
+<li>Spark Streaming 提供流计算功能</li>
+<li>MLlib 提供机器学习算法库的组件</li>
+<li>GraphX 提供图计算</li>
+</ol>
+</li>
+</ul>
+<p><img src="/images/spark/spark2.png" alt="Spark生态系统组件的应用场景"></p>
+<h2 id="spark-">Spark 运行架构</h2>
+<p><img src="/images/spark/spark4.png" alt="Spark基本概念"></p>
+<p><strong>RDD</strong>: Resillient Distributed Dataset (弹性分布式数据集)</p>
+<p><strong>DAG</strong>: Directed Acyclic Gragh(有向无环图)</p>
+<p><strong>Executor</strong>: 是运行在工作节点(worknode)的一个进程，负责运行Task</p>
+<p><strong>Application</strong>: 用户编写的Spark应用程序</p>
+<p><strong>Task</strong>: 运行在Executor上的工作单元</p>
+<p><strong>Job</strong>: 一个job包含多个RDD及作用于相应RDD上的各种操作</p>
+<p><strong>Stage</strong>: 是job的基本调度单位，一个job会分为多组Task，每组Task被称为Stage，或者也被称为TaskSet，代表了一组关联的、相互之间没有Shuffle依赖关系的任务组成的任务集</p>
+<p><img src="/images/spark/spark3.png" alt="Spark架构设计"></p>
+<p><strong>Cluster Manager</strong>: 集群资源管理器，是中间最核心的部分，负责对整个spark应用程序进行资源的分配和管理调度的，可以用spark自带的资源管理器，也可以用其他的开源框架，比如Mesos或YARN</p>
+<p><strong>Worker Node</strong>：运行作业任务的工作节点，其中Executor负责任务执行的具体进程</p>
+<p><strong>Driver Program</strong>：任务控制节点，类似管家，负责整个应用的任务控制的，应用提交后，生成有向无环图DAG，将DAG分成多个阶段，对多个阶段进行任务拆解，把任务分给相关的具体的Executor去执行</p>
+<h4 id="hadoop-mapreduce-sparkexecutor">相比Hadoop MapReduce, Spark的Executor优点</h4>
+<ol>
+<li>利用多线程来执行具体的任务，减少任务的启动开销</li>
+<li>Executor中有一个BlockManager存储模块，会将内存和磁盘共同作为存储设备，有效减少IO开销</li>
+</ol>
+<h4 id="heading">运行基本流程</h4>
+<p>SparkContext</p>
 
     </div>
 

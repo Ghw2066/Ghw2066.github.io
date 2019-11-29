@@ -146,45 +146,30 @@
           
           
 
-          
-
-<h2 id="先吐个槽">先吐个槽</h2>
-
+          <h2 id="heading">先吐个槽</h2>
 <p>前面几个实验虽然或多或少碰到点小麻烦，但是编程的思路还是比较清晰，按照逻辑一步一步来就好了，无非就是相比高级编程语言麻烦一些，直到遇到了本次lab。。</p>
-
-<p>在lecture上首先介绍了<code>栈(stack)</code>的概念，然后引入用<code>栈(stack)</code>实现的<code>函数(function)</code>，讲到这里我已经晕了，各种<code>pointer</code>满天飞，然后就开始用<code>rcall</code> <code>ret</code>开始实现递归了，心里一万头草泥马。。。</p>
-
+<p>在lecture上首先介绍了<code>栈(stack)</code>的概念，然后引入用<code>栈(stack)</code>实现的<code>函数(function)</code>，讲到这里我已经晕了，各种<code>pointer</code>满天飞，然后就开始用<code>rcall` </code>ret`开始实现递归了，心里一万头草泥马。。。</p>
 <p>吐槽归吐槽，lab还得做，日子还得过</p>
-
-<h2 id="任务描述">任务描述</h2>
-
+<h2 id="heading1">任务描述</h2>
 <blockquote>
 <p>GCD can be calculated in many ways. Figure 1 shows a different approach (as compared to the one used in Lab 1) to obtain GCD of two integers (written in C,  where, <code>a%b</code> is the remainder of <code>a</code> divided by <code>b</code>).</p>
-
 <p>Write an assembly recursive function to implement the C program. Here we assume the integer size is two bytes. For readability, use a macro for <code>n1%n2</code> in your assembly code.</p>
-
 <blockquote>
-<p>int gcd(int a, int b)
-{<br />
-    if (b != 0)<br />
-     return gcd(b, a%b);<br />
- else
-       return a;
+<p>int gcd(int a, int b) 
+{ <br>
+if (b != 0)     <br>
+return gcd(b, a%b);<br>
+else
+return a;
 }</p>
 </blockquote>
-
 <p>Assemble your program using AVR Studio, and run it on the AVR Microcontroller Board. Demonstrate your working program to the lab assessor.</p>
 </blockquote>
-
-<h2 id="解题思路">解题思路</h2>
-
+<h2 id="heading2">解题思路</h2>
 <p>其实在课后仔细学习了lecture N+1遍后，终于顿悟。虽然各种指令集看起来花里胡哨的，但其实还是逻辑清晰，条例明确的，只要真正理解了栈用于函数的实现以及各个指令集的功能，这个问题也就迎刃而解了。</p>
-
-<h4 id="mod-求余的实现">mod 求余的实现</h4>
-
+<h4 id="mod-">mod 求余的实现</h4>
 <p>首先指令集中并没有求余指令，所以这里要自己实现一个，最后保存在一个macro中，方便调用，同时也增强了程序的可读性与健壮性。这里实现如下：</p>
-
-<pre><code class="language-assembly">.macro mod		;a%b a-&gt;@1:@0   b-&gt;@3@2	
+<pre><code class="language-assembly" data-lang="assembly">.macro mod		;a%b a-&gt;@1:@0   b-&gt;@3@2	
 loop:
 	cp @0,@2	
 	cpc @1,@3
@@ -196,22 +181,13 @@ sbtr:
 	rjmp loop
 done:
 .endmacro
-</code></pre>
-
-<h4 id="gcd-函数的prologue"><code>gcd</code>函数的prologue</h4>
-
+</code></pre><h4 id="gcdprologue"><code>gcd</code>函数的prologue</h4>
 <p>这个prologue不知道怎么翻译合适，我理解的就是相当于c语言中的函数头部分，定义了与外界的接口，将值传递进入函数内部。</p>
-
-<pre><code class="language-c">int gcd(int a, int b)
-</code></pre>
-
-<p>因为汇编中也没有函数的实现，所以要使用栈这种结构实现一个函数。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">int</span> gcd(<span style="color:#66d9ef">int</span> a, <span style="color:#66d9ef">int</span> b)
+</code></pre></div><p>因为汇编中也没有函数的实现，所以要使用栈这种结构实现一个函数。</p>
 <p>因此需要<code>stack pointer</code>以及<code>stack frame pointer</code>来实现一个栈，前者是汇编中已有的栈指针，为2字节，表示为<code>SPL</code>和<code>SPH</code>；后者是根据我们的需要，需要使用<code>Y</code>，即<code>R29:R28</code>寄存器对，作为<code>frame pointer</code>，用来分配内存以及指向栈顶。</p>
-
 <p><strong>Prologue</strong></p>
-
-<pre><code class="language-assembly">;prologue
+<pre><code class="language-assembly" data-lang="assembly">;prologue
 				;Y -&gt; r29:r28 will be used as the frame pointer
 	push YL		;save r29:r28 in the stack
 	push YH		
@@ -230,15 +206,10 @@ done:
 	std Y+3,bl	;pass b's value to local_b in the function
 	std Y+4,bh
 	;End of prologue
-</code></pre>
-
-<h4 id="gcd-函数的-function-body"><code>gcd</code>函数的<code>function body</code></h4>
-
+</code></pre><h4 id="gcdfunction-body"><code>gcd</code>函数的<code>function body</code></h4>
 <p>函数主体部分就比较直观了，基本就是对c代码的汇编实现。</p>
-
 <p><strong>Function body</strong></p>
-
-<pre><code class="language-assembly">;function body
+<pre><code class="language-assembly" data-lang="assembly">;function body
 	clr zero
 	cp r20,zero
 	cpc r21,zero
@@ -255,15 +226,10 @@ L1:
 	mod bl,bh,r16,r17		;calculate a%b and put the result in b
 	;now a is b, b is a%b
 	rcall gcd				;return gcd(b, a%b);
-</code></pre>
-
-<h4 id="gcd-函数的-epilogue"><code>gcd</code>函数的<code>epilogue</code></h4>
-
+</code></pre><h4 id="gcdepilogue"><code>gcd</code>函数的<code>epilogue</code></h4>
 <p>这个epilogue我理解为将栈释放，返回值，所以这里的一系列操作几乎就是<code>Prologue</code>的反向操作。</p>
-
 <p><strong>Epilogue</strong></p>
-
-<pre><code class="language-assembly">L2:
+<pre><code class="language-assembly" data-lang="assembly">L2:
 	adiw Y,4		;deallocate the reserved space
 	out SPH,YH
 	out SPL,YL
@@ -274,11 +240,8 @@ L1:
 	pop YL
 	ret				;return to main()
 	;End of epilogue
-</code></pre>
-
-<h2 id="完整代码">完整代码</h2>
-
-<pre><code class="language-assembly">;
+</code></pre><h2 id="heading3">完整代码</h2>
+<pre><code class="language-assembly" data-lang="assembly">;
 ; task1_gcd_recursive.asm
 ;
 ; Created: 2019/10/10 11:43:21
@@ -378,11 +341,8 @@ L2:
 	pop YL
 	ret				;return to main()
 	;End of epilogue
-</code></pre>
-
-<h2 id="小结">小结</h2>
-
-<p>并不是第一次接触递归，过去学<code>c/c++</code>,<code>java</code>, <code>python</code>都接触过递归，但是其实心里一直对递归有种知其然不知其所以然的感觉，直到这次用汇编手动操作内存，用栈实现一个函数，同时实现递归之后，才终于算是理解递归是一个什么样的过程，在每一次递归的过程中，函数都要在内存中申请新的空间，存放本次递归的结果，直到递归达到返回条件之后，再逐层返回，并释放内存。所以说递归其实是一个内存开销比较大的方法，但熟练掌握之后，确实是更符合编程逻辑的方式。</p>
+</code></pre><h2 id="heading4">小结</h2>
+<p>并不是第一次接触递归，过去学<code>c/c++`,</code> java<code>, </code>python`都接触过递归，但是其实心里一直对递归有种知其然不知其所以然的感觉，直到这次用汇编手动操作内存，用栈实现一个函数，同时实现递归之后，才终于算是理解递归是一个什么样的过程，在每一次递归的过程中，函数都要在内存中申请新的空间，存放本次递归的结果，直到递归达到返回条件之后，再逐层返回，并释放内存。所以说递归其实是一个内存开销比较大的方法，但熟练掌握之后，确实是更符合编程逻辑的方式。</p>
 
     </div>
 
