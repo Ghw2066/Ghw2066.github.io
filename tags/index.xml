@@ -2,93 +2,93 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Haowen`s Blog</title>
-    <link>https://Ghw2066.github.io/tags/</link>
+    <link>http://always4u.cloud/tags/</link>
     <description>Recent content in Tags on Haowen`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sat, 30 Nov 2019 11:38:36 +1100</lastBuildDate>
     
-	<atom:link href="https://Ghw2066.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://always4u.cloud/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Bigdata</title>
-      <link>https://Ghw2066.github.io/tags/bigdata/</link>
+      <link>http://always4u.cloud/tags/bigdata/</link>
       <pubDate>Sat, 30 Nov 2019 11:38:36 +1100</pubDate>
       
-      <guid>https://Ghw2066.github.io/tags/bigdata/</guid>
+      <guid>http://always4u.cloud/tags/bigdata/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Spark</title>
-      <link>https://Ghw2066.github.io/tags/spark/</link>
+      <link>http://always4u.cloud/tags/spark/</link>
       <pubDate>Tue, 29 Oct 2019 17:04:28 +1100</pubDate>
       
-      <guid>https://Ghw2066.github.io/tags/spark/</guid>
+      <guid>http://always4u.cloud/tags/spark/</guid>
       <description></description>
     </item>
     
     <item>
       <title>hadoop</title>
-      <link>https://Ghw2066.github.io/tags/hadoop/</link>
+      <link>http://always4u.cloud/tags/hadoop/</link>
       <pubDate>Mon, 28 Oct 2019 22:30:53 +1100</pubDate>
       
-      <guid>https://Ghw2066.github.io/tags/hadoop/</guid>
+      <guid>http://always4u.cloud/tags/hadoop/</guid>
       <description></description>
     </item>
     
     <item>
       <title>java</title>
-      <link>https://Ghw2066.github.io/tags/java/</link>
+      <link>http://always4u.cloud/tags/java/</link>
       <pubDate>Mon, 28 Oct 2019 22:30:53 +1100</pubDate>
       
-      <guid>https://Ghw2066.github.io/tags/java/</guid>
+      <guid>http://always4u.cloud/tags/java/</guid>
       <description></description>
     </item>
     
     <item>
       <title>mapreduce</title>
-      <link>https://Ghw2066.github.io/tags/mapreduce/</link>
+      <link>http://always4u.cloud/tags/mapreduce/</link>
       <pubDate>Mon, 28 Oct 2019 22:30:53 +1100</pubDate>
       
-      <guid>https://Ghw2066.github.io/tags/mapreduce/</guid>
+      <guid>http://always4u.cloud/tags/mapreduce/</guid>
       <description></description>
     </item>
     
     <item>
       <title>汇编Assembly</title>
-      <link>https://Ghw2066.github.io/tags/%E6%B1%87%E7%BC%96assembly/</link>
+      <link>http://always4u.cloud/tags/%E6%B1%87%E7%BC%96assembly/</link>
       <pubDate>Mon, 14 Oct 2019 10:15:04 +1100</pubDate>
       
-      <guid>https://Ghw2066.github.io/tags/%E6%B1%87%E7%BC%96assembly/</guid>
+      <guid>http://always4u.cloud/tags/%E6%B1%87%E7%BC%96assembly/</guid>
       <description></description>
     </item>
     
     <item>
       <title>递归</title>
-      <link>https://Ghw2066.github.io/tags/%E9%80%92%E5%BD%92/</link>
+      <link>http://always4u.cloud/tags/%E9%80%92%E5%BD%92/</link>
       <pubDate>Mon, 14 Oct 2019 10:15:04 +1100</pubDate>
       
-      <guid>https://Ghw2066.github.io/tags/%E9%80%92%E5%BD%92/</guid>
+      <guid>http://always4u.cloud/tags/%E9%80%92%E5%BD%92/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Algorithm</title>
-      <link>https://Ghw2066.github.io/tags/algorithm/</link>
+      <link>http://always4u.cloud/tags/algorithm/</link>
       <pubDate>Sat, 12 Oct 2019 11:25:25 +1100</pubDate>
       
-      <guid>https://Ghw2066.github.io/tags/algorithm/</guid>
+      <guid>http://always4u.cloud/tags/algorithm/</guid>
       <description></description>
     </item>
     
     <item>
       <title>leetcode</title>
-      <link>https://Ghw2066.github.io/tags/leetcode/</link>
+      <link>http://always4u.cloud/tags/leetcode/</link>
       <pubDate>Sat, 12 Oct 2019 11:25:25 +1100</pubDate>
       
-      <guid>https://Ghw2066.github.io/tags/leetcode/</guid>
+      <guid>http://always4u.cloud/tags/leetcode/</guid>
       <description></description>
     </item>
     

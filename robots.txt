@@ -63,4 +63,4 @@ Disallow: /
 User-agent: ZoominfoBot
 Disallow: /
 
-Sitemap: https://Ghw2066.github.io/sitemap.xml
+Sitemap: http://always4u.cloud/sitemap.xml

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>java on Haowen`s Blog</title>
-    <link>https://Ghw2066.github.io/tags/java/</link>
+    <link>http://always4u.cloud/tags/java/</link>
     <description>Recent content in java on Haowen`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Mon, 28 Oct 2019 22:30:53 +1100</lastBuildDate>
     
-	<atom:link href="https://Ghw2066.github.io/tags/java/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://always4u.cloud/tags/java/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>MapReduce Case--Tablejoin</title>
-      <link>https://Ghw2066.github.io/2019/008/</link>
+      <link>http://always4u.cloud/2019/008/</link>
       <pubDate>Mon, 28 Oct 2019 22:30:53 +1100</pubDate>
       
-      <guid>https://Ghw2066.github.io/2019/008/</guid>
+      <guid>http://always4u.cloud/2019/008/</guid>
       <description>Case Specification There are two tables and both of them have the same foreign key. join in hadoop, is similar with the join in database.
 The first table, students.txt, is a text file, each row shows a student&#39;s zid and his/her name, as shown below.
 z1	Saraz2	AliThe second table, marks.txt, is a text file, each row shows a student&#39;s zid and two marks for his/her assignments.
@@ -25,10 +25,10 @@ z1	90	80z2	75	98Now code a Hadoop job to join (outer join) these two tables ba
     
     <item>
       <title>MapReduce Case--Movie pair and users&#39; ratings</title>
-      <link>https://Ghw2066.github.io/2019/007/</link>
+      <link>http://always4u.cloud/2019/007/</link>
       <pubDate>Mon, 28 Oct 2019 20:03:43 +1100</pubDate>
       
-      <guid>https://Ghw2066.github.io/2019/007/</guid>
+      <guid>http://always4u.cloud/2019/007/</guid>
       <description>Assignment Specification In this assignment we will be working on the processing of a Movie dataset:
 In this dataset, each row contains a movie rating done by a user (e.g., user1 has rated Titanic as 10). Here is the format of the dataset:
 user_id::movie_id::rating::timestampIn this assignment, for each pair of movies A and B, you need to find all the users who rated both movie A and B. For example, given the following dataset (for the sake of illustration we have used U and M to represent users and movies respectively in the example):</description>

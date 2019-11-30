@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Haowen`s Blog</title>
-    <link>https://Ghw2066.github.io/posts/</link>
+    <link>http://always4u.cloud/posts/</link>
     <description>Recent content in Posts on Haowen`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sat, 30 Nov 2019 11:38:36 +1100</lastBuildDate>
     
-	<atom:link href="https://Ghw2066.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://always4u.cloud/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>010</title>
-      <link>https://Ghw2066.github.io/2019/010/</link>
+      <link>http://always4u.cloud/2019/010/</link>
       <pubDate>Sat, 30 Nov 2019 11:38:36 +1100</pubDate>
       
-      <guid>https://Ghw2066.github.io/2019/010/</guid>
+      <guid>http://always4u.cloud/2019/010/</guid>
       <description>“Big data is a field that treats ways to analyze, systematically extract information from, or otherwise deal with data sets that are too large or complex to be dealt with by traditional data-processing application software”
 ​	&amp;mdash;&amp;mdash; Wikipedia
  Characterizing Big Data The 3 Vs of Big Data   Volume
@@ -26,19 +26,19 @@
     
     <item>
       <title>Spark概述及运行架构</title>
-      <link>https://Ghw2066.github.io/2019/009/</link>
+      <link>http://always4u.cloud/2019/009/</link>
       <pubDate>Tue, 29 Oct 2019 17:04:28 +1100</pubDate>
       
-      <guid>https://Ghw2066.github.io/2019/009/</guid>
+      <guid>http://always4u.cloud/2019/009/</guid>
       <description>Spark概述 运行速度快：使用DAG执行引擎以支持循环数据流与内存计算，比MapReduce迭代式计算高效。 易用：Scala, Java, Python, R并且支持</description>
     </item>
     
     <item>
       <title>MapReduce Case--Tablejoin</title>
-      <link>https://Ghw2066.github.io/2019/008/</link>
+      <link>http://always4u.cloud/2019/008/</link>
       <pubDate>Mon, 28 Oct 2019 22:30:53 +1100</pubDate>
       
-      <guid>https://Ghw2066.github.io/2019/008/</guid>
+      <guid>http://always4u.cloud/2019/008/</guid>
       <description>Case Specification There are two tables and both of them have the same foreign key. join in hadoop, is similar with the join in database.
 The first table, students.txt, is a text file, each row shows a student&#39;s zid and his/her name, as shown below.
 z1	Saraz2	AliThe second table, marks.txt, is a text file, each row shows a student&#39;s zid and two marks for his/her assignments.
@@ -47,10 +47,10 @@ z1	90	80z2	75	98Now code a Hadoop job to join (outer join) these two tables ba
     
     <item>
       <title>MapReduce Case--Movie pair and users&#39; ratings</title>
-      <link>https://Ghw2066.github.io/2019/007/</link>
+      <link>http://always4u.cloud/2019/007/</link>
       <pubDate>Mon, 28 Oct 2019 20:03:43 +1100</pubDate>
       
-      <guid>https://Ghw2066.github.io/2019/007/</guid>
+      <guid>http://always4u.cloud/2019/007/</guid>
       <description>Assignment Specification In this assignment we will be working on the processing of a Movie dataset:
 In this dataset, each row contains a movie rating done by a user (e.g., user1 has rated Titanic as 10). Here is the format of the dataset:
 user_id::movie_id::rating::timestampIn this assignment, for each pair of movies A and B, you need to find all the users who rated both movie A and B. For example, given the following dataset (for the sake of illustration we have used U and M to represent users and movies respectively in the example):</description>
@@ -58,55 +58,55 @@ user_id::movie_id::rating::timestampIn this assignment, for each pair of movies
     
     <item>
       <title>汇编学习笔记（四）---栈、函数、递归</title>
-      <link>https://Ghw2066.github.io/2019/006/</link>
+      <link>http://always4u.cloud/2019/006/</link>
       <pubDate>Mon, 14 Oct 2019 10:15:04 +1100</pubDate>
       
-      <guid>https://Ghw2066.github.io/2019/006/</guid>
+      <guid>http://always4u.cloud/2019/006/</guid>
       <description>先吐个槽 前面几个实验虽然或多或少碰到点小麻烦，但是编程的思路还是比较清晰，按照逻辑一步一步来就好了，无非就是相比高级编程语言麻烦一些，直到遇</description>
     </item>
     
     <item>
       <title>汇编学习笔记（三）---分支、循环实现辗转相除法</title>
-      <link>https://Ghw2066.github.io/2019/005/</link>
+      <link>http://always4u.cloud/2019/005/</link>
       <pubDate>Mon, 14 Oct 2019 10:14:58 +1100</pubDate>
       
-      <guid>https://Ghw2066.github.io/2019/005/</guid>
+      <guid>http://always4u.cloud/2019/005/</guid>
       <description>任务说明 将下面的c代码用汇编表达 int main(void) { int a, b; /* Initialized elsewhere */ while (a!=b) { /* Assume a, b &amp;gt; 0 */ if (a&amp;gt;b) a = a - b; else b = b - a; } return 0; /* a and b both hold the result */ } 汇编程序 ; lab1_task2.asm ; ;</description>
     </item>
     
     <item>
       <title>汇编学习笔记（二）---进制转换</title>
-      <link>https://Ghw2066.github.io/2019/004/</link>
+      <link>http://always4u.cloud/2019/004/</link>
       <pubDate>Mon, 14 Oct 2019 09:40:02 +1100</pubDate>
       
-      <guid>https://Ghw2066.github.io/2019/004/</guid>
+      <guid>http://always4u.cloud/2019/004/</guid>
       <description>问题描述 Write an assembly code that converts a given data of the string type into a binary number. The string can be a decimal or a hexadecimal number. For simplicity, here we assume the string data only contains two digits. Each digit in the string is represented by an ASCII code. For example, the decimal number string “78” is represented by 0x37 for ‘</description>
     </item>
     
     <item>
       <title>汇编学习笔记（一）</title>
-      <link>https://Ghw2066.github.io/2019/003/</link>
+      <link>http://always4u.cloud/2019/003/</link>
       <pubDate>Sun, 13 Oct 2019 23:25:55 +1100</pubDate>
       
-      <guid>https://Ghw2066.github.io/2019/003/</guid>
+      <guid>http://always4u.cloud/2019/003/</guid>
       <description>写在前面 这学期的COMP9032这门课是操作系统分支的入门课程，介绍了很多计算机系统偏底层的知识，同时lab都是以汇编语言实现的，本科没有选</description>
     </item>
     
     <item>
       <title>最大完美子序列</title>
-      <link>https://Ghw2066.github.io/2019/002/</link>
+      <link>http://always4u.cloud/2019/002/</link>
       <pubDate>Sat, 12 Oct 2019 11:25:25 +1100</pubDate>
       
-      <guid>https://Ghw2066.github.io/2019/002/</guid>
+      <guid>http://always4u.cloud/2019/002/</guid>
       <description>题目描述 定义一个数字序列是完美的，当且仅当对于任意2&amp;lt;=i&amp;lt;=n 都满足(A1+A2+…+Aj) &amp;lt;= Ai，1&amp;lt;=j&amp;lt;=i</description>
     </item>
     
     <item>
       <title>My First Blog</title>
-      <link>https://Ghw2066.github.io/2019/001/</link>
+      <link>http://always4u.cloud/2019/001/</link>
       <pubDate>Fri, 11 Oct 2019 22:13:03 +1100</pubDate>
       
-      <guid>https://Ghw2066.github.io/2019/001/</guid>
+      <guid>http://always4u.cloud/2019/001/</guid>
       <description></description>
     </item>
     
