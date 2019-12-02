@@ -6,10 +6,19 @@
     <description>Recent content in 汇编Assembly on Haowen`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 14 Oct 2019 10:15:04 +1100</lastBuildDate>
+    <lastBuildDate>Sun, 01 Dec 2019 22:13:57 +1100</lastBuildDate>
     
 	<atom:link href="http://always4u.cloud/tags/%E6%B1%87%E7%BC%96assembly/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>COMP9032 Overview</title>
+      <link>http://always4u.cloud/2019/011/</link>
+      <pubDate>Sun, 01 Dec 2019 22:13:57 +1100</pubDate>
+      
+      <guid>http://always4u.cloud/2019/011/</guid>
+      <description>Overview Main points Basics of microprocessor systems AVR and AVR programming Interfacing Microcontroller application development Basics of microprocessor systems 通过编程实现不同的功能 Information can be encoded 二进制形式 例如：补码 计算机硬件的五个基本部分： datapath, control unit, memory, input/output devices microprocessor datapath + control unit -&amp;gt; on</description>
+    </item>
     
     <item>
       <title>汇编学习笔记（四）---栈、函数、递归</title>

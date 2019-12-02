@@ -10,7 +10,7 @@
   
   
   <link rel="prev" href="http://always4u.cloud/2019/009/" />
-  
+  <link rel="next" href="http://always4u.cloud/2019/011/" />
   <link rel="canonical" href="http://always4u.cloud/2019/010/" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -22,10 +22,10 @@
   <title>
        
        
-           010 | Haowen`s Blog
+           Overview of COMP9313 Big Data Magement  | Haowen`s Blog
        
   </title>
-  <meta name="title" content="010 | Haowen`s Blog">
+  <meta name="title" content="Overview of COMP9313 Big Data Magement  | Haowen`s Blog">
     
   
   <link rel="stylesheet" href="/font/iconfont.css">
@@ -44,9 +44,9 @@
          "@id": "http:\/\/always4u.cloud\/"
     },
     "articleSection" : "posts",
-    "name" : "010",
-    "headline" : "010",
-    "description" : "“Big data is a field that treats ways to analyze, systematically extract information from, or otherwise deal with data sets that are too large or complex to be dealt with by traditional data-processing application software”\n​\t\x26mdash;\x26mdash; Wikipedia\n Characterizing Big Data The 3 Vs of Big Data   Volume\n  Challenges for traditional IT infrastructures\n  Large amounts of data, low capacity to process it",
+    "name" : "Overview of COMP9313 Big Data Magement ",
+    "headline" : "Overview of COMP9313 Big Data Magement ",
+    "description" : "“Big data is a field that treats ways to analyze, systematically extract information from, or otherwise deal with data sets that are too large or complex to be dealt with by traditional data-processing application software” ​ \x26mdash;\x26mdash; Wikipedia Week 1: Characterizing Big Data The 3 Vs of Big Data Volume Challenges for traditional IT infrastructures Large amounts of data,",
     "inLanguage" : "zh-cn",
     "author" : "Guo Haowen",
     "creator" : "Guo Haowen",
@@ -57,7 +57,7 @@
     "datePublished": "2019-11-30 11:38:36 \x2b1100 AEDT",
     "dateModified" : "2019-11-30 11:38:36 \x2b1100 AEDT",
     "url" : "http:\/\/always4u.cloud\/2019\/010\/",
-    "wordCount" : "201",
+    "wordCount" : "1165",
     "keywords" : [ "Bigdata", "Haowen`s Blog"]
 }
 </script>
@@ -116,7 +116,7 @@
       		
 <article class="post-warp" itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">010</h1>
+        <h1 class="post-title" itemprop="name headline">Overview of COMP9313 Big Data Magement </h1>
         <div class="post-meta">
                 Written by <a itemprop="name" href="http://always4u.cloud/" rel="author">Guo Haowen</a> with ♥ 
                 <span class="post-time">
@@ -128,7 +128,7 @@
                         <a href="http://always4u.cloud/categories/bigdata/"> Bigdata </a>
                         
                 </span>
-                <span class="post-word-count">, 201 words</span>
+                <span class="post-word-count">, 1165 words</span>
         </div>
     </header>
     <div class="post-content">
@@ -151,7 +151,7 @@
 <p>“Big data is a field that treats ways to analyze, systematically extract information from, or otherwise deal with data sets that are too large or complex to be dealt with by traditional data-processing application software”</p>
 <p>​																															<strong>&mdash;&mdash; Wikipedia</strong></p>
 </blockquote>
-<h2 id="characterizing-big-data">Characterizing Big Data</h2>
+<h2 id="week-1-characterizing-big-data">Week 1: Characterizing Big Data</h2>
 <h4 id="the-3-vs-of-big-data">The 3 Vs of Big Data</h4>
 <ul>
 <li>
@@ -212,6 +212,164 @@
 </ul>
 </li>
 </ul>
+<h4 id="hadoop">Hadoop</h4>
+<ul>
+<li>
+<p>开源的数据存储和处理平台</p>
+</li>
+<li>
+<p>Massively scalable, automatically parallelizable:</p>
+<ul>
+<li>Google: GFS + MapReduce + BigTable (not open)</li>
+<li>Hadoop: HDFS + Hadoop mapreduce + Hbase(opensource)</li>
+</ul>
+</li>
+<li>
+<p>Redundant, fault-tolerant data storage</p>
+</li>
+<li>
+<p>parallel computation framework</p>
+</li>
+<li>
+<p>编写mapreduce程序时，不需要考虑文件分布，数据丢失，分布式计算，scaling，都被hadoop框架处理好了</p>
+</li>
+<li>
+<p>Mapreduce 极大地简化了在大规模unreliable集群上的大数据分析问题，非常有利于one-pass 计算</p>
+</li>
+</ul>
+<h4 id="spark">Spark</h4>
+<ul>
+<li>
+<p>随着大数据的发展，以及hadoop生态的广泛应用，开发者们开始不满足于已有的能力</p>
+<ul>
+<li>想要更复杂的multi-pass分析能力（如ML, Graph）</li>
+<li>想要交互式ad-hoc queries</li>
+<li>想要实时stream processing</li>
+</ul>
+</li>
+<li>
+<p>相比之下，MapReduce 的局限：</p>
+<ul>
+<li>作为一种通用编程模型来说：
+<ul>
+<li>更适合作为one-pass计算</li>
+<li>hard to compose and nest multi ops</li>
+<li>不支持交互式ops</li>
+</ul>
+</li>
+<li>在hadoop的实现方式上：
+<ul>
+<li>数据读写都是基于disk</li>
+<li>所有data都是以triple-replicated方式以保证reliability</li>
+<li>java对于仅仅想要做大数据分析的其他行业研究者来说不易使用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Spark的进步：</p>
+<ul>
+<li>将更多的数据存放于内存中以提高性能</li>
+<li>继承并扩展hadoop 模型以支持两类常用应用;
+<ul>
+<li>iterative算法（ML, Graph)</li>
+<li>interactive data mining</li>
+</ul>
+</li>
+<li>更易使用：
+<ul>
+<li>scala编写（支持java）</li>
+<li>可使用scala解释器交互式编写</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Spark 并不是hadoop的升级改进版，spark和hadoop同时存在，不是替代关系</p>
+</li>
+<li>
+<p>Spark不依赖于hadoop，因为spark有自己的集群管理，仅使用hadoop的数据存储部分</p>
+</li>
+</ul>
+<h4 id="nosql">NoSql</h4>
+<ul>
+<li>
+<p><strong>NOT ONLY SQL</strong></p>
+</li>
+<li>
+<p>SQL不作为主要的query语言</p>
+</li>
+<li>
+<p>是一类非关系型数据库</p>
+</li>
+<li>
+<p>并不是替代RMDBS, 而是补充</p>
+</li>
+<li>
+<p>offer typically relax one or more of the ACID properties</p>
+</li>
+<li>
+<p>key features:</p>
+<ul>
+<li>非关系型</li>
+<li>不要求严格的范式</li>
+<li>数据可被复制到多个node（identical&amp;fault-tolerant）且可以分区(partitioned)</li>
+<li>horizonral scalable</li>
+<li>Massive write performance</li>
+<li>fast key-value access</li>
+</ul>
+</li>
+</ul>
+<h4 id="elasticsearch">Elasticsearch</h4>
+<ul>
+<li>
+<p>opensource 搜索引擎，基于Apach Lucene</p>
+</li>
+<li>
+<p>提供分布式、full-text的搜索引擎rest API</p>
+</li>
+<li>
+<p>Document oriented（e.g. JSON)</p>
+</li>
+<li>
+<p>java</p>
+</li>
+<li>
+<p>Focused on scalability - distributed by design</p>
+</li>
+<li>
+<p>Cluster</p>
+<ul>
+<li>一个ES集群由多个node(server)组成</li>
+<li>唯一name标识</li>
+<li>数据存储于集群节点中</li>
+<li>提供所有节点上的indexing和search能力</li>
+</ul>
+</li>
+<li>
+<p>Node</p>
+<ul>
+<li>a single server</li>
+<li>唯一name标识</li>
+<li>存储全部或部分数据集</li>
+<li>为ES提供indexing和search能力</li>
+</ul>
+</li>
+<li>
+<p>Shard</p>
+<ul>
+<li>individual instances of Lucene index</li>
+<li>ES利用Lucene在分布式系统上indexing</li>
+</ul>
+</li>
+<li>
+<p>Index</p>
+<ul>
+<li>distributed across shards</li>
+<li>Replicas（容错）</li>
+</ul>
+</li>
+</ul>
 
     </div>
 
@@ -257,6 +415,8 @@
         
         <a href="http://always4u.cloud/2019/009/" class="prev" rel="prev" title="Spark概述及运行架构"><i class="iconfont icon-left"></i>&nbsp;Spark概述及运行架构</a>
          
+        
+        <a href="http://always4u.cloud/2019/011/" class="next" rel="next" title="COMP9032 Overview">COMP9032 Overview&nbsp;<i class="iconfont icon-right"></i></a>
         
     </div>
 
