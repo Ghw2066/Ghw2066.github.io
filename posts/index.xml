@@ -6,13 +6,22 @@
     <description>Recent content in Posts on Haowen`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 01 Dec 2019 22:13:57 +1100</lastBuildDate>
+    <lastBuildDate>Thu, 13 Feb 2020 09:24:51 +0800</lastBuildDate>
     
 	<atom:link href="http://always4u.cloud/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>COMP9032 Overview</title>
+      <title>工欲善其事——VsCode远程模式连接WSL编写C/C&#43;&#43;/Python</title>
+      <link>http://always4u.cloud/2020/012/</link>
+      <pubDate>Thu, 13 Feb 2020 09:24:51 +0800</pubDate>
+      
+      <guid>http://always4u.cloud/2020/012/</guid>
+      <description>因为在想要保有Windows优秀的图形界面的同时，又想要linux便利的包管理功能，于是萌生了利用vscode+wsl的方式实现这个目的。但</description>
+    </item>
+    
+    <item>
+      <title>Overview of COMP9032 </title>
       <link>http://always4u.cloud/2019/011/</link>
       <pubDate>Sun, 01 Dec 2019 22:13:57 +1100</pubDate>
       

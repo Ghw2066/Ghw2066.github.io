@@ -9,9 +9,9 @@
   
   
   
-  <link rel="prev" href="http://always4u.cloud/2019/004/" />
-  <link rel="next" href="http://always4u.cloud/2019/006/" />
-  <link rel="canonical" href="http://always4u.cloud/2019/005/" />
+  <link rel="prev" href="http://always4u.cloud/2019/011/" />
+  
+  <link rel="canonical" href="http://always4u.cloud/2020/012/" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -22,10 +22,10 @@
   <title>
        
        
-           汇编学习笔记（三）---分支、循环实现辗转相除法 | Haowen`s Blog
+           工欲善其事——VsCode远程模式连接WSL编写C/C&#43;&#43;/Python | Haowen`s Blog
        
   </title>
-  <meta name="title" content="汇编学习笔记（三）---分支、循环实现辗转相除法 | Haowen`s Blog">
+  <meta name="title" content="工欲善其事——VsCode远程模式连接WSL编写C/C&#43;&#43;/Python | Haowen`s Blog">
     
   
   <link rel="stylesheet" href="/font/iconfont.css">
@@ -44,21 +44,21 @@
          "@id": "http:\/\/always4u.cloud\/"
     },
     "articleSection" : "posts",
-    "name" : "汇编学习笔记（三）---分支、循环实现辗转相除法",
-    "headline" : "汇编学习笔记（三）---分支、循环实现辗转相除法",
-    "description" : "任务说明 将下面的c代码用汇编表达 int main(void) { int a, b; \/* Initialized elsewhere *\/ while (a!=b) { \/* Assume a, b \x26gt; 0 *\/ if (a\x26gt;b) a = a - b; else b = b - a; } return 0; \/* a and b both hold the result *\/ } 汇编程序 ; lab1_task2.asm ; ;",
+    "name" : "工欲善其事——VsCode远程模式连接WSL编写C\/C\x2b\x2b\/Python",
+    "headline" : "工欲善其事——VsCode远程模式连接WSL编写C\/C\x2b\x2b\/Python",
+    "description" : "因为在想要保有Windows优秀的图形界面的同时，又想要linux便利的包管理功能，于是萌生了利用vscode\x2bwsl的方式实现这个目的。但",
     "inLanguage" : "zh-cn",
     "author" : "Guo Haowen",
     "creator" : "Guo Haowen",
     "publisher": "Guo Haowen",
     "accountablePerson" : "Guo Haowen",
     "copyrightHolder" : "Guo Haowen",
-    "copyrightYear" : "2019",
-    "datePublished": "2019-10-14 10:14:58 \x2b1100 \x2b1100",
-    "dateModified" : "2019-10-14 10:14:58 \x2b1100 \x2b1100",
-    "url" : "http:\/\/always4u.cloud\/2019\/005\/",
-    "wordCount" : "412",
-    "keywords" : [ "汇编Assembly", "Haowen`s Blog"]
+    "copyrightYear" : "2020",
+    "datePublished": "2020-02-13 09:24:51 \x2b0800 CST",
+    "dateModified" : "2020-02-13 09:24:51 \x2b0800 CST",
+    "url" : "http:\/\/always4u.cloud\/2020\/012\/",
+    "wordCount" : "904",
+    "keywords" : [ "tools", "Haowen`s Blog"]
 }
 </script>
 
@@ -116,24 +116,26 @@
       		
 <article class="post-warp" itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">汇编学习笔记（三）---分支、循环实现辗转相除法</h1>
+        <h1 class="post-title" itemprop="name headline">工欲善其事——VsCode远程模式连接WSL编写C/C&#43;&#43;/Python</h1>
         <div class="post-meta">
                 Written by <a itemprop="name" href="http://always4u.cloud/" rel="author">Guo Haowen</a> with ♥ 
                 <span class="post-time">
-                on <time datetime=2019-10-14 itemprop="datePublished">October 14, 2019</time>
+                on <time datetime=2020-02-13 itemprop="datePublished">February 13, 2020</time>
                 </span>
                 in
                 <i class="iconfont icon-folder"></i>
                 <span class="post-category">
-                        <a href="http://always4u.cloud/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"> 计算机系统 </a>
+                        <a href="http://always4u.cloud/categories/%E5%B7%A5%E6%AC%B2%E5%96%84%E5%85%B6%E4%BA%8B/"> 工欲善其事 </a>
                         
                 </span>
-                <span class="post-word-count">, 412 words</span>
+                <span class="post-word-count">, 904 words</span>
         </div>
     </header>
     <div class="post-content">
         
 
+        
+            
         
 
         
@@ -147,78 +149,49 @@
           
           
 
-          <h2 id="heading">任务说明</h2>
-<p>将下面的c代码用汇编表达</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">void</span>) 
-{  
-    <span style="color:#66d9ef">int</span> a, b;    <span style="color:#75715e">/* Initialized elsewhere */</span> 
- 
- 	<span style="color:#66d9ef">while</span> (a<span style="color:#f92672">!</span><span style="color:#f92672">=</span>b)  
- 	{   <span style="color:#75715e">/* Assume a, b &gt; 0 */</span>   
-        <span style="color:#66d9ef">if</span> (a<span style="color:#f92672">&gt;</span>b)                  
-            a <span style="color:#f92672">=</span> a <span style="color:#f92672">-</span> b;   
-        <span style="color:#66d9ef">else</span>                  
-            b <span style="color:#f92672">=</span> b <span style="color:#f92672">-</span> a;  
-    }  
-    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;   <span style="color:#75715e">/* a and b both hold the result */</span> } 
-</code></pre></div><h2 id="heading1">汇编程序</h2>
-<pre><code class="language-assembly" data-lang="assembly">; lab1_task2.asm
-;
-; Created: 2019/10/3 12:19:02
-; Author : Haowen Guo
-;
-
-
-; Replace with your application code
-;int a, b; /* Initialized elsewhere */
-;while (a!=b)
-;{ /* Assume a, b &gt; 0 */
-;if (a&gt;b)
-;a = a - b;
-;else
-;b = b - a;
-;}
-;return 0; /* a and b both hold the result */
-.include &quot;m2560def.inc&quot;
-
-.def ah = r10
-.def al = r11
-.def bh = r12
-.def bl = r13
-
-.dseg
-.org 0x200
-
-.cseg
-
-loop:
-	
-	;cp bl,al
-	;cpc bh,ah		;no need to compare twice
-	
-	cp bl,al
-	cpc bh,ah		;compare b , a
-	breq end		;while(a!=b) ;; if a==b branch to the end of loop
-	brlt case1		;if(b&lt;a) branch to case1
-	jmp case2		;else to case2
-
-	case1:
-		sub al,bl
-		sbc ah,bh	;a = a - b
-		jmp loop	;go back to the next loop
-
-	case2:
-		sub bl,al
-		sbc bh,ah	;b = b - a
-		jmp loop	;go back to the next loop	
-	
-
-end:
-    rjmp end
-</code></pre><p>这次实验比较直观，不是很复杂，按照c逻辑一步一步实现就好了。有一点要说明的是，最初的版本中进行了两次比较</p>
-<pre><code class="language-assembly" data-lang="assembly">cp bl,al
-cpc bh,ah		;compare b , a
-</code></pre><p>在tutor验收的时候，给出了优化意见，这时才发现对于后续的分支语句<code>breq</code>和<code>brlt</code>只需要一次对a，b的比较就可以了，因为a，b比较之后状态寄存器<code>SREG</code>状态位<code>C:Carry</code>并没有被改变，仍然可以表示a，b比较结果，所以可以执行正确的分支语句。</p>
+          <p>因为在想要保有Windows优秀的图形界面的同时，又想要linux便利的包管理功能，于是萌生了利用vscode+wsl的方式实现这个目的。但是在翻看网上诸多博客之后，发现并没有找到能够完整的描述这个流程的博文，所以写下这篇博客。</p>
+<h2 id="wsl">安装wsl</h2>
+<p>这一步网上随手便可搜到教程，还是比较容易，我就简单说一下。</p>
+<ol>
+<li>
+<p>控制面板-&gt;程序和功能-&gt;启用或关闭Windows功能-&gt;勾选 适用于Linux的Windows子系统</p>
+<p><img src="/images/vscode+wsl/1.png" alt="安装wsl"></p>
+</li>
+<li>
+<p>打开win10应用商店，搜索linux，选一个喜欢的发行版安装就好，我这里选择的是ubuntu 18.04</p>
+</li>
+</ol>
+<p><img src="/images/vscode+wsl/2.png" alt="ubuntu 18.04"></p>
+<p>现在wsl就安装好了，剩下就是设置自己的账户名密码，然后运行一下</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt-get update
+sudo apt-get upgrade
+</code></pre></div><h2 id="wslgccpython">在wsl中安装gcc/Python</h2>
+<h4 id="1-cc">1. 安装C/C++编译器</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt install gcc
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">gcc -V
+</code></pre></div><p>检查一下是否安装成果，如果出现版本号，则说明安装成功</p>
+<p><img src="/images/vscode+wsl/3.png" alt="安装gcc"></p>
+<p>我的终端是安装了open-wsl工具以及zsh之后的样子，所以可能和安装wsl之后原始界面不一样，但是这不影响接下来的步骤，可以放心参考。</p>
+<h4 id="2-python">2. 安装python</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt install python3
+</code></pre></div><p>检查python版本</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">python3 -V
+</code></pre></div><p><img src="/images/vscode+wsl/4.png" alt="python3"></p>
+<p>我这里是因为之前已经安装过，所以终端输出是这样。</p>
+<h2 id="vscode-remotewsl">VScode remote模式连接wsl</h2>
+<p>win10下打开vscode，搜索remote，可以看的vscode为我们提供了很忙remote工具，这里我们选择第一个，安装remote-wsl插件</p>
+<p><img src="/images/vscode+wsl/5.png" alt="remote-wsl"></p>
+<p>然后就是打开remote-wsl连接到wsl上，这里有两种方式</p>
+<p>一是直接打开vscode，点击remote&ndash;选择ubuntu18.04&ndash;点击文件夹按钮打开。</p>
+<p><img src="/images/vscode+wsl/6.png" alt="remote-wsl"></p>
+<p>二是打开wsl终端，cd到要打开的文件夹，输入命令</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">code .
+</code></pre></div><p>即可在vscode中以remote模式连接wsl，并打开对应文件夹</p>
+<p><img src="/images/vscode+wsl/7.png" alt="remote-wsl"></p>
+<p><img src="/images/vscode+wsl/8.png" alt="remote-wsl"></p>
+<p>这时候已经可以用vscode访问wsl中的文件了，并且vscode的文件管理器可以充当wsl中的文件管理图形界面，包括新建文件、删除文件、修改文件，都很方便。这时候如果熟悉linux下命令好编译运行程序的小伙伴，到这一步就足够了，在vscode中编辑保存，然后在终端里编译运行对应程序文件就好，其实code runner插件就是这么做的，只不过是替你在终端输入命令而已。</p>
+<h2 id="vscode">安装VScode插件</h2>
+<p>vscode</p>
 
     </div>
 
@@ -233,7 +206,7 @@ cpc bh,ah		;compare b , a
              
             <p class="copyright-item">
                     <span>Link:</span>
-                    <a href=http://always4u.cloud/2019/005/>http://always4u.cloud/2019/005/</span>
+                    <a href=http://always4u.cloud/2020/012/>http://always4u.cloud/2020/012/</span>
             </p>
             
              
@@ -249,8 +222,8 @@ cpc bh,ah		;compare b , a
             <section>
             <i class="iconfont icon-tag"></i>Tag(s): 
             
-            <span class="tag"><a href="http://always4u.cloud/tags/%E6%B1%87%E7%BC%96assembly/">
-                    #汇编Assembly</a></span>
+            <span class="tag"><a href="http://always4u.cloud/tags/tools/">
+                    #tools</a></span>
             
             </section>
         
@@ -262,10 +235,8 @@ cpc bh,ah		;compare b , a
 
     <div class="post-nav">
         
-        <a href="http://always4u.cloud/2019/004/" class="prev" rel="prev" title="汇编学习笔记（二）---进制转换"><i class="iconfont icon-left"></i>&nbsp;汇编学习笔记（二）---进制转换</a>
+        <a href="http://always4u.cloud/2019/011/" class="prev" rel="prev" title="Overview of COMP9032 "><i class="iconfont icon-left"></i>&nbsp;Overview of COMP9032 </a>
          
-        
-        <a href="http://always4u.cloud/2019/006/" class="next" rel="next" title="汇编学习笔记（四）---栈、函数、递归">汇编学习笔记（四）---栈、函数、递归&nbsp;<i class="iconfont icon-right"></i></a>
         
     </div>
 
@@ -330,8 +301,9 @@ cpc bh,ah		;compare b , a
 
 
     
-    
-    <script src="/js/vendor_no_gallery.min.js" async=""></script>
+     <link href="//lib.baomitu.com/lightgallery/1.6.11/css/lightgallery.min.css" rel="stylesheet">  
+      
+     <script src="/js/vendor_gallery.min.js" async="" ></script>
     
   
 
