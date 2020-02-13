@@ -198,12 +198,10 @@ sudo apt-get upgrade
 <p>我安装了code-runner和C++的插件，大家可以自行选择</p>
 <p>安装好code-runner之后，有一些配置需要结合情况修改一下</p>
 <ol>
-<li>
-<p>使用wsl终端作为程序输出，且整合进vscode中。点击File-Preferences-Settings-Extensions-Run Code Configuration, 勾选Run in Terminal，这样程序的运行后就可以在terminal中输出了，而不是在output中输出。这样有一个好处，就是在编写需要从键盘获取输入的程序时，run in terminal模式就可以允许输入，而默认的output方式不行。</p>
-<p><img src="/images/vscode+wsl/10.png" alt="remote-wsl"></p>
-</li>
+<li>使用wsl终端作为程序输出，且整合进vscode中。点击File-Preferences-Settings-Extensions-Run Code Configuration, 勾选Run in Terminal，这样程序的运行后就可以在terminal中输出了，而不是在output中输出。这样有一个好处，就是在编写需要从键盘获取输入的程序时，run in terminal模式就可以允许输入，而默认的output方式不行。</li>
 </ol>
 <p><img src="/images/vscode+wsl/10.png" alt="remote-wsl"></p>
+<p><img src="/images/vscode+wsl/14.png" alt="remote-wsl"></p>
 <ol start="2">
 <li>
 <p>因为我们安装的时python3，在ubuntu中，直接输入python调用的是python2，或者如果没有安装python2的话，就会出现command not found的错误提示，这里code runner默认使用的命令是<code>python -u</code>，我们需要修改一下以使得可以正常运行。</p>
