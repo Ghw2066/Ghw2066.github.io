@@ -149,74 +149,133 @@
           
           
 
-          <p>因为在想要保有Windows优秀的图形界面的同时，又想要linux便利的包管理功能，于是萌生了利用vscode+wsl的方式实现这个目的。但是在翻看网上诸多博客之后，发现并没有找到能够完整的描述这个流程的博文，所以写下这篇博客。</p>
-<h2 id="wsl">安装wsl</h2>
+          
+
+<p>因为在想要保有Windows优秀的图形界面的同时，又想要linux便利的包管理功能，于是萌生了利用vscode+wsl的方式实现这个目的。但是在翻看网上诸多博客之后，发现并没有找到能够完整的描述这个流程的博文，所以写下这篇博客。</p>
+
+<h2 id="安装wsl">安装wsl</h2>
+
 <p>这一步网上随手便可搜到教程，还是比较容易，我就简单说一下。</p>
+
 <ol>
-<li>
-<p>控制面板-&gt;程序和功能-&gt;启用或关闭Windows功能-&gt;勾选 适用于Linux的Windows子系统</p>
-<p><img src="/images/vscode+wsl/1.png" alt="安装wsl"></p>
-</li>
-<li>
-<p>打开win10应用商店，搜索linux，选一个喜欢的发行版安装就好，我这里选择的是ubuntu 18.04</p>
-</li>
+<li>控制面板-&gt;程序和功能-&gt;启用或关闭Windows功能-&gt;勾选 适用于Linux的Windows子系统</li>
 </ol>
-<p><img src="/images/vscode+wsl/2.png" alt="ubuntu 18.04"></p>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/vscode+wsl/1.png" alt="安装wsl" class="lazyload"><figcaption class="image-caption">安装wsl</figcaption></figure></p>
+
+<ol>
+<li>打开win10应用商店，搜索linux，选一个喜欢的发行版安装就好，我这里选择的是ubuntu 18.04</li>
+</ol>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/vscode+wsl/2.png" alt="ubuntu 18.04" class="lazyload"><figcaption class="image-caption">ubuntu 18.04</figcaption></figure></p>
+
 <p>现在wsl就安装好了，剩下就是设置自己的账户名密码，然后运行一下</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt-get update
+
+<pre><code class="language-shell">sudo apt-get update
 sudo apt-get upgrade
-</code></pre></div><h2 id="wslgccpython">在wsl中安装gcc/Python</h2>
-<h4 id="1-cc">1. 安装C/C++编译器</h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt install gcc
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">gcc -V
-</code></pre></div><p>检查一下是否安装成果，如果出现版本号，则说明安装成功</p>
-<p><img src="/images/vscode+wsl/3.png" alt="安装gcc"></p>
+</code></pre>
+
+<h2 id="在wsl中安装gcc-python">在wsl中安装gcc/Python</h2>
+
+<h4 id="1-安装c-c-编译器">1. 安装C/C++编译器</h4>
+
+<pre><code class="language-shell">sudo apt install gcc
+</code></pre>
+
+<pre><code class="language-shell">gcc -V
+</code></pre>
+
+<p>检查一下是否安装成果，如果出现版本号，则说明安装成功</p>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/vscode+wsl/3.png" alt="安装gcc" class="lazyload"><figcaption class="image-caption">安装gcc</figcaption></figure></p>
+
 <p>我的终端是安装了open-wsl工具以及zsh之后的样子，所以可能和安装wsl之后原始界面不一样，但是这不影响接下来的步骤，可以放心参考。</p>
-<h4 id="2-python">2. 安装python</h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt install python3
-</code></pre></div><p>检查python版本</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">python3 -V
-</code></pre></div><p><img src="/images/vscode+wsl/4.png" alt="python3"></p>
+
+<h4 id="2-安装python">2. 安装python</h4>
+
+<pre><code class="language-shell">sudo apt install python3
+</code></pre>
+
+<p>检查python版本</p>
+
+<pre><code class="language-shell">python3 -V
+</code></pre>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/vscode+wsl/4.png" alt="python3" class="lazyload"><figcaption class="image-caption">python3</figcaption></figure></p>
+
 <p>我这里是因为之前已经安装过，所以终端输出是这样。</p>
-<h2 id="vscode-remotewsl">VScode remote模式连接wsl</h2>
+
+<h2 id="vscode-remote模式连接wsl">VScode remote模式连接wsl</h2>
+
 <p>win10下打开vscode，搜索remote，可以看的vscode为我们提供了很忙remote工具，这里我们选择第一个，安装remote-wsl插件</p>
-<p><img src="/images/vscode+wsl/5.png" alt="remote-wsl"></p>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/vscode+wsl/5.png" alt="remote-wsl" class="lazyload"><figcaption class="image-caption">remote-wsl</figcaption></figure></p>
+
 <p>然后就是打开remote-wsl连接到wsl上，这里有两种方式</p>
+
 <p>一是直接打开vscode，点击remote&ndash;选择ubuntu18.04&ndash;点击文件夹按钮打开。</p>
-<p><img src="/images/vscode+wsl/6.png" alt="remote-wsl"></p>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/vscode+wsl/6.png" alt="remote-wsl" class="lazyload"><figcaption class="image-caption">remote-wsl</figcaption></figure></p>
+
 <p>二是打开wsl终端，cd到要打开的文件夹，输入命令</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">code .
-</code></pre></div><p>即可在vscode中以remote模式连接wsl，并打开对应文件夹</p>
-<p><img src="/images/vscode+wsl/7.png" alt="remote-wsl"></p>
-<p><img src="/images/vscode+wsl/8.png" alt="remote-wsl"></p>
+
+<pre><code class="language-shell">code .
+</code></pre>
+
+<p>即可在vscode中以remote模式连接wsl，并打开对应文件夹</p>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/vscode+wsl/7.png" alt="remote-wsl" class="lazyload"><figcaption class="image-caption">remote-wsl</figcaption></figure></p>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/vscode+wsl/8.png" alt="remote-wsl" class="lazyload"><figcaption class="image-caption">remote-wsl</figcaption></figure></p>
+
 <p>这时候已经可以用vscode访问wsl中的文件了，并且vscode的文件管理器可以充当wsl中的文件管理图形界面，包括新建文件、删除文件、修改文件，都很方便。这时候如果熟悉linux下命令好编译运行程序的小伙伴，到这一步就足够了，在vscode中编辑保存，然后在终端里编译运行对应程序文件就好，其实code runner插件就是这么做的，只不过是替你在终端输入命令而已。</p>
-<h2 id="vscode">安装VScode插件</h2>
+
+<h2 id="安装vscode插件">安装VScode插件</h2>
+
 <p>vscode提供两种工作在不同位置的插件，locally on the UI / client side, or in WSL</p>
+
 <p>可能大家在使用remote模式连接wsl之前已经安装过许多插件，用于windows环境下的本地开发，这其中和UI相关的插件（vscode-icons，字体插件等等）是可以在wsl模式下通用的，但是code runner、C++、python的插件是要再单独安装到remote-wsl中的</p>
-<p><img src="/images/vscode+wsl/9.png" alt="remote-wsl"></p>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/vscode+wsl/9.png" alt="remote-wsl" class="lazyload"><figcaption class="image-caption">remote-wsl</figcaption></figure></p>
+
 <p>这里可以看到，在remote-wsl模式下生效的插件是高亮白色，未生效插件是灰色的</p>
+
 <p>我安装了code-runner和C++的插件，大家可以自行选择</p>
+
 <p>安装好code-runner之后，有一些配置需要结合情况修改一下</p>
+
 <ol>
 <li>使用wsl终端作为程序输出，且整合进vscode中。点击File-Preferences-Settings-Extensions-Run Code Configuration, 勾选Run in Terminal，这样程序的运行后就可以在terminal中输出了，而不是在output中输出。这样有一个好处，就是在编写需要从键盘获取输入的程序时，run in terminal模式就可以允许输入，而默认的output方式不行。</li>
 </ol>
-<p><img src="/images/vscode+wsl/10.png" alt="remote-wsl"></p>
-<p><img src="/images/vscode+wsl/14.png" alt="remote-wsl"></p>
-<ol start="2">
-<li>
-<p>因为我们安装的时python3，在ubuntu中，直接输入python调用的是python2，或者如果没有安装python2的话，就会出现command not found的错误提示，这里code runner默认使用的命令是<code>python -u</code>，我们需要修改一下以使得可以正常运行。</p>
-<p>点击File-Preferences-Settings-Extensions-Run Code Configuration, 点击edit in setting.json</p>
-<p><img src="/images/vscode+wsl/11.png" alt="remote-wsl"></p>
-<p>看到如下内容</p>
-<p><img src="/images/vscode+wsl/12.png" alt="remote-wsl"></p>
-<p>在最后输入</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#e6db74">&#34;code-runner.executorMap&#34;</span><span style="color:#960050;background-color:#1e0010">:</span>
-</code></pre></div><p>按下回车后面的一大串都会自动补全</p>
-<p>这时候就能发现，code runner其实就是代替你在命令行输入了编译执行的命令</p>
-<p>我们修改python部分，将python修改为python3，保存，即可正常运行。</p>
-</li>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/vscode+wsl/10.png" alt="remote-wsl" class="lazyload"><figcaption class="image-caption">remote-wsl</figcaption></figure></p>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/vscode+wsl/14.png" alt="remote-wsl" class="lazyload"><figcaption class="image-caption">remote-wsl</figcaption></figure></p>
+
+<ol>
+<li>因为我们安装的时python3，在ubuntu中，直接输入python调用的是python2，或者如果没有安装python2的话，就会出现command not found的错误提示，这里code runner默认使用的命令是<code>python -u</code>，我们需要修改一下以使得可以正常运行。</li>
 </ol>
-<p><img src="/images/vscode+wsl/13.png" alt="remote-wsl"></p>
+
+<p>点击File-Preferences-Settings-Extensions-Run Code Configuration, 点击edit in setting.json</p>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/vscode+wsl/11.png" alt="remote-wsl" class="lazyload"><figcaption class="image-caption">remote-wsl</figcaption></figure></p>
+
+<p>看到如下内容</p>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/vscode+wsl/12.png" alt="remote-wsl" class="lazyload"><figcaption class="image-caption">remote-wsl</figcaption></figure></p>
+
+<p>在最后输入</p>
+
+<pre><code class="language-json">   &quot;code-runner.executorMap&quot;:
+</code></pre>
+
+<p>按下回车后面的一大串都会自动补全</p>
+
+<p>这时候就能发现，code runner其实就是代替你在命令行输入了编译执行的命令</p>
+
+<p>我们修改python部分，将python修改为python3，保存，即可正常运行。</p>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/vscode+wsl/13.png" alt="remote-wsl" class="lazyload"><figcaption class="image-caption">remote-wsl</figcaption></figure></p>
 
     </div>
 

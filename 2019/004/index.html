@@ -147,15 +147,23 @@
           
           
 
-          <h2 id="heading">问题描述</h2>
+          
+
+<h2 id="问题描述">问题描述</h2>
+
 <blockquote>
 <p>Write an assembly code that converts a given data of the string type into a binary number. The string can be a decimal or a hexadecimal number.</p>
+
 <p>For simplicity, here we assume the string data only contains two digits. Each digit in the string is represented by an ASCII code. For example, the decimal number string “78” is represented by 0x37 for ‘7’ and 0x38 for ‘8’. (See the ASCII table shown at the end of this document).</p>
+
 <p>We also assume that each ASCII code is stored in a register and the result of the conversion is also saved in a register. Since ASCII only uses 7 bits, you can use the leftmost bit to indicate the string is for decimal or hexadecimal, for example 0 for decimal and 1 for hexadecimal.</p>
 </blockquote>
+
 <p>简单来说，就是讲字符串类型数值转化为数值型，然后将2机制根据最左位的值确定转换为十进制或十六进制。</p>
-<h2 id="heading1">解决方案</h2>
-<pre><code class="language-assembly" data-lang="assembly">;
+
+<h2 id="解决方案">解决方案</h2>
+
+<pre><code class="language-assembly">;
 ; lab_1.asm
 ;
 ; Created: 2019/9/23 16:24:24
@@ -230,7 +238,10 @@ next:
 	;mov dh,hh		;nothing
 
 halt:	rjmp halt	
-</code></pre><p>几点说明：</p>
+</code></pre>
+
+<p>几点说明：</p>
+
 <ul>
 <li>在判断是否转为十进制或十六进制时，使用了sbrc指令集，即skip if bit in register is cleared。指定ah寄存器第7位，用该指令集判断该位为1或0。为0时，即表示十进制，跳过下一条指令，进入case1，反之，jump到case2</li>
 <li>十进制计算较为简单，对照ASCII码表，字符型数值与真值相差0x30，所以对每一位减去0x30即可得到十进制真值。</li>

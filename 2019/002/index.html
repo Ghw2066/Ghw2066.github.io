@@ -57,7 +57,7 @@
     "datePublished": "2019-10-12 11:25:25 \x2b1100 \x2b1100",
     "dateModified" : "2019-10-12 11:25:25 \x2b1100 \x2b1100",
     "url" : "http:\/\/always4u.cloud\/2019\/002\/",
-    "wordCount" : "1447",
+    "wordCount" : "1442",
     "keywords" : [ "Algorithm","leetcode", "Haowen`s Blog"]
 }
 </script>
@@ -128,7 +128,7 @@
                         <a href="http://always4u.cloud/categories/algorithm/"> Algorithm </a>
                         
                 </span>
-                <span class="post-word-count">, 1447 words</span>
+                <span class="post-word-count">, 1442 words</span>
         </div>
     </header>
     <div class="post-content">
@@ -147,14 +147,20 @@
           
           
 
-          <h2 id="heading">题目描述</h2>
+          
+
+<h2 id="题目描述">题目描述</h2>
+
 <p>定义一个数字序列是完美的，当且仅当对于任意2&lt;=i&lt;=n 都满足(A1+A2+…+Aj) &lt;= Ai，1&lt;=j&lt;=i，即每个数字都要大于等于前面所有数字的和。
 现在给定数字序列Ai，想请你从中找出最长的一段连续子序列，满足它是完美的。</p>
+
 <p>输入描述：
 第一行数据组数T。对于每组数据，第一行一个整数n，接下来一行n个整数表示序列。
 1&lt;=n&lt;=1e5, 1&lt;=T&lt;=5,1&lt;=Ai&lt;=1e9</p>
+
 <p>输出描述：
 对于每组数据，一行一个数字表示最长完美的连续子序列的长度</p>
+
 <p>示例1：
 输入：
 2
@@ -162,134 +168,168 @@
 1 3 9 2 6
 5
 4 2 9 16 7</p>
+
 <p>输出：
 3</p>
-<h2 id="heading1">解题思路</h2>
+
+<h2 id="解题思路">解题思路</h2>
+
 <p>一般来说这类题目是要以空间换时间的方式，需要另外开一个记录状态的容器，以跟踪记录每一个完美子串的长度，最后从中找出最大值，即为最长完美连续子序列长度。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++">vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> M(n,<span style="color:#ae81ff">1</span>);		
-<span style="color:#75715e">//M用来记录从当前位置开始，完美子串的长度，初始值为1表示每个字符自己都是完美子串，长度为1
-</span><span style="color:#75715e"></span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> A(n);
-<span style="color:#75715e">//A保存原始序列
-</span></code></pre></div><p>因为多次输入的序列长度不固定，所以使用vector容器灵活处理</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span> it <span style="color:#f92672">=</span> A.begin(); it <span style="color:#f92672">!</span><span style="color:#f92672">=</span> A.end(); <span style="color:#f92672">+</span><span style="color:#f92672">+</span>it)
-    <span style="color:#75715e">//C++ primer中建议使用 ++it 而不是 it++，以减少内存开支
-</span><span style="color:#75715e"></span>	cin <span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">*</span>it;
-	<span style="color:#75715e">//因为n未知，所以使用动态扩充方式，以最大化利用空间
-</span><span style="color:#75715e"></span>
-</code></pre></div><p>以样例输入1 3 9 2 6 为例</p>
+
+<pre><code class="language-c++">vector&lt;int&gt; M(n,1);		
+//M用来记录从当前位置开始，完美子串的长度，初始值为1表示每个字符自己都是完美子串，长度为1
+vector&lt;int&gt; A(n);
+//A保存原始序列
+</code></pre>
+
+<p>因为多次输入的序列长度不固定，所以使用vector容器灵活处理</p>
+
+<pre><code class="language-c++">for (auto it = A.begin(); it != A.end(); ++it)
+    //C++ primer中建议使用 ++it 而不是 it++，以减少内存开支
+	cin &gt;&gt; *it;
+	//因为n未知，所以使用动态扩充方式，以最大化利用空间
+
+</code></pre>
+
+<p>以样例输入1 3 9 2 6 为例</p>
+
 <p>A容器</p>
+
 <blockquote>
 <p>1 3 9 2 6</p>
 </blockquote>
+
 <p>M容器，记录在查找完美子序列过程中，对应A容器中的从该数字起始的完美子序列长度。</p>
+
 <p>初始值为1。</p>
+
 <blockquote>
 <p>1 1 1 1 1</p>
 </blockquote>
-<p>定义k为查找过程中当前完美子串起点，从<code>k</code>到<code>i</code>为完美子串，且由题意知<code>k`~`i</code>之间的每一个连续子串都是完美子串</p>
-<pre><code>int k = 0;
-</code></pre><p>然后对A容器进行遍历，查找最大完美子串。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> n; i<span style="color:#f92672">+</span><span style="color:#f92672">+</span>) 
-{		
-	<span style="color:#66d9ef">bool</span> flag <span style="color:#f92672">=</span> false; <span style="color:#75715e">//用来标记 子序列之和 &lt;= Ai是否成立，即是否为完美子串
-</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
 
-	<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> k; j <span style="color:#f92672">&lt;</span><span style="color:#f92672">=</span> i; j<span style="color:#f92672">+</span><span style="color:#f92672">+</span>) <span style="color:#75715e">//计算子序列之和
-</span><span style="color:#75715e"></span>		sum <span style="color:#f92672">+</span><span style="color:#f92672">=</span> A[j];	
+<p>定义k为查找过程中当前完美子串起点，从<code>k</code>到<code>i</code>为完美子串，且由题意知<code>k</code>~<code>i</code>之间的每一个连续子串都是完美子串</p>
+
+<pre><code>int k = 0;
+</code></pre>
+
+<p>然后对A容器进行遍历，查找最大完美子串。</p>
+
+<pre><code class="language-c++">for (int i = 0; i &lt; n; i++) 
+{		
+	bool flag = false; //用来标记 子序列之和 &lt;= Ai是否成立，即是否为完美子串
+	int sum = 0;
+
+	for (int j = k; j &lt;= i; j++) //计算子序列之和
+		sum += A[j];	
 						
-	<span style="color:#66d9ef">if</span> (i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">!</span><span style="color:#f92672">=</span> n <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> sum <span style="color:#f92672">&lt;</span><span style="color:#f92672">=</span> A[i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>])	<span style="color:#75715e">//这里判断一下是否到了最后一个数字，以防A[i+1]越界
-</span><span style="color:#75715e"></span>		flag <span style="color:#f92672">=</span> true;
-	<span style="color:#66d9ef">else</span> {
-		flag <span style="color:#f92672">=</span> false;
-		k <span style="color:#f92672">=</span> i;
+	if (i + 1 != n &amp;&amp; sum &lt;= A[i + 1])	//这里判断一下是否到了最后一个数字，以防A[i+1]越界
+		flag = true;
+	else {
+		flag = false;
+		k = i;
 	}
 
-	<span style="color:#66d9ef">if</span> (flag <span style="color:#f92672">=</span><span style="color:#f92672">=</span> true ){
-		<span style="color:#75715e">//t为临时量，用来遍历当前子串，用来更新M中每一个数字A[t]对应的从自身开始的最大子串长度
-</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> t <span style="color:#f92672">=</span> k; t <span style="color:#f92672">&lt;</span><span style="color:#f92672">=</span> i; t<span style="color:#f92672">+</span><span style="color:#f92672">+</span>)		
-			M[t]<span style="color:#f92672">+</span><span style="color:#f92672">+</span>;	
+	if (flag){
+		//t为临时量，用来遍历当前子串，用来更新M中每一个数字A[t]对应的从自身开始的最大子串长度
+		for (int t = k; t &lt;= i; t++)		
+			M[t]++;	
 	}
 }
-</code></pre></div><p>在循环结束之后，M容器被更新为</p>
+</code></pre>
+
+<p>在循环结束之后，M容器被更新为</p>
+
 <blockquote>
 <p>3 2 1 1 2</p>
 </blockquote>
+
 <p>然后找出其中最大值max，即为该序列的最大完美子序列长度</p>
+
 <pre><code>//使用迭代器重新实现寻找最大值maxfor(auto it = M.begin();it!=M.end();++it)	if(*it &gt; max)		max = *it;
-</code></pre><p>对于每一个序列都执行一次上述过程，共执行T次，每次都找是否有更大的max值，即可得到所有序列中的最长连续完美子序列</p>
-<h4 id="heading2">完整代码如下</h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#75715e">#</span><span style="color:#75715e">include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
-</span><span style="color:#75715e"></span><span style="color:#75715e">#</span><span style="color:#75715e">include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
-</span><span style="color:#75715e"></span><span style="color:#75715e">//#define N 10000
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+</code></pre>
 
-<span style="color:#75715e">//int m[N]= { 0 };
-</span><span style="color:#75715e"></span><span style="color:#75715e">//int A[N] = { 0 };
-</span><span style="color:#75715e"></span>
+<p>对于每一个序列都执行一次上述过程，共执行T次，每次都找是否有更大的max值，即可得到所有序列中的最长连续完美子序列</p>
+
+<h4 id="完整代码如下">完整代码如下</h4>
+
+<pre><code class="language-c++">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+//#define N 10000
+using namespace std;
+
+//int m[N]= { 0 };
+//int A[N] = { 0 };
 
 
-<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() 
+
+int main() 
 {
-	<span style="color:#66d9ef">int</span> T <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, n <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-	<span style="color:#66d9ef">int</span> max <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+	int T = 0, n = 0;
+	int max = 0;
 	
-	cin <span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> T;
-	<span style="color:#66d9ef">while</span> (T<span style="color:#f92672">-</span><span style="color:#f92672">-</span>) 
+	cin &gt;&gt; T;
+	while (T--) 
     {
-		cin <span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> n;		
-		vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> M(n,<span style="color:#ae81ff">1</span>);		
-        <span style="color:#75715e">//M用来记录从当前位置开始，完美子串的长度，初始值为1表示每个字符自己都是完美子串，长度为1
-</span><span style="color:#75715e"></span>		vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> A(n);
+		cin &gt;&gt; n;		
+		vector&lt;int&gt; M(n,1);		
+        //M用来记录从当前位置开始，完美子串的长度，初始值为1表示每个字符自己都是完美子串，长度为1
+		vector&lt;int&gt; A(n);
 
-		<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span> it <span style="color:#f92672">=</span> A.begin(); it <span style="color:#f92672">!</span><span style="color:#f92672">=</span> A.end(); <span style="color:#f92672">+</span><span style="color:#f92672">+</span>it)
-            <span style="color:#75715e">//C++ primer中建议使用 ++it 而不是 it++，以减少内存开支
-</span><span style="color:#75715e"></span>			cin <span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">*</span>it;
-			<span style="color:#75715e">//因为n未知，所以使用动态扩充方式，以最大化利用空间
-</span><span style="color:#75715e"></span>			
-		<span style="color:#66d9ef">int</span> k <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;			<span style="color:#75715e">//当前完美子串起点，从k到i为完美子串，随循环变化。
-</span><span style="color:#75715e"></span>
-		<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> n; i<span style="color:#f92672">+</span><span style="color:#f92672">+</span>) 
+		for (auto it = A.begin(); it != A.end(); ++it)
+            //C++ primer中建议使用 ++it 而不是 it++，以减少内存开支
+			cin &gt;&gt; *it;
+			//因为n未知，所以使用动态扩充方式，以最大化利用空间
+			
+		int k = 0;			//当前完美子串起点，从k到i为完美子串，随循环变化。
+
+		for (int i = 0; i &lt; n; i++) 
         {
-			<span style="color:#66d9ef">bool</span> flag <span style="color:#f92672">=</span> false;
-			<span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+			bool flag = false;
+			int sum = 0;
 
-			<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> k; j <span style="color:#f92672">&lt;</span><span style="color:#f92672">=</span> i; j<span style="color:#f92672">+</span><span style="color:#f92672">+</span>)
-				sum <span style="color:#f92672">+</span><span style="color:#f92672">=</span> A[j];	
+			for (int j = k; j &lt;= i; j++)
+				sum += A[j];	
 						
-			<span style="color:#66d9ef">if</span> (i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">!</span><span style="color:#f92672">=</span> n <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> sum <span style="color:#f92672">&lt;</span><span style="color:#f92672">=</span> A[i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>])	
-                <span style="color:#75715e">//这里判断一下是否到了最后一个数字，以防A[i+1]越界
-</span><span style="color:#75715e"></span>				flag <span style="color:#f92672">=</span> true;
-			<span style="color:#66d9ef">else</span> 
+			if (i + 1 != n &amp;&amp; sum &lt;= A[i + 1])	
+                //这里判断一下是否到了最后一个数字，以防A[i+1]越界
+				flag = true;
+			else 
             {
-				flag <span style="color:#f92672">=</span> false;
-				k <span style="color:#f92672">=</span> i;
+				flag = false;
+				k = i;
 			}
 
-			<span style="color:#66d9ef">if</span> (flag <span style="color:#f92672">=</span><span style="color:#f92672">=</span> true )
+			if (flag == true )
             {
-				<span style="color:#75715e">//t为临时量，用来遍历当前子串，用来更新M中每一个数字A[t]对应的从自身开始的最大子串长度
-</span><span style="color:#75715e"></span>				<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> t <span style="color:#f92672">=</span> k; t <span style="color:#f92672">&lt;</span><span style="color:#f92672">=</span> i; t<span style="color:#f92672">+</span><span style="color:#f92672">+</span>)		
-					M[t]<span style="color:#f92672">+</span><span style="color:#f92672">+</span>;	
+				//t为临时量，用来遍历当前子串，用来更新M中每一个数字A[t]对应的从自身开始的最大子串长度
+				for (int t = k; t &lt;= i; t++)		
+					M[t]++;	
 			}
 		}
 
-		<span style="color:#75715e">/*for (int i = 0; i &lt; n; i++)
-</span><span style="color:#75715e">			if(M[i]&gt;max)
-</span><span style="color:#75715e">				max = M[i];*/</span>
+		/*for (int i = 0; i &lt; n; i++)
+			if(M[i]&gt;max)
+				max = M[i];*/
         
-		<span style="color:#75715e">//使用迭代器重新实现寻找最大值max
-</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">auto</span> it <span style="color:#f92672">=</span> M.begin();it<span style="color:#f92672">!</span><span style="color:#f92672">=</span>M.end();<span style="color:#f92672">+</span><span style="color:#f92672">+</span>it)
-			<span style="color:#66d9ef">if</span>(<span style="color:#f92672">*</span>it <span style="color:#f92672">&gt;</span> max)
-				max <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>it;
+		//使用迭代器重新实现寻找最大值max
+		for(auto it = M.begin();it!=M.end();++it)
+			if(*it &gt; max)
+				max = *it;
 	}
-		cout <span style="color:#f92672">&lt;</span><span style="color:#f92672">&lt;</span> max;
-	<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+		cout &lt;&lt; max;
+	return 0;
 }
-</code></pre></div><h2 id="heading3">小结</h2>
+</code></pre>
+
+<h2 id="小结">小结</h2>
+
 <p>因为没有全部的测试用例，不敢保证代码完全正确，但是思路应该是没有问题。</p>
+
 <p>按照这个方式，时间复杂度应该是在<code>O(nlogn)</code>范围，但是在最差情况下—最长完美子序列为序列本身，此时时间复杂度接近<code>O(n^2)</code></p>
+
 <p>Author: Guo Haowen</p>
-<p>License: Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</p>
+
+<p>License: Copyright &copy; 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" rel="nofollow noreferrer" target="_blank">CC-BY-NC-4.0</a> LICENSE</p>
 
     </div>
 

@@ -147,187 +147,173 @@
           
           
 
-          <h1 id="overview">Overview</h1>
+          
+
+<h1 id="overview">Overview</h1>
+
 <h2 id="main-points">Main points</h2>
+
 <ul>
 <li>Basics of microprocessor systems</li>
 <li>AVR and AVR programming</li>
 <li>Interfacing</li>
 <li>Microcontroller application development</li>
 </ul>
+
 <h2 id="basics-of-microprocessor-systems">Basics of microprocessor systems</h2>
+
 <ul>
-<li>
-<p>通过编程实现不同的功能</p>
-</li>
-<li>
-<p>Information can be encoded</p>
+<li>通过编程实现不同的功能</li>
+
+<li><p>Information can be encoded</p>
+
 <ul>
 <li>二进制形式</li>
 <li>例如：补码</li>
-</ul>
-</li>
-<li>
-<p>计算机硬件的五个基本部分：</p>
+</ul></li>
+
+<li><p>计算机硬件的五个基本部分：</p>
+
 <ul>
 <li>datapath, control unit, memory, input/output devices</li>
-</ul>
-</li>
-<li>
-<p>microprocessor</p>
+</ul></li>
+
+<li><p>microprocessor</p>
+
 <ul>
 <li>datapath + control unit -&gt; on one chip</li>
-</ul>
-</li>
-<li>
-<p>Microcontroller</p>
+</ul></li>
+
+<li><p>Microcontroller</p>
+
 <ul>
 <li>microprpcessor + memory + peripherals周边设备-&gt;on one chip</li>
-</ul>
-</li>
-<li>
-<p>Computer application systems</p>
+</ul></li>
+
+<li><p>Computer application systems</p>
+
 <ul>
 <li>hardware + software</li>
-</ul>
-</li>
-<li>
-<p>ISA</p>
+</ul></li>
+
+<li><p>ISA</p>
+
 <ul>
 <li>Interface between hardware and software</li>
-<li>Instruction set architecture
-<ul>
+<li>Instruction set architecture</li>
 <li>assembly 程序可以调用的指令集</li>
 <li>硬件设计者应当遵循并实现的说明</li>
-</ul>
-</li>
 <li>包含指令集Instruction set，支持的原生数据类型（byte，integer，word（需要两个寄存器）），registers（通用，专用），Memory models, Interrupts schemes</li>
+</ul></li>
 </ul>
-</li>
-</ul>
+
 <h2 id="avr-and-avr-programming">AVR and AVR Programming</h2>
+
 <ul>
-<li>
-<p>需要对ISA有一定的了解</p>
+<li><p>需要对ISA有一定的了解</p>
+
 <ul>
-<li>原因：需要理解指令集的为什么这样设计
-<ul>
+<li>原因：需要理解指令集的为什么这样设计</li>
 <li>e.g. 原生支持数据类型native data type，AVR只有8bit(byte)整型，所以指令集为更大的数据运算提供carry bit支持</li>
 <li>e.g. Register 同样地，存在一定地限制，比如r0保存mul结果，X Y Z寄存器对等等，这些特别之处使得assembly程序对于不同的ISA要做出适应性变化</li>
 <li>e.g. AVR 中不提供software interrupt方式，但是可以用external interrupt来实现</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>e.g. 对于c语言结构体的赋值初始化，在AVR中，将初始化值存放在.cseg program memory中，这是因为</p>
+</ul></li>
+
+<li><p>e.g. 对于c语言结构体的赋值初始化，在AVR中，将初始化值存放在.cseg program memory中，这是因为</p>
+
 <ul>
 <li>1.program memory中一个地址有16位，可以存放更多的数据</li>
 <li>2.如果不存放在.cseg，那只能放在.dseg data memory中，这就需要使用instruction进行初始化复制，比如LDI。并且因为操作对象只有8位，就需要很长很长的一串指令集完成赋值，对于数组 <code>a[20]</code>就要有20条指令集，如果数组大小变化，还要调整指令集数量，十分麻烦。</li>
-</ul>
-</li>
-<li>
-<p>AVR use little ending endianness AVR使用小端字节表示，即小端为高位</p>
+</ul></li>
+
+<li><p>AVR use little ending endianness AVR使用小端字节表示，即小端为高位</p>
+
 <ul>
 <li>e.g.  v : DW 0x1234</li>
-<li>e.g. v&laquo;1 : 0x34</li>
-<li>e.g. (v&laquo;1) + 1 :  0x12</li>
+<li>e.g. v&lt;&lt;1 : 0x34</li>
+<li>e.g. (v&lt;&lt;1) + 1 :  0x12</li>
+</ul></li>
 </ul>
-</li>
-</ul>
+
 <h2 id="week-1">Week 1</h2>
+
 <h4 id="register">Register</h4>
+
 <ul>
-<li>
-<p>Two types</p>
+<li><p>Two types</p>
+
 <ul>
 <li>General purpose Registers</li>
-<li>Special purpose Registers
-<ul>
+<li>Special purpose Registers</li>
 <li>e.g. Program Counter(PC)</li>
 <li>e.g. Status Register</li>
 <li>e.g. Stack Pointer(SP)</li>
 <li>e.g. Input/Output Registers</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>Gerneral purpose Register</p>
+</ul></li>
+
+<li><p>Gerneral purpose Register</p>
+
 <ul>
 <li>机器上的一组寄存器，用于存储临时数据或结果</li>
 <li>在不同的机器上的结构不同（ISA不同）</li>
-</ul>
-</li>
-<li>
-<p>Program Couter</p>
+</ul></li>
+
+<li><p>Program Couter</p>
+
 <ul>
 <li>特殊寄存器，用于存储当前被执行指令的内存地址</li>
 <li>16bit或32bit，取决于指令集内存大小</li>
 <li>可以自增</li>
-</ul>
-</li>
-<li>
-<p>Status Register</p>
+</ul></li>
+
+<li><p>Status Register</p>
+
 <ul>
 <li>用于控制程序执行流 program execution flow</li>
+</ul></li>
 </ul>
-</li>
-</ul>
+
 <h4 id="memory-model">Memory Model</h4>
+
 <ul>
-<li>
-<p>Addressable unit size</p>
+<li><p>Addressable unit size</p>
+
 <ul>
 <li>内存由units组成，每个unit有一个地址，大多是unit size都是8bit(1 byte)，称作byte-addresses</li>
-<li>现代processor可以有multi-byte unit
-<ul>
+<li>现代processor可以有multi-byte unit</li>
 <li>e.g. 32bit Instruction memory MIPS</li>
 <li>e.g. 16bit Instruction memory AVR</li>
-</ul>
-</li>
 <li>被称作word-addresses</li>
-</ul>
-</li>
-<li>
-<p>Address Space</p>
-</li>
-<li>
-<p>处理器能访问的地址空间大小</p>
-</li>
-<li>
-<p>Endianness</p>
+</ul></li>
+
+<li><p>Address Space</p></li>
+
+<li><p>处理器能访问的地址空间大小</p></li>
+
+<li><p>Endianness</p>
+
 <ul>
 <li>计算机组成原理有涉及过，大小端的概念</li>
 <li>AVR使用little endian 即0x1234 -&gt; 0x34 0x12</li>
-</ul>
-</li>
-<li>
-<p>Addressing Modes</p>
+</ul></li>
+
+<li><p>Addressing Modes</p>
+
 <ul>
-<li>
-<p>immediate Addressing 数值来自指令，add r5,99</p>
-</li>
-<li>
-<p>Register direct addressing 数据在寄存器r4中，寄存器直接寻址, add r5,r4</p>
-</li>
-<li>
-<p>Memory Direct Addressing 内存直接寻址，数据是0x123A地址上的数据，add r5, 0x123A</p>
-</li>
-<li>
-<p>Memory register Indirect Addressing  内存地址保存在寄存器中，间接寄存器寻址，add r5,(r4)</p>
-</li>
-<li>
-<p>Memory register indirect Auto-increment 寄存器中的地址自增，适合对array类型寻址</p>
-</li>
-<li>
-<p>Memory register indirect with displacement 对于结构体数据，可能一个数据类型占据多个byte，加上displacement适合这类情况</p>
-</li>
-<li>
-<p>Address Register Indirect with Index and Displacement 最复杂的形式，对于数组，第一个寄存器保存数组的起始位置地址，第二个寄存器为index，用于索引其中的每一个元素，displacement和上面一样</p>
-</li>
-</ul>
-</li>
+<li>immediate Addressing 数值来自指令，add r5,99</li>
+
+<li><p>Register direct addressing 数据在寄存器r4中，寄存器直接寻址, add r5,r4</p></li>
+
+<li><p>Memory Direct Addressing 内存直接寻址，数据是0x123A地址上的数据，add r5, 0x123A</p></li>
+
+<li><p>Memory register Indirect Addressing  内存地址保存在寄存器中，间接寄存器寻址，add r5,(r4)</p></li>
+
+<li><p>Memory register indirect Auto-increment 寄存器中的地址自增，适合对array类型寻址</p></li>
+
+<li><p>Memory register indirect with displacement 对于结构体数据，可能一个数据类型占据多个byte，加上displacement适合这类情况</p></li>
+
+<li><p>Address Register Indirect with Index and Displacement 最复杂的形式，对于数组，第一个寄存器保存数组的起始位置地址，第二个寄存器为index，用于索引其中的每一个元素，displacement和上面一样</p></li>
+</ul></li>
 </ul>
 
     </div>
