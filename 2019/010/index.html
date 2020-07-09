@@ -46,7 +46,7 @@
     "articleSection" : "posts",
     "name" : "Overview of COMP9313 Big Data Magement ",
     "headline" : "Overview of COMP9313 Big Data Magement ",
-    "description" : "“Big data is a field that treats ways to analyze, systematically extract information from, or otherwise deal with data sets that are too large or complex to be dealt with by traditional data-processing application software” ​ \x26mdash;\x26mdash; Wikipedia Week 1: Characterizing Big Data The 3 Vs of Big Data Volume Challenges for traditional IT infrastructures Large amounts of data,",
+    "description" : "“Big data is a field that treats ways to analyze, systematically extract information from, or otherwise deal with data sets that are too large or complex to be dealt with by traditional data-processing application software” ​ \u0026mdash;\u0026mdash; Wikipedia Week 1: Characterizing Big Data The 3 Vs of Big Data Volume Challenges for traditional IT infrastructures Large amounts of data,",
     "inLanguage" : "zh-cn",
     "author" : "Guo Haowen",
     "creator" : "Guo Haowen",
@@ -54,8 +54,8 @@
     "accountablePerson" : "Guo Haowen",
     "copyrightHolder" : "Guo Haowen",
     "copyrightYear" : "2019",
-    "datePublished": "2019-11-30 11:38:36 \x2b1100 \x2b1100",
-    "dateModified" : "2019-11-30 11:38:36 \x2b1100 \x2b1100",
+    "datePublished": "2019-11-30 11:38:36 \u002b1100 \u002b1100",
+    "dateModified" : "2019-11-30 11:38:36 \u002b1100 \u002b1100",
     "url" : "http:\/\/always4u.cloud\/2019\/010\/",
     "wordCount" : "1165",
     "keywords" : [ "Bigdata", "Haowen`s Blog"]
@@ -147,148 +147,169 @@
           
           
 
-          
-
-<blockquote>
+          <blockquote>
 <p>“Big data is a field that treats ways to analyze, systematically extract information from, or otherwise deal with data sets that are too large or complex to be dealt with by traditional data-processing application software”</p>
-
-<p>​                                                                                                                         <strong>&mdash;&mdash; Wikipedia</strong></p>
+<p>​																															<strong>&mdash;&mdash; Wikipedia</strong></p>
 </blockquote>
-
 <h2 id="week-1-characterizing-big-data">Week 1: Characterizing Big Data</h2>
-
 <h4 id="the-3-vs-of-big-data">The 3 Vs of Big Data</h4>
-
 <ul>
-<li><p><strong>Volume</strong></p>
-
+<li>
+<p><strong>Volume</strong></p>
 <ul>
-<li><p>Challenges for traditional IT infrastructures</p></li>
-
-<li><p>Large amounts of data, low capacity to process it</p></li>
-
-<li><p>Distributed technologies: Filesystems and computation (e.g. Hadoop)</p></li>
-</ul></li>
-
-<li><p>Variety</p>
-
+<li>
+<p>Challenges for traditional IT infrastructures</p>
+</li>
+<li>
+<p>Large amounts of data, low capacity to process it</p>
+</li>
+<li>
+<p>Distributed technologies: Filesystems and computation (e.g. Hadoop)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Variety</p>
 <ul>
 <li>Diverse sources of data (not just relational)</li>
 <li>Text, image, videos, sensor data, etc.</li>
 <li>Big data integration and curation challenges</li>
 <li>Flexibility in data representation</li>
-</ul></li>
-
-<li><p>Velocity</p>
-
+</ul>
+</li>
+<li>
+<p>Velocity</p>
 <ul>
 <li>Internet/ mobile: Faster creation and consumption of data</li>
 <li>How to keep up with the pace of it?</li>
 <li>Streaming processing -&gt; (pre)analyze data it arrives</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h4 id="other-vs-for-big-data">Other Vs for Big Data</h4>
-
 <ul>
-<li><p>veracity</p>
-
+<li>
+<p>veracity</p>
 <ul>
 <li>how much can u trust that data</li>
 <li>data -&gt; quantity + quality (trust)</li>
-</ul></li>
-
-<li><p>Visibility</p>
-
+</ul>
+</li>
+<li>
+<p>Visibility</p>
 <ul>
 <li>The state of being able to see ot be seen - is implied</li>
 <li>not enough for information to &ldquo;exists&rdquo;. It should be visible to the right person</li>
 <li>Information silos -&gt; Important roadblocks in the extraction of value from data</li>
-</ul></li>
-
-<li><p>Value</p>
-
+</ul>
+</li>
+<li>
+<p>Value</p>
 <ul>
 <li>Holy grail of big data -&gt; main goal</li>
 <li>data in and of itself has no real value</li>
 <li>does it justify the effort/ investment</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h4 id="hadoop">Hadoop</h4>
-
 <ul>
-<li>开源的数据存储和处理平台</li>
-
-<li><p>Massively scalable, automatically parallelizable:</p>
-
+<li>
+<p>开源的数据存储和处理平台</p>
+</li>
+<li>
+<p>Massively scalable, automatically parallelizable:</p>
 <ul>
 <li>Google: GFS + MapReduce + BigTable (not open)</li>
 <li>Hadoop: HDFS + Hadoop mapreduce + Hbase(opensource)</li>
-</ul></li>
-
-<li><p>Redundant, fault-tolerant data storage</p></li>
-
-<li><p>parallel computation framework</p></li>
-
-<li><p>编写mapreduce程序时，不需要考虑文件分布，数据丢失，分布式计算，scaling，都被hadoop框架处理好了</p></li>
-
-<li><p>Mapreduce 极大地简化了在大规模unreliable集群上的大数据分析问题，非常有利于one-pass 计算</p></li>
 </ul>
-
+</li>
+<li>
+<p>Redundant, fault-tolerant data storage</p>
+</li>
+<li>
+<p>parallel computation framework</p>
+</li>
+<li>
+<p>编写mapreduce程序时，不需要考虑文件分布，数据丢失，分布式计算，scaling，都被hadoop框架处理好了</p>
+</li>
+<li>
+<p>Mapreduce 极大地简化了在大规模unreliable集群上的大数据分析问题，非常有利于one-pass 计算</p>
+</li>
+</ul>
 <h4 id="spark">Spark</h4>
-
 <ul>
-<li><p>随着大数据的发展，以及hadoop生态的广泛应用，开发者们开始不满足于已有的能力</p>
-
+<li>
+<p>随着大数据的发展，以及hadoop生态的广泛应用，开发者们开始不满足于已有的能力</p>
 <ul>
 <li>想要更复杂的multi-pass分析能力（如ML, Graph）</li>
 <li>想要交互式ad-hoc queries</li>
 <li>想要实时stream processing</li>
-</ul></li>
-
-<li><p>相比之下，MapReduce 的局限：</p>
-
+</ul>
+</li>
+<li>
+<p>相比之下，MapReduce 的局限：</p>
 <ul>
-<li>作为一种通用编程模型来说：</li>
+<li>作为一种通用编程模型来说：
+<ul>
 <li>更适合作为one-pass计算</li>
 <li>hard to compose and nest multi ops</li>
 <li>不支持交互式ops</li>
-<li>在hadoop的实现方式上：</li>
+</ul>
+</li>
+<li>在hadoop的实现方式上：
+<ul>
 <li>数据读写都是基于disk</li>
 <li>所有data都是以triple-replicated方式以保证reliability</li>
 <li>java对于仅仅想要做大数据分析的其他行业研究者来说不易使用</li>
-</ul></li>
-
-<li><p>Spark的进步：</p>
-
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Spark的进步：</p>
 <ul>
 <li>将更多的数据存放于内存中以提高性能</li>
-<li>继承并扩展hadoop 模型以支持两类常用应用;</li>
+<li>继承并扩展hadoop 模型以支持两类常用应用;
+<ul>
 <li>iterative算法（ML, Graph)</li>
 <li>interactive data mining</li>
-<li>更易使用：</li>
+</ul>
+</li>
+<li>更易使用：
+<ul>
 <li>scala编写（支持java）</li>
 <li>可使用scala解释器交互式编写</li>
-</ul></li>
-
-<li><p>Spark 并不是hadoop的升级改进版，spark和hadoop同时存在，不是替代关系</p></li>
-
-<li><p>Spark不依赖于hadoop，因为spark有自己的集群管理，仅使用hadoop的数据存储部分</p></li>
 </ul>
-
+</li>
+</ul>
+</li>
+<li>
+<p>Spark 并不是hadoop的升级改进版，spark和hadoop同时存在，不是替代关系</p>
+</li>
+<li>
+<p>Spark不依赖于hadoop，因为spark有自己的集群管理，仅使用hadoop的数据存储部分</p>
+</li>
+</ul>
 <h4 id="nosql">NoSql</h4>
-
 <ul>
-<li><strong>NOT ONLY SQL</strong></li>
-<li>SQL不作为主要的query语言</li>
-<li>是一类非关系型数据库</li>
-<li>并不是替代RMDBS, 而是补充</li>
-
-<li><p>offer typically relax one or more of the ACID properties</p></li>
-
-<li><p>key features:</p>
-
+<li>
+<p><strong>NOT ONLY SQL</strong></p>
+</li>
+<li>
+<p>SQL不作为主要的query语言</p>
+</li>
+<li>
+<p>是一类非关系型数据库</p>
+</li>
+<li>
+<p>并不是替代RMDBS, 而是补充</p>
+</li>
+<li>
+<p>offer typically relax one or more of the ACID properties</p>
+</li>
+<li>
+<p>key features:</p>
 <ul>
 <li>非关系型</li>
 <li>不要求严格的范式</li>
@@ -296,50 +317,58 @@
 <li>horizonral scalable</li>
 <li>Massive write performance</li>
 <li>fast key-value access</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h4 id="elasticsearch">Elasticsearch</h4>
-
 <ul>
-<li>opensource 搜索引擎，基于Apach Lucene</li>
-<li>提供分布式、full-text的搜索引擎rest API</li>
-<li>Document oriented（e.g. JSON)</li>
-<li>java</li>
-
-<li><p>Focused on scalability - distributed by design</p></li>
-
-<li><p>Cluster</p>
-
+<li>
+<p>opensource 搜索引擎，基于Apach Lucene</p>
+</li>
+<li>
+<p>提供分布式、full-text的搜索引擎rest API</p>
+</li>
+<li>
+<p>Document oriented（e.g. JSON)</p>
+</li>
+<li>
+<p>java</p>
+</li>
+<li>
+<p>Focused on scalability - distributed by design</p>
+</li>
+<li>
+<p>Cluster</p>
 <ul>
 <li>一个ES集群由多个node(server)组成</li>
 <li>唯一name标识</li>
 <li>数据存储于集群节点中</li>
 <li>提供所有节点上的indexing和search能力</li>
-</ul></li>
-
-<li><p>Node</p>
-
+</ul>
+</li>
+<li>
+<p>Node</p>
 <ul>
 <li>a single server</li>
 <li>唯一name标识</li>
 <li>存储全部或部分数据集</li>
 <li>为ES提供indexing和search能力</li>
-</ul></li>
-
-<li><p>Shard</p>
-
+</ul>
+</li>
+<li>
+<p>Shard</p>
 <ul>
 <li>individual instances of Lucene index</li>
 <li>ES利用Lucene在分布式系统上indexing</li>
-</ul></li>
-
-<li><p>Index</p>
-
+</ul>
+</li>
+<li>
+<p>Index</p>
 <ul>
 <li>distributed across shards</li>
 <li>Replicas（容错）</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 
     </div>

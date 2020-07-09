@@ -46,7 +46,7 @@
     "articleSection" : "posts",
     "name" : "MapReduce Case--Tablejoin",
     "headline" : "MapReduce Case--Tablejoin",
-    "description" : "Case Specification There are two tables and both of them have the same foreign key. join in hadoop, is similar with the join in database.\nThe first table, students.txt, is a text file, each row shows a student\x26rsquo;s zid and his\/her name, as shown below.\nz1\tSara z2\tAli  The second table, marks.txt, is a text file, each row shows a student\x26rsquo;s zid and two marks for his\/her assignments.",
+    "description" : "Case Specification There are two tables and both of them have the same foreign key. join in hadoop, is similar with the join in database.\nThe first table, students.txt, is a text file, each row shows a student\u0026rsquo;s zid and his\/her name, as shown below.\nz1\tSara\rz2\tAli\rThe second table, marks.txt, is a text file, each row shows a student\u0026rsquo;s zid and two marks for his\/her assignments.\nz1\t90\t80\rz2\t75\t98\rNow code a Hadoop job to join (outer join) these two tables based on the zids.",
     "inLanguage" : "zh-cn",
     "author" : "Guo Haowen",
     "creator" : "Guo Haowen",
@@ -54,8 +54,8 @@
     "accountablePerson" : "Guo Haowen",
     "copyrightHolder" : "Guo Haowen",
     "copyrightYear" : "2019",
-    "datePublished": "2019-10-28 22:30:53 \x2b1100 \x2b1100",
-    "dateModified" : "2019-10-28 22:30:53 \x2b1100 \x2b1100",
+    "datePublished": "2019-10-28 22:30:53 \u002b1100 \u002b1100",
+    "dateModified" : "2019-10-28 22:30:53 \u002b1100 \u002b1100",
     "url" : "http:\/\/always4u.cloud\/2019\/008\/",
     "wordCount" : "544",
     "keywords" : [ "hadoop","mapreduce","java", "Haowen`s Blog"]
@@ -147,182 +147,165 @@
           
           
 
-          
-
-<h2 id="case-specification">Case Specification</h2>
-
+          <h2 id="case-specification">Case Specification</h2>
 <p>There are two tables and both of them have the same foreign key. <code>join</code> in <code>hadoop</code>, is similar with the <code>join</code> in database.</p>
-
-<p>The first table, <a href="https://github.com/Ghw2066/BigdataLearning/blob/master/lab/lab2/students.txt" rel="nofollow noreferrer" target="_blank">students.txt</a>, is a text file, each row shows a student&rsquo;s zid and his/her name, as shown below.</p>
-
+<p>The first table, <a href="https://github.com/Ghw2066/BigdataLearning/blob/master/lab/lab2/students.txt">students.txt</a>, is a text file, each row shows a student&rsquo;s zid and his/her name, as shown below.</p>
 <pre><code>z1	Sara
 z2	Ali
-</code></pre>
-
-<p>The second table, marks.txt, is a text file, each row shows a student&rsquo;s zid and two marks for his/her  assignments.</p>
-
+</code></pre><p>The second table, marks.txt, is a text file, each row shows a student&rsquo;s zid and two marks for his/her  assignments.</p>
 <pre><code>z1	90	80
 z2	75	98
-</code></pre>
-
-<p>Now code a Hadoop job to join (outer join) these two tables based on the zids. You output must look like:</p>
-
+</code></pre><p>Now code a Hadoop job to join (outer join) these two tables based on the zids. You output must look like:</p>
 <pre><code>z1 Sara,90,80
 z2 Ali,75,98
-</code></pre>
-
-<p>To this happen, you need to create your own Writable class to store complex datatypes (based on existing Writable Datatypes such as IntWritable, Text, etc. ).The following link may help: <a href="https://hadoop.apache.org/docs/r3.0.1/api/org/apache/hadoop/io/Writable.html" rel="nofollow noreferrer" target="_blank">A magic link</a></p>
-
+</code></pre><p>To this happen, you need to create your own Writable class to store complex datatypes (based on existing Writable Datatypes such as IntWritable, Text, etc. ).The following link may help: <a href="https://hadoop.apache.org/docs/r3.0.1/api/org/apache/hadoop/io/Writable.html">A magic link</a></p>
 <h2 id="solution">Solution</h2>
-
 <p>The code comes with comments for explanation.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+<span style="color:#f92672">import</span> org.apache.hadoop.conf.Configuration<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.fs.Path<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.io.*<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.mapreduce.Job<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.mapreduce.Mapper<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.mapreduce.Reducer<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.mapreduce.lib.input.MultipleInputs<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.mapreduce.lib.input.TextInputFormat<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.mapreduce.lib.output.FileOutputFormat<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.*;
-import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.Reducer;
-import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
-import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
-import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
+<span style="color:#f92672">import</span> java.io.DataInput<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.io.DataOutput<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
 
 
-public class Tablejoin {
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Tablejoin</span> <span style="color:#f92672">{</span>
     
-    //This class is for store the result, which is &quot;name Assign1 Assign2&quot;
-    public static class stdMarkWritable implements Writable {
+    <span style="color:#75715e">//This class is for store the result, which is &#34;name Assign1 Assign2&#34;
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">stdMarkWritable</span> <span style="color:#66d9ef">implements</span> Writable <span style="color:#f92672">{</span>
 
-        private Text name;
-        private IntWritable Assign1;
-        private IntWritable Assign2;
-    //initialize the class, in order to detect the value to be joined
-        public stdMarkWritable(){
-            this.name = new Text(&quot;&quot;);
-            this.Assign1 = new IntWritable(-1);
-            this.Assign2 = new IntWritable(-1);
-        }
+        <span style="color:#66d9ef">private</span> Text name<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">private</span> IntWritable Assign1<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">private</span> IntWritable Assign2<span style="color:#f92672">;</span>
+    <span style="color:#75715e">//initialize the class, in order to detect the value to be joined
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">stdMarkWritable</span><span style="color:#f92672">(){</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Text<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Assign1</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> IntWritable<span style="color:#f92672">(-</span>1<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Assign2</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> IntWritable<span style="color:#f92672">(-</span>1<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
 
-        public stdMarkWritable(Text name, IntWritable assign1, IntWritable assign2) {
-            this.name = name;
-            Assign1 = assign1;
-            Assign2 = assign2;
-        }
+        <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">stdMarkWritable</span><span style="color:#f92672">(</span>Text name<span style="color:#f92672">,</span> IntWritable assign1<span style="color:#f92672">,</span> IntWritable assign2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name<span style="color:#f92672">;</span>
+            Assign1 <span style="color:#f92672">=</span> assign1<span style="color:#f92672">;</span>
+            Assign2 <span style="color:#f92672">=</span> assign2<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-        public Text getName() {
-            return name;
-        }
+        <span style="color:#66d9ef">public</span> Text <span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> name<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-        public void setName(Text name) {
-            this.name = name;
-        }
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setName</span><span style="color:#f92672">(</span>Text name<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-        public IntWritable getAssign1() {
-            return Assign1;
-        }
+        <span style="color:#66d9ef">public</span> IntWritable <span style="color:#a6e22e">getAssign1</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> Assign1<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-        public void setAssign1(IntWritable assign1) {
-            Assign1 = assign1;
-        }
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setAssign1</span><span style="color:#f92672">(</span>IntWritable assign1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            Assign1 <span style="color:#f92672">=</span> assign1<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-        public IntWritable getAssign2() {
-            return Assign2;
-        }
+        <span style="color:#66d9ef">public</span> IntWritable <span style="color:#a6e22e">getAssign2</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> Assign2<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-        public void setAssign2(IntWritable assign2) {
-            Assign2 = assign2;
-        }
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setAssign2</span><span style="color:#f92672">(</span>IntWritable assign2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            Assign2 <span style="color:#f92672">=</span> assign2<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-        @Override
-        public void write(DataOutput dataOutput) throws IOException {
-            this.name.write(dataOutput);
-            this.Assign1.write(dataOutput);
-            this.Assign2.write(dataOutput);
-        }
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>DataOutput dataOutput<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>dataOutput<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Assign1</span><span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>dataOutput<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Assign2</span><span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>dataOutput<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
 
-        @Override
-        public void readFields(DataInput dataInput) throws IOException {
-            this.name.readFields(dataInput);
-            this.Assign1.readFields(dataInput);
-            this.Assign2.readFields(dataInput);
-        }
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">readFields</span><span style="color:#f92672">(</span>DataInput dataInput<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">.</span><span style="color:#a6e22e">readFields</span><span style="color:#f92672">(</span>dataInput<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Assign1</span><span style="color:#f92672">.</span><span style="color:#a6e22e">readFields</span><span style="color:#f92672">(</span>dataInput<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Assign2</span><span style="color:#f92672">.</span><span style="color:#a6e22e">readFields</span><span style="color:#f92672">(</span>dataInput<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
 
-        @Override
-        public String toString() {
-            return  this.name.toString() + &quot; &quot; +
-                    this.Assign1.toString() + &quot; &quot; +
-                    this.Assign2.toString() ;
-        }
-    }
-    //this class read the students.txt file and pass to reducer
-    public static class StudentMapper extends Mapper&lt;LongWritable, Text, Text, stdMarkWritable&gt; {
-        @Override
-        protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-            String parts[] = value.toString().split(&quot;,&quot;);
-            stdMarkWritable val = new stdMarkWritable();
-            val.setName(new Text(parts[1]));
-            //zid as key, &quot;name A1 A2&quot; as value
-            context.write(new Text(parts[0]), val);
-        }
-    }
-    //read the marks.txt file and pass to reducer
-    public static class MarkMapper extends Mapper&lt;LongWritable, Text, Text, stdMarkWritable&gt;{
-        @Override
-        protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-            String parts[] = value.toString().split(&quot;,&quot;);
-            stdMarkWritable val = new stdMarkWritable();
-            val.setAssign1(new IntWritable(Integer.parseInt(parts[1])));
-            val.setAssign2(new IntWritable(Integer.parseInt(parts[2])));
-            //zid as key, &quot;name A1 A2&quot; as value
-            context.write(new Text(parts[0]), val);
-        }
-    }
-    //the only one reducer receives the key, value-list from two mapper
-    public static class MyReducer extends Reducer&lt;Text, stdMarkWritable, Text, stdMarkWritable&gt;{
-        @Override
-        protected void reduce(Text key, Iterable&lt;stdMarkWritable&gt; values, Context context) throws IOException, InterruptedException {
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span>  <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; &#34;</span> <span style="color:#f92672">+</span>
+                    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Assign1</span><span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; &#34;</span> <span style="color:#f92672">+</span>
+                    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Assign2</span><span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">()</span> <span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#75715e">//this class read the students.txt file and pass to reducer
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StudentMapper</span> <span style="color:#66d9ef">extends</span> Mapper<span style="color:#f92672">&lt;</span>LongWritable<span style="color:#f92672">,</span> Text<span style="color:#f92672">,</span> Text<span style="color:#f92672">,</span> stdMarkWritable<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>LongWritable key<span style="color:#f92672">,</span> Text value<span style="color:#f92672">,</span> Context context<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
+            String parts<span style="color:#f92672">[]</span> <span style="color:#f92672">=</span> value<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">().</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;,&#34;</span><span style="color:#f92672">);</span>
+            stdMarkWritable val <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> stdMarkWritable<span style="color:#f92672">();</span>
+            val<span style="color:#f92672">.</span><span style="color:#a6e22e">setName</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Text<span style="color:#f92672">(</span>parts<span style="color:#f92672">[</span>1<span style="color:#f92672">]));</span>
+            <span style="color:#75715e">//zid as key, &#34;name A1 A2&#34; as value
+</span><span style="color:#75715e"></span>            context<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Text<span style="color:#f92672">(</span>parts<span style="color:#f92672">[</span>0<span style="color:#f92672">]),</span> val<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#75715e">//read the marks.txt file and pass to reducer
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MarkMapper</span> <span style="color:#66d9ef">extends</span> Mapper<span style="color:#f92672">&lt;</span>LongWritable<span style="color:#f92672">,</span> Text<span style="color:#f92672">,</span> Text<span style="color:#f92672">,</span> stdMarkWritable<span style="color:#f92672">&gt;{</span>
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>LongWritable key<span style="color:#f92672">,</span> Text value<span style="color:#f92672">,</span> Context context<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
+            String parts<span style="color:#f92672">[]</span> <span style="color:#f92672">=</span> value<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">().</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;,&#34;</span><span style="color:#f92672">);</span>
+            stdMarkWritable val <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> stdMarkWritable<span style="color:#f92672">();</span>
+            val<span style="color:#f92672">.</span><span style="color:#a6e22e">setAssign1</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> IntWritable<span style="color:#f92672">(</span>Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">parseInt</span><span style="color:#f92672">(</span>parts<span style="color:#f92672">[</span>1<span style="color:#f92672">])));</span>
+            val<span style="color:#f92672">.</span><span style="color:#a6e22e">setAssign2</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> IntWritable<span style="color:#f92672">(</span>Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">parseInt</span><span style="color:#f92672">(</span>parts<span style="color:#f92672">[</span>2<span style="color:#f92672">])));</span>
+            <span style="color:#75715e">//zid as key, &#34;name A1 A2&#34; as value
+</span><span style="color:#75715e"></span>            context<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Text<span style="color:#f92672">(</span>parts<span style="color:#f92672">[</span>0<span style="color:#f92672">]),</span> val<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#75715e">//the only one reducer receives the key, value-list from two mapper
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyReducer</span> <span style="color:#66d9ef">extends</span> Reducer<span style="color:#f92672">&lt;</span>Text<span style="color:#f92672">,</span> stdMarkWritable<span style="color:#f92672">,</span> Text<span style="color:#f92672">,</span> stdMarkWritable<span style="color:#f92672">&gt;{</span>
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">reduce</span><span style="color:#f92672">(</span>Text key<span style="color:#f92672">,</span> Iterable<span style="color:#f92672">&lt;</span>stdMarkWritable<span style="color:#f92672">&gt;</span> values<span style="color:#f92672">,</span> Context context<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
 
-            stdMarkWritable value = new stdMarkWritable();
-            //join phase
-            for(stdMarkWritable a: values)
-                if(a.getName().toString().equals(&quot;&quot;)){
-                    value.setAssign1(new IntWritable(a.getAssign1().get()));
-                    value.setAssign2(new IntWritable(a.getAssign2().get()));
-                }else {
-                    value.setName(new Text(a.getName().toString()));
-                }
+            stdMarkWritable value <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> stdMarkWritable<span style="color:#f92672">();</span>
+            <span style="color:#75715e">//join phase
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>stdMarkWritable a<span style="color:#f92672">:</span> values<span style="color:#f92672">)</span>
+                <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>a<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">().</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">().</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">)){</span>
+                    value<span style="color:#f92672">.</span><span style="color:#a6e22e">setAssign1</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> IntWritable<span style="color:#f92672">(</span>a<span style="color:#f92672">.</span><span style="color:#a6e22e">getAssign1</span><span style="color:#f92672">().</span><span style="color:#a6e22e">get</span><span style="color:#f92672">()));</span>
+                    value<span style="color:#f92672">.</span><span style="color:#a6e22e">setAssign2</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> IntWritable<span style="color:#f92672">(</span>a<span style="color:#f92672">.</span><span style="color:#a6e22e">getAssign2</span><span style="color:#f92672">().</span><span style="color:#a6e22e">get</span><span style="color:#f92672">()));</span>
+                <span style="color:#f92672">}</span><span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                    value<span style="color:#f92672">.</span><span style="color:#a6e22e">setName</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Text<span style="color:#f92672">(</span>a<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">().</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">()));</span>
+                <span style="color:#f92672">}</span>
 
-            context.write(key, value);
-        }
-    }
+            context<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> value<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
 
-    public static void main(String[] args) throws Exception {
-        Configuration conf = new Configuration();
-        Job job = Job.getInstance(conf, &quot;Table join&quot;);
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        Configuration conf <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Configuration<span style="color:#f92672">();</span>
+        Job job <span style="color:#f92672">=</span> Job<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">(</span>conf<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Table join&#34;</span><span style="color:#f92672">);</span>
 
-        job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(stdMarkWritable.class);
+        job<span style="color:#f92672">.</span><span style="color:#a6e22e">setOutputKeyClass</span><span style="color:#f92672">(</span>Text<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        job<span style="color:#f92672">.</span><span style="color:#a6e22e">setOutputValueClass</span><span style="color:#f92672">(</span>stdMarkWritable<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
 
-        job.setMapOutputKeyClass(Text.class);
-        job.setMapOutputValueClass(stdMarkWritable.class);
+        job<span style="color:#f92672">.</span><span style="color:#a6e22e">setMapOutputKeyClass</span><span style="color:#f92672">(</span>Text<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        job<span style="color:#f92672">.</span><span style="color:#a6e22e">setMapOutputValueClass</span><span style="color:#f92672">(</span>stdMarkWritable<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
 
-        MultipleInputs.addInputPath(job, new Path(args[0]), TextInputFormat.class, StudentMapper.class);
-        MultipleInputs.addInputPath(job, new Path(args[1]), TextInputFormat.class, MarkMapper.class);
+        MultipleInputs<span style="color:#f92672">.</span><span style="color:#a6e22e">addInputPath</span><span style="color:#f92672">(</span>job<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Path<span style="color:#f92672">(</span>args<span style="color:#f92672">[</span>0<span style="color:#f92672">]),</span> TextInputFormat<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> StudentMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        MultipleInputs<span style="color:#f92672">.</span><span style="color:#a6e22e">addInputPath</span><span style="color:#f92672">(</span>job<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Path<span style="color:#f92672">(</span>args<span style="color:#f92672">[</span>1<span style="color:#f92672">]),</span> TextInputFormat<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> MarkMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
 
-        job.setReducerClass(MyReducer.class);
-        FileOutputFormat.setOutputPath(job, new Path(args[2]));
-        job.waitForCompletion(true);
+        job<span style="color:#f92672">.</span><span style="color:#a6e22e">setReducerClass</span><span style="color:#f92672">(</span>MyReducer<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        FileOutputFormat<span style="color:#f92672">.</span><span style="color:#a6e22e">setOutputPath</span><span style="color:#f92672">(</span>job<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Path<span style="color:#f92672">(</span>args<span style="color:#f92672">[</span>2<span style="color:#f92672">]));</span>
+        job<span style="color:#f92672">.</span><span style="color:#a6e22e">waitForCompletion</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
 
-    }
-}
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 
-</code></pre>
-
+</code></pre></div>
     </div>
 
     <div class="post-copyright">

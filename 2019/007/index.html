@@ -44,9 +44,9 @@
          "@id": "http:\/\/always4u.cloud\/"
     },
     "articleSection" : "posts",
-    "name" : "MapReduce Case--Movie pair and users\x27 ratings",
-    "headline" : "MapReduce Case--Movie pair and users\x27 ratings",
-    "description" : "Assignment Specification In this assignment we will be working on the processing of a Movie dataset:\nIn this dataset, each row contains a movie rating done by a user (e.g., user1 has rated Titanic as 10). Here is the format of the dataset:\nuser_id::movie_id::rating::timestamp  In this assignment, for each pair of movies A and B, you need to find all the users who rated both movie A and B.",
+    "name" : "MapReduce Case--Movie pair and users\u0027 ratings",
+    "headline" : "MapReduce Case--Movie pair and users\u0027 ratings",
+    "description" : "Assignment Specification In this assignment we will be working on the processing of a Movie dataset:\nIn this dataset, each row contains a movie rating done by a user (e.g., user1 has rated Titanic as 10). Here is the format of the dataset:\nuser_id::movie_id::rating::timestamp\rIn this assignment, for each pair of movies A and B, you need to find all the users who rated both movie A and B. For example, given the following dataset (for the sake of illustration we have used U and M to represent users and movies respectively in the example):",
     "inLanguage" : "zh-cn",
     "author" : "Guo Haowen",
     "creator" : "Guo Haowen",
@@ -54,8 +54,8 @@
     "accountablePerson" : "Guo Haowen",
     "copyrightHolder" : "Guo Haowen",
     "copyrightYear" : "2019",
-    "datePublished": "2019-10-28 20:03:43 \x2b1100 \x2b1100",
-    "dateModified" : "2019-10-28 20:03:43 \x2b1100 \x2b1100",
+    "datePublished": "2019-10-28 20:03:43 \u002b1100 \u002b1100",
+    "dateModified" : "2019-10-28 20:03:43 \u002b1100 \u002b1100",
     "url" : "http:\/\/always4u.cloud\/2019\/007\/",
     "wordCount" : "1288",
     "keywords" : [ "hadoop","mapreduce","java", "Haowen`s Blog"]
@@ -147,19 +147,11 @@
           
           
 
-          
-
-<h2 id="assignment-specification">Assignment Specification</h2>
-
-<p>In this assignment we will be working on the processing of a <a href="https://raw.githubusercontent.com/sidooms/MovieTweetings/master/latest/ratings.dat" rel="nofollow noreferrer" target="_blank">Movie dataset</a>:</p>
-
+          <h2 id="assignment-specification">Assignment Specification</h2>
+<p>In this assignment we will be working on the processing of a <a href="https://raw.githubusercontent.com/sidooms/MovieTweetings/master/latest/ratings.dat">Movie dataset</a>:</p>
 <p>In this dataset, each row contains a movie rating done by a user (e.g., user1 has rated <em>Titanic</em> as 10). Here is the format of the dataset:</p>
-
 <pre><code>user_id::movie_id::rating::timestamp
-</code></pre>
-
-<p>In this assignment, for each pair of movies A and B, you need to find all the users who rated both movie A and B. For example, given the following dataset (for the sake of illustration we have used U and M to represent users and movies respectively in the example):</p>
-
+</code></pre><p>In this assignment, for each pair of movies A and B, you need to find all the users who rated both movie A and B. For example, given the following dataset (for the sake of illustration we have used U and M to represent users and movies respectively in the example):</p>
 <pre><code>U1::M1::2::11111111
 U2::M2::3::11111111
 U2::M3::1::11111111
@@ -168,338 +160,308 @@ U4::M2::5::11111111
 U5::M2::3::11111111
 U5::M1::1::11111111
 U5::M3::3::11111111
-</code></pre>
-
-<p>The assumption is that User and Movie names are in String format and Rating is an Integer value. You should ignore the timestamp in the Mapper.</p>
-
+</code></pre><p>The assumption is that User and Movie names are in String format and Rating is an Integer value. You should ignore the timestamp in the Mapper.</p>
 <p>The output of your code should be in the form as below:</p>
-
 <pre><code>(M1,M2) [(U5,1,3)]
 (M2,M3) [(U5,3,3),(U2,3,1)]
 (M1,M3) [(U5,1,3)]
-</code></pre>
-
-<p>where (M,M) shows pairs of movies, [] indicates the list of users and their ratings. For example, (U5,1,3) shows U5 has rated M1 and M2 with 1 and 3 respectively.</p>
-
+</code></pre><p>where (M,M) shows pairs of movies, [] indicates the list of users and their ratings. For example, (U5,1,3) shows U5 has rated M1 and M2 with 1 and 3 respectively.</p>
 <h2 id="solution-explanation">Solution Explanation</h2>
-
 <p>This solution contains two jobs and each of them contains one mapper and one reducer respectively.</p>
-
 <p>The first mapper in job one, <code>MapperOne</code>, receives the key and value from raw data by line, as well as regards the offset of each line as the key with <code>LongWritable</code> type and the text of this line as the value with <code>Text</code> type. Over the period of this <code>MapperOne</code>, <code>userID</code> is sent to <code>ReducerOne</code> as <code>Text</code> key, as well as movie and rate are stored in a custom <code>Writable</code> object&mdash;<code>MovieRateWritable</code>.</p>
-
 <p>The first reducer in job one, <code>ReducerOne</code>, after receiving the key and values from <code>MapperOne</code>, adds</p>
-
 <p><code>iterable</code> values into <code>movieRateList</code>. By the way, I need to create a new object to avoid reuse. Then, sort this <code>movieRateList</code> by ascending according to &ldquo;movie&rdquo;, in case the situation of <code>(M1, M2)</code></p>
-
 <p>and <code>(M2, M1)</code> happen. Lastly, create movie pair and corresponding <code>(user, rate1, rate2)</code> by doubly nested loops, and write movie pair and <code>(user, rate1, rate2)</code> as key and value respectively into <strong>&ldquo;out1&rdquo;</strong> file, which is an intermediate data file, also as an input file for the second job.</p>
-
 <p>The second job is quite simple. During the <code>MapperTwo</code> phase, just split the whole <code>Text</code> value into two</p>
-
 <p>parts&mdash;-<code>parts[0]</code>: movie pair and <code>parts[1]</code>: <code>(user, rate1, rate2)</code>. Over the process of <code>ReducerTwo</code>,</p>
-
 <p>after the stage of <em>shuffle</em>, all movie pairs with the same hash code would be sent to one <em>reduce</em> task,</p>
-
 <p>so just add the complex object(<code>userRates</code>: is a custom writable to store <code>(user, rate1, rate2)</code>) into</p>
-
 <p>a string <code>ArrayList</code> one by one. Then, use a loop to format the output of list by</p>
-
 <p><code>StringBuffer.append()</code> which is a cost-effective way, and better than &ldquo;+&rdquo;. Finally, write the</p>
-
-<p>key<code>(movie pair)</code> and result<code>(userRatesList)</code> into <strong>&ldquo;out2&rdquo;</strong>file.</p>
-
+<p>key<code>(movie pair)</code> and result<code>(userRatesList)</code> into **&ldquo;out2&rdquo;**file.</p>
 <h2 id="solution-code">Solution Code</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> org.apache.hadoop.conf.Configuration<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.fs.Path<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.io.*<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.mapreduce.Job<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.mapreduce.Mapper<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.mapreduce.Reducer<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.mapreduce.lib.input.FileInputFormat<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.mapreduce.lib.output.FileOutputFormat<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.*;
-import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.Reducer;
-import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+<span style="color:#f92672">import</span> java.io.DataInput<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.io.DataOutput<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.util.ArrayList<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.util.Collections<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.util.Comparator<span style="color:#f92672">;</span>
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AssigOne</span> <span style="color:#f92672">{</span>
 
-public class AssigOne {
+    <span style="color:#75715e">//literally contain the string value of movie and the integer value of rate,
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">//which are corresponding to each other.
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">//Also, override the toString() method to generate &#34;movie,rate&#34; to convert to 		
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">//reducer.
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MovieRateWritable</span> <span style="color:#66d9ef">implements</span> Writable<span style="color:#f92672">{</span>
 
-    //literally contain the string value of movie and the integer value of rate,
-    //which are corresponding to each other.
-    //Also, override the toString() method to generate &quot;movie,rate&quot; to convert to 		
-    //reducer.
-    public static class MovieRateWritable implements Writable{
+	    <span style="color:#66d9ef">private</span> String movie<span style="color:#f92672">;</span>
+	    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> rate<span style="color:#f92672">;</span>
 
-	    private String movie;
-	    private int rate;
+	    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">MovieRateWritable</span><span style="color:#f92672">(){</span>
 
-	    public MovieRateWritable(){
+        <span style="color:#f92672">}</span>
 
-        }
-
-	    public MovieRateWritable(String movie, int rate){
-	        this.movie = movie;
-	        this.rate = rate;
-        }
+	    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">MovieRateWritable</span><span style="color:#f92672">(</span>String movie<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> rate<span style="color:#f92672">){</span>
+	        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">movie</span> <span style="color:#f92672">=</span> movie<span style="color:#f92672">;</span>
+	        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">rate</span> <span style="color:#f92672">=</span> rate<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
 
-        public String getMovie() {
-            return movie;
-        }
+        <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getMovie</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> movie<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-        public void setMovie(String movie) {
-            this.movie = movie;
-        }
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setMovie</span><span style="color:#f92672">(</span>String movie<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">movie</span> <span style="color:#f92672">=</span> movie<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-        public int getRate() {
-            return rate;
-        }
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getRate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> rate<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-        public void setRate(int rate) {
-            this.rate = rate;
-        }
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setRate</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> rate<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">rate</span> <span style="color:#f92672">=</span> rate<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-        @Override
-        public void write(DataOutput dataOutput) throws IOException {
-            dataOutput.writeUTF(movie);
-	        dataOutput.writeInt(rate);
-        }
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>DataOutput dataOutput<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+            dataOutput<span style="color:#f92672">.</span><span style="color:#a6e22e">writeUTF</span><span style="color:#f92672">(</span>movie<span style="color:#f92672">);</span>
+	        dataOutput<span style="color:#f92672">.</span><span style="color:#a6e22e">writeInt</span><span style="color:#f92672">(</span>rate<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
 
-        @Override
-        public void readFields(DataInput dataInput) throws IOException {
-            this.movie = dataInput.readUTF();
-            this.rate = dataInput.readInt();
-        }
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">readFields</span><span style="color:#f92672">(</span>DataInput dataInput<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">movie</span> <span style="color:#f92672">=</span> dataInput<span style="color:#f92672">.</span><span style="color:#a6e22e">readUTF</span><span style="color:#f92672">();</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">rate</span> <span style="color:#f92672">=</span> dataInput<span style="color:#f92672">.</span><span style="color:#a6e22e">readInt</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span>
 
-        @Override
-        public String toString() {
-            return  movie + &quot;:&quot;+ rate;
-        }
-    }
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span>  movie <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span><span style="color:#f92672">+</span> rate<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
 
-    //Literally contain &quot;String user, int rate1, int rate2&quot; to satisfy the requirement of 
-    //output value.
-    //Also override the toString() method to generate &quot;(user,rate1,rate2)&quot;
-    public static class userRates implements Writable{
+    <span style="color:#75715e">//Literally contain &#34;String user, int rate1, int rate2&#34; to satisfy the requirement of 
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">//output value.
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">//Also override the toString() method to generate &#34;(user,rate1,rate2)&#34;
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">userRates</span> <span style="color:#66d9ef">implements</span> Writable<span style="color:#f92672">{</span>
 
-	    private String user;
-	    private int rate1;
-	    private int rate2;
+	    <span style="color:#66d9ef">private</span> String user<span style="color:#f92672">;</span>
+	    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> rate1<span style="color:#f92672">;</span>
+	    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> rate2<span style="color:#f92672">;</span>
 
-	    public userRates() {
-        }
+	    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">userRates</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#f92672">}</span>
 
-        public userRates(String user, int rate1, int rate2){
-	        this.user = user;
-	        this.rate1 = rate1;
-	        this.rate2 = rate2;
-        }
+        <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">userRates</span><span style="color:#f92672">(</span>String user<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> rate1<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> rate2<span style="color:#f92672">){</span>
+	        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">user</span> <span style="color:#f92672">=</span> user<span style="color:#f92672">;</span>
+	        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">rate1</span> <span style="color:#f92672">=</span> rate1<span style="color:#f92672">;</span>
+	        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">rate2</span> <span style="color:#f92672">=</span> rate2<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-        public String getUser() {
-            return user;
-        }
+        <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getUser</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> user<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-        public void setUser(String user) {
-            this.user = user;
-        }
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setUser</span><span style="color:#f92672">(</span>String user<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">user</span> <span style="color:#f92672">=</span> user<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-        public int getRate1() {
-            return rate1;
-        }
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getRate1</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> rate1<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-        public void setRate1(int rate1) {
-            this.rate1 = rate1;
-        }
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setRate1</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> rate1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">rate1</span> <span style="color:#f92672">=</span> rate1<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-        public int getRate2() {
-            return rate2;
-        }
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getRate2</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> rate2<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-        public void setRate2(int rate2) {
-            this.rate2 = rate2;
-        }
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setRate2</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> rate2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">rate2</span> <span style="color:#f92672">=</span> rate2<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-        @Override
-        public void write(DataOutput dataOutput) throws IOException {
-            dataOutput.writeUTF(user);
-            dataOutput.writeInt(rate1);
-            dataOutput.writeInt(rate2);
-        }
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>DataOutput dataOutput<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+            dataOutput<span style="color:#f92672">.</span><span style="color:#a6e22e">writeUTF</span><span style="color:#f92672">(</span>user<span style="color:#f92672">);</span>
+            dataOutput<span style="color:#f92672">.</span><span style="color:#a6e22e">writeInt</span><span style="color:#f92672">(</span>rate1<span style="color:#f92672">);</span>
+            dataOutput<span style="color:#f92672">.</span><span style="color:#a6e22e">writeInt</span><span style="color:#f92672">(</span>rate2<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
 
-        @Override
-        public void readFields(DataInput dataInput) throws IOException {
-            this.user = dataInput.readUTF();
-            this.rate1 = dataInput.readInt();
-            this.rate2 = dataInput.readInt();
-        }
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">readFields</span><span style="color:#f92672">(</span>DataInput dataInput<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">user</span> <span style="color:#f92672">=</span> dataInput<span style="color:#f92672">.</span><span style="color:#a6e22e">readUTF</span><span style="color:#f92672">();</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">rate1</span> <span style="color:#f92672">=</span> dataInput<span style="color:#f92672">.</span><span style="color:#a6e22e">readInt</span><span style="color:#f92672">();</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">rate2</span> <span style="color:#f92672">=</span> dataInput<span style="color:#f92672">.</span><span style="color:#a6e22e">readInt</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span>
 
-        @Override
-        public String toString() {
-            return  &quot;(&quot; + user + &quot;,&quot; + rate1 + &quot;,&quot; + rate2 + ')';
-        }
-    }
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span>  <span style="color:#e6db74">&#34;(&#34;</span> <span style="color:#f92672">+</span> user <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;,&#34;</span> <span style="color:#f92672">+</span> rate1 <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;,&#34;</span> <span style="color:#f92672">+</span> rate2 <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;)&#39;</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
     
-    public static class MapperOne extends Mapper&lt;LongWritable, Text, Text, MovieRateWritable&gt;{
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MapperOne</span> <span style="color:#66d9ef">extends</span> Mapper<span style="color:#f92672">&lt;</span>LongWritable<span style="color:#f92672">,</span> Text<span style="color:#f92672">,</span> Text<span style="color:#f92672">,</span> MovieRateWritable<span style="color:#f92672">&gt;{</span>
 
-        @Override
-        protected void map(LongWritable key, Text value,
-                           Context context) throws IOException, InterruptedException {
-            String[] parts = value.toString().split(&quot;::&quot;);
-            MovieRateWritable mr = new MovieRateWritable();
-            mr.setMovie(parts[1]);
-            mr.setRate(Integer.parseInt(parts[2]));
-            context.write(new Text(parts[0]), mr);   //&quot;user&quot; as key, &quot;movie,rate&quot; as value
-        }
-    }
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>LongWritable key<span style="color:#f92672">,</span> Text value<span style="color:#f92672">,</span>
+                           Context context<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
+            String<span style="color:#f92672">[]</span> parts <span style="color:#f92672">=</span> value<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">().</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;::&#34;</span><span style="color:#f92672">);</span>
+            MovieRateWritable mr <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MovieRateWritable<span style="color:#f92672">();</span>
+            mr<span style="color:#f92672">.</span><span style="color:#a6e22e">setMovie</span><span style="color:#f92672">(</span>parts<span style="color:#f92672">[</span>1<span style="color:#f92672">]);</span>
+            mr<span style="color:#f92672">.</span><span style="color:#a6e22e">setRate</span><span style="color:#f92672">(</span>Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">parseInt</span><span style="color:#f92672">(</span>parts<span style="color:#f92672">[</span>2<span style="color:#f92672">]));</span>
+            context<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Text<span style="color:#f92672">(</span>parts<span style="color:#f92672">[</span>0<span style="color:#f92672">]),</span> mr<span style="color:#f92672">);</span>   <span style="color:#75715e">//&#34;user&#34; as key, &#34;movie,rate&#34; as value
+</span><span style="color:#75715e"></span>        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
 
-    public static class ReducerOne extends Reducer&lt;Text, MovieRateWritable, Text, Text&gt;{
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ReducerOne</span> <span style="color:#66d9ef">extends</span> Reducer<span style="color:#f92672">&lt;</span>Text<span style="color:#f92672">,</span> MovieRateWritable<span style="color:#f92672">,</span> Text<span style="color:#f92672">,</span> Text<span style="color:#f92672">&gt;{</span>
 
-        @Override
-        protected void reduce(Text user, Iterable&lt;MovieRateWritable&gt; values,
-                              Context context) throws IOException, InterruptedException {
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">reduce</span><span style="color:#f92672">(</span>Text user<span style="color:#f92672">,</span> Iterable<span style="color:#f92672">&lt;</span>MovieRateWritable<span style="color:#f92672">&gt;</span> values<span style="color:#f92672">,</span>
+                              Context context<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
 
-            ArrayList&lt;MovieRateWritable&gt; movieRateList = new ArrayList&lt;&gt;();
+            ArrayList<span style="color:#f92672">&lt;</span>MovieRateWritable<span style="color:#f92672">&gt;</span> movieRateList <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
             
-            for(MovieRateWritable movieRate: values) {
-                movieRateList.add(new MovieRateWritable(movieRate.getMovie(), movieRate.getRate()));
-		//create a new object to store the temp value.
-            }
-	    //sort the list by the value of movie, in case the situation of (M1,M2) and (M2,M1) happen.
-            Collections.sort(movieRateList, new Comparator&lt;MovieRateWritable&gt;() {
-                @Override
-                public int compare(MovieRateWritable movieRateWritable, MovieRateWritable t1) {
-                    return movieRateWritable.getMovie().compareTo(t1.getMovie());
-                }
-            });
-	    //generate movie pair and coresponding (user,rate1,rate2)
-            for(int i=0; i&lt;movieRateList.size()-1; i++) {
-                for(int j=i+1;j&lt;movieRateList.size();j++) {
-                    context.write(new Text(&quot;(&quot;+movieRateList.get(i).getMovie()+&quot;,&quot; +
-                                    movieRateList.get(j).getMovie()+&quot;)&quot;),
-                            new Text(user.toString()+&quot;,&quot;+movieRateList.get(i).getRate()+&quot;,&quot; +
-                                    movieRateList.get(j).getRate()));
-                }
-            }
+            <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>MovieRateWritable movieRate<span style="color:#f92672">:</span> values<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                movieRateList<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> MovieRateWritable<span style="color:#f92672">(</span>movieRate<span style="color:#f92672">.</span><span style="color:#a6e22e">getMovie</span><span style="color:#f92672">(),</span> movieRate<span style="color:#f92672">.</span><span style="color:#a6e22e">getRate</span><span style="color:#f92672">()));</span>
+		<span style="color:#75715e">//create a new object to store the temp value.
+</span><span style="color:#75715e"></span>            <span style="color:#f92672">}</span>
+	    <span style="color:#75715e">//sort the list by the value of movie, in case the situation of (M1,M2) and (M2,M1) happen.
+</span><span style="color:#75715e"></span>            Collections<span style="color:#f92672">.</span><span style="color:#a6e22e">sort</span><span style="color:#f92672">(</span>movieRateList<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Comparator<span style="color:#f92672">&lt;</span>MovieRateWritable<span style="color:#f92672">&gt;()</span> <span style="color:#f92672">{</span>
+                <span style="color:#a6e22e">@Override</span>
+                <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">compare</span><span style="color:#f92672">(</span>MovieRateWritable movieRateWritable<span style="color:#f92672">,</span> MovieRateWritable t1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    <span style="color:#66d9ef">return</span> movieRateWritable<span style="color:#f92672">.</span><span style="color:#a6e22e">getMovie</span><span style="color:#f92672">().</span><span style="color:#a6e22e">compareTo</span><span style="color:#f92672">(</span>t1<span style="color:#f92672">.</span><span style="color:#a6e22e">getMovie</span><span style="color:#f92672">());</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">});</span>
+	    <span style="color:#75715e">//generate movie pair and coresponding (user,rate1,rate2)
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span>0<span style="color:#f92672">;</span> i<span style="color:#f92672">&lt;</span>movieRateList<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()-</span>1<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> j<span style="color:#f92672">=</span>i<span style="color:#f92672">+</span>1<span style="color:#f92672">;</span>j<span style="color:#f92672">&lt;</span>movieRateList<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">();</span>j<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+                    context<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Text<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;(&#34;</span><span style="color:#f92672">+</span>movieRateList<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>i<span style="color:#f92672">).</span><span style="color:#a6e22e">getMovie</span><span style="color:#f92672">()+</span><span style="color:#e6db74">&#34;,&#34;</span> <span style="color:#f92672">+</span>
+                                    movieRateList<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>j<span style="color:#f92672">).</span><span style="color:#a6e22e">getMovie</span><span style="color:#f92672">()+</span><span style="color:#e6db74">&#34;)&#34;</span><span style="color:#f92672">),</span>
+                            <span style="color:#66d9ef">new</span> Text<span style="color:#f92672">(</span>user<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">()+</span><span style="color:#e6db74">&#34;,&#34;</span><span style="color:#f92672">+</span>movieRateList<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>i<span style="color:#f92672">).</span><span style="color:#a6e22e">getRate</span><span style="color:#f92672">()+</span><span style="color:#e6db74">&#34;,&#34;</span> <span style="color:#f92672">+</span>
+                                    movieRateList<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>j<span style="color:#f92672">).</span><span style="color:#a6e22e">getRate</span><span style="color:#f92672">()));</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>
 
-        }
+        <span style="color:#f92672">}</span>
 
-    }
+    <span style="color:#f92672">}</span>
     
-    public static class MapperTwo extends Mapper&lt;LongWritable, Text, Text, Text&gt;{
-	//split the whole Text value into movie pair and (user,rate1,rate2)
-        @Override
-        protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-            String[] parts = value.toString().split(&quot;\t&quot;);
-            context.write(new Text(parts[0]), new Text(parts[1]));
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MapperTwo</span> <span style="color:#66d9ef">extends</span> Mapper<span style="color:#f92672">&lt;</span>LongWritable<span style="color:#f92672">,</span> Text<span style="color:#f92672">,</span> Text<span style="color:#f92672">,</span> Text<span style="color:#f92672">&gt;{</span>
+	<span style="color:#75715e">//split the whole Text value into movie pair and (user,rate1,rate2)
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>LongWritable key<span style="color:#f92672">,</span> Text value<span style="color:#f92672">,</span> Context context<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
+            String<span style="color:#f92672">[]</span> parts <span style="color:#f92672">=</span> value<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">().</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\t&#34;</span><span style="color:#f92672">);</span>
+            context<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Text<span style="color:#f92672">(</span>parts<span style="color:#f92672">[</span>0<span style="color:#f92672">]),</span> <span style="color:#66d9ef">new</span> Text<span style="color:#f92672">(</span>parts<span style="color:#f92672">[</span>1<span style="color:#f92672">]));</span>
 	    
-        }
-    }
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
 
-    public static class ReducerTwo extends Reducer&lt;Text, Text, Text, Text&gt;{
-	//add userRates object into a list and output it.
-        @Override
-        protected void reduce(Text key, Iterable&lt;Text&gt; values, Context context) throws IOException, InterruptedException {
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ReducerTwo</span> <span style="color:#66d9ef">extends</span> Reducer<span style="color:#f92672">&lt;</span>Text<span style="color:#f92672">,</span> Text<span style="color:#f92672">,</span> Text<span style="color:#f92672">,</span> Text<span style="color:#f92672">&gt;{</span>
+	<span style="color:#75715e">//add userRates object into a list and output it.
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">reduce</span><span style="color:#f92672">(</span>Text key<span style="color:#f92672">,</span> Iterable<span style="color:#f92672">&lt;</span>Text<span style="color:#f92672">&gt;</span> values<span style="color:#f92672">,</span> Context context<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
             
-            ArrayList&lt;String&gt; userRatesList = new ArrayList&lt;&gt;();
-	    userRates urs = new userRates();
+            ArrayList<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> userRatesList <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
+	    userRates urs <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> userRates<span style="color:#f92672">();</span>
 
-	    String[] parts;
-            for(Text temp:values){
-                parts = new Text(temp).toString().split(&quot;,&quot;);
-                urs.setUser(parts[0]);
-                urs.setRate1(Integer.parseInt(parts[1]));
-                urs.setRate2(Integer.parseInt(parts[2]));
-                userRatesList.add(urs.toString());                
-            }
-        //Format output
-	    //StringBuffer.append() could save time and memory, in comparison to &quot;+&quot;.
-            StringBuffer buf = new StringBuffer(&quot;[&quot;);
+	    String<span style="color:#f92672">[]</span> parts<span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>Text temp<span style="color:#f92672">:</span>values<span style="color:#f92672">){</span>
+                parts <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Text<span style="color:#f92672">(</span>temp<span style="color:#f92672">).</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">().</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;,&#34;</span><span style="color:#f92672">);</span>
+                urs<span style="color:#f92672">.</span><span style="color:#a6e22e">setUser</span><span style="color:#f92672">(</span>parts<span style="color:#f92672">[</span>0<span style="color:#f92672">]);</span>
+                urs<span style="color:#f92672">.</span><span style="color:#a6e22e">setRate1</span><span style="color:#f92672">(</span>Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">parseInt</span><span style="color:#f92672">(</span>parts<span style="color:#f92672">[</span>1<span style="color:#f92672">]));</span>
+                urs<span style="color:#f92672">.</span><span style="color:#a6e22e">setRate2</span><span style="color:#f92672">(</span>Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">parseInt</span><span style="color:#f92672">(</span>parts<span style="color:#f92672">[</span>2<span style="color:#f92672">]));</span>
+                userRatesList<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>urs<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">());</span>                
+            <span style="color:#f92672">}</span>
+        <span style="color:#75715e">//Format output
+</span><span style="color:#75715e"></span>	    <span style="color:#75715e">//StringBuffer.append() could save time and memory, in comparison to &#34;+&#34;.
+</span><span style="color:#75715e"></span>            StringBuffer buf <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuffer<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;[&#34;</span><span style="color:#f92672">);</span>
 
-            for(int i=0; i &lt; userRatesList.size()-1; i++) {
-                buf.append(userRatesList.get(i).toString());
-                buf.append(&quot;,&quot;);
-            }
-            buf.append(userRatesList.get(userRatesList.size()-1).toString());
-            buf.append(&quot;]&quot;);
-            String result = buf.toString();
+            <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span>0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> userRatesList<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()-</span>1<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+                buf<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>userRatesList<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>i<span style="color:#f92672">).</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">());</span>
+                buf<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;,&#34;</span><span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
+            buf<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>userRatesList<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>userRatesList<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()-</span>1<span style="color:#f92672">).</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">());</span>
+            buf<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;]&#34;</span><span style="color:#f92672">);</span>
+            String result <span style="color:#f92672">=</span> buf<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">();</span>
 
-            context.write(key, new Text(result));
+            context<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Text<span style="color:#f92672">(</span>result<span style="color:#f92672">));</span>
 
-        }
-    }
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
 
-    public static void main(String[] args) throws Exception {
-        Configuration conf = new Configuration();
-        Path out = new Path(args[1]);
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        Configuration conf <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Configuration<span style="color:#f92672">();</span>
+        Path out <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Path<span style="color:#f92672">(</span>args<span style="color:#f92672">[</span>1<span style="color:#f92672">]);</span>
 
-        Job job1 = Job.getInstance(conf, &quot;Job One&quot;);
-        job1.setJarByClass(AssigOne.class);
-        job1.setMapperClass(MapperOne.class);
-        job1.setReducerClass(ReducerOne.class);
-        job1.setMapOutputKeyClass(Text.class);
-        job1.setMapOutputValueClass(MovieRateWritable.class);
-        job1.setOutputKeyClass(Text.class);
-        job1.setOutputValueClass(Text.class);
-        FileInputFormat.addInputPath(job1, new Path(args[0]));
-        FileOutputFormat.setOutputPath(job1, new Path(out,&quot;out1&quot;));  //out1 stores the intermediate data
-        if (!job1.waitForCompletion(true)) {
-            System.exit(1);
-        }
+        Job job1 <span style="color:#f92672">=</span> Job<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">(</span>conf<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Job One&#34;</span><span style="color:#f92672">);</span>
+        job1<span style="color:#f92672">.</span><span style="color:#a6e22e">setJarByClass</span><span style="color:#f92672">(</span>AssigOne<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        job1<span style="color:#f92672">.</span><span style="color:#a6e22e">setMapperClass</span><span style="color:#f92672">(</span>MapperOne<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        job1<span style="color:#f92672">.</span><span style="color:#a6e22e">setReducerClass</span><span style="color:#f92672">(</span>ReducerOne<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        job1<span style="color:#f92672">.</span><span style="color:#a6e22e">setMapOutputKeyClass</span><span style="color:#f92672">(</span>Text<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        job1<span style="color:#f92672">.</span><span style="color:#a6e22e">setMapOutputValueClass</span><span style="color:#f92672">(</span>MovieRateWritable<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        job1<span style="color:#f92672">.</span><span style="color:#a6e22e">setOutputKeyClass</span><span style="color:#f92672">(</span>Text<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        job1<span style="color:#f92672">.</span><span style="color:#a6e22e">setOutputValueClass</span><span style="color:#f92672">(</span>Text<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        FileInputFormat<span style="color:#f92672">.</span><span style="color:#a6e22e">addInputPath</span><span style="color:#f92672">(</span>job1<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Path<span style="color:#f92672">(</span>args<span style="color:#f92672">[</span>0<span style="color:#f92672">]));</span>
+        FileOutputFormat<span style="color:#f92672">.</span><span style="color:#a6e22e">setOutputPath</span><span style="color:#f92672">(</span>job1<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Path<span style="color:#f92672">(</span>out<span style="color:#f92672">,</span><span style="color:#e6db74">&#34;out1&#34;</span><span style="color:#f92672">));</span>  <span style="color:#75715e">//out1 stores the intermediate data
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>job1<span style="color:#f92672">.</span><span style="color:#a6e22e">waitForCompletion</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">exit</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
 
-        Job job2 = Job.getInstance(conf, &quot;Job Two&quot;);
-        job2.setJarByClass(AssigOne.class);
-        job2.setMapperClass(MapperTwo.class);
-        job2.setMapOutputKeyClass(Text.class);
-        job2.setMapOutputValueClass(Text.class);
-        job2.setReducerClass(ReducerTwo.class);
-        job2.setOutputKeyClass(Text.class);
-        job2.setOutputValueClass(Text.class);
-        FileInputFormat.addInputPath(job2, new Path(out, &quot;out1&quot;));
-        FileOutputFormat.setOutputPath(job2, new Path(out, &quot;out2&quot;));  //out2 stores the final result, pls check this file.
-        if (!job2.waitForCompletion(true)) {
-            System.exit(1);
-        }
+        Job job2 <span style="color:#f92672">=</span> Job<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">(</span>conf<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Job Two&#34;</span><span style="color:#f92672">);</span>
+        job2<span style="color:#f92672">.</span><span style="color:#a6e22e">setJarByClass</span><span style="color:#f92672">(</span>AssigOne<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        job2<span style="color:#f92672">.</span><span style="color:#a6e22e">setMapperClass</span><span style="color:#f92672">(</span>MapperTwo<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        job2<span style="color:#f92672">.</span><span style="color:#a6e22e">setMapOutputKeyClass</span><span style="color:#f92672">(</span>Text<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        job2<span style="color:#f92672">.</span><span style="color:#a6e22e">setMapOutputValueClass</span><span style="color:#f92672">(</span>Text<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        job2<span style="color:#f92672">.</span><span style="color:#a6e22e">setReducerClass</span><span style="color:#f92672">(</span>ReducerTwo<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        job2<span style="color:#f92672">.</span><span style="color:#a6e22e">setOutputKeyClass</span><span style="color:#f92672">(</span>Text<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        job2<span style="color:#f92672">.</span><span style="color:#a6e22e">setOutputValueClass</span><span style="color:#f92672">(</span>Text<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        FileInputFormat<span style="color:#f92672">.</span><span style="color:#a6e22e">addInputPath</span><span style="color:#f92672">(</span>job2<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Path<span style="color:#f92672">(</span>out<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;out1&#34;</span><span style="color:#f92672">));</span>
+        FileOutputFormat<span style="color:#f92672">.</span><span style="color:#a6e22e">setOutputPath</span><span style="color:#f92672">(</span>job2<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Path<span style="color:#f92672">(</span>out<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;out2&#34;</span><span style="color:#f92672">));</span>  <span style="color:#75715e">//out2 stores the final result, pls check this file.
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>job2<span style="color:#f92672">.</span><span style="color:#a6e22e">waitForCompletion</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">exit</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
 
-    }
-}
-</code></pre>
-
-<p>There are some comments inside and combined with the explanation above, I guess it would be helpful to understand the solution code. If you have any questions, please feel free to add a comment at the bottom of this blog. I will give a reply ASAP.</p>
-
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>There are some comments inside and combined with the explanation above, I guess it would be helpful to understand the solution code. If you have any questions, please feel free to add a comment at the bottom of this blog. I will give a reply ASAP.</p>
 <h2 id="usage">Usage</h2>
-
 <ol>
-<li>Command Line Usage</li>
-</ol>
-
+<li>
+<p>Command Line Usage</p>
 <p>JDK 1.8 required</p>
-
 <p>Put Hadoop-Core.jar and ratings.dat in the same path as AssigOne.java.</p>
-
-<pre><code class="language-shell">   javac -cp &quot;Hadoop-Core.jar&quot; AssigOne.java
-   java -cp &quot;Hadoop-Core.jar&quot; AssigOne.java ratings.dat output/
-</code></pre>
-
-<ol>
-<li>Eclipse Project Usage</li>
-</ol>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">javac -cp <span style="color:#e6db74">&#34;Hadoop-Core.jar&#34;</span> AssigOne.java
+java -cp <span style="color:#e6db74">&#34;Hadoop-Core.jar&#34;</span> AssigOne.java ratings.dat output/
+</code></pre></div></li>
+<li>
+<p>Eclipse Project Usage</p>
 <p>Get and add Hadoop dependency to your project:</p>
-
 <ol>
-<li><p>Create a new Java project in Eclipse</p></li>
-
-<li><p>Right click on your project and add the <code>Hadoop-Core.jar</code> file to your project:</p></li>
+<li>
+<p>Create a new Java project in Eclipse</p>
+</li>
+<li>
+<p>Right click on your project and add the <code>Hadoop-Core.jar</code> file to your project:</p>
+</li>
 </ol>
-
 <p><code>Build-Path -&gt; Add External Archives</code></p>
-
-<p><strong><em>Code, dependency and input data are available on my <a href="https://github.com/Ghw2066/BigdataLearning" rel="nofollow noreferrer" target="_blank">github</a></em></strong></p>
-
-<p><strong><em>If this you like my work, please give me a star at <a href="https://github.com/Ghw2066/BigdataLearning" rel="nofollow noreferrer" target="_blank">github</a>. That would be really appreciated.</em></strong></p>
+</li>
+</ol>
+<p><em><strong>Code, dependency and input data are available on my <a href="https://github.com/Ghw2066/BigdataLearning">github</a></strong></em></p>
+<p><em><strong>If this you like my work, please give me a star at <a href="https://github.com/Ghw2066/BigdataLearning">github</a>. That would be really appreciated.</strong></em></p>
 
     </div>
 

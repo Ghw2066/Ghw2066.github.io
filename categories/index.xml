@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Haowen`s Blog</title>
@@ -6,10 +6,19 @@
     <description>Recent content in Categories on Haowen`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 13 Feb 2020 09:24:51 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 09 Jul 2020 21:02:30 +0800</lastBuildDate>
     
 	<atom:link href="http://always4u.cloud/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>计算机系统</title>
+      <link>http://always4u.cloud/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/</link>
+      <pubDate>Thu, 09 Jul 2020 21:02:30 +0800</pubDate>
+      
+      <guid>http://always4u.cloud/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>工欲善其事</title>
@@ -17,15 +26,6 @@
       <pubDate>Thu, 13 Feb 2020 09:24:51 +0800</pubDate>
       
       <guid>http://always4u.cloud/categories/%E5%B7%A5%E6%AC%B2%E5%96%84%E5%85%B6%E4%BA%8B/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>计算机系统</title>
-      <link>http://always4u.cloud/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/</link>
-      <pubDate>Sun, 01 Dec 2019 22:13:57 +1100</pubDate>
-      
-      <guid>http://always4u.cloud/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/</guid>
       <description></description>
     </item>
     

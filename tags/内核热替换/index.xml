@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>内核热替换 on Haowen`s Blog</title>
+    <link>http://always4u.cloud/tags/%E5%86%85%E6%A0%B8%E7%83%AD%E6%9B%BF%E6%8D%A2/</link>
+    <description>Recent content in 内核热替换 on Haowen`s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 09 Jul 2020 21:02:30 +0800</lastBuildDate>
+    
+	<atom:link href="http://always4u.cloud/tags/%E5%86%85%E6%A0%B8%E7%83%AD%E6%9B%BF%E6%8D%A2/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>013</title>
+      <link>http://always4u.cloud/2020/013/</link>
+      <pubDate>Thu, 09 Jul 2020 21:02:30 +0800</pubDate>
+      
+      <guid>http://always4u.cloud/2020/013/</guid>
+      <description>CRIU即Checkpoint/Restore In Userspace CRIU读作kree-oo /krɪʊ/，是一个linux软件，可以冻结一个运行中的容&amp;gt</description>
+    </item>
+    
+  </channel>
+</rss>

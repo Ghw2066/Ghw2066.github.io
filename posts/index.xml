@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Haowen`s Blog</title>
@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Haowen`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 13 Feb 2020 09:24:51 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 09 Jul 2020 21:02:30 +0800</lastBuildDate>
     
 	<atom:link href="http://always4u.cloud/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>013</title>
+      <link>http://always4u.cloud/2020/013/</link>
+      <pubDate>Thu, 09 Jul 2020 21:02:30 +0800</pubDate>
+      
+      <guid>http://always4u.cloud/2020/013/</guid>
+      <description>CRIU即Checkpoint/Restore In Userspace CRIU读作kree-oo /krɪʊ/，是一个linux软件，可以冻结一个运行中的容&amp;gt</description>
+    </item>
     
     <item>
       <title>工欲善其事——VsCode远程模式连接WSL编写C/C&#43;&#43;/Python</title>
@@ -55,7 +64,8 @@
       <guid>http://always4u.cloud/2019/008/</guid>
       <description>Case Specification There are two tables and both of them have the same foreign key. join in hadoop, is similar with the join in database.
 The first table, students.txt, is a text file, each row shows a student&amp;rsquo;s zid and his/her name, as shown below.
-z1	Sara z2	Ali  The second table, marks.txt, is a text file, each row shows a student&amp;rsquo;s zid and two marks for his/her assignments.</description>
+z1	Saraz2	AliThe second table, marks.txt, is a text file, each row shows a student&amp;rsquo;s zid and two marks for his/her assignments.
+z1	90	80z2	75	98Now code a Hadoop job to join (outer join) these two tables based on the zids.</description>
     </item>
     
     <item>
@@ -66,7 +76,7 @@ z1	Sara z2	Ali  The second table, marks.txt, is a text file, each row shows a st
       <guid>http://always4u.cloud/2019/007/</guid>
       <description>Assignment Specification In this assignment we will be working on the processing of a Movie dataset:
 In this dataset, each row contains a movie rating done by a user (e.g., user1 has rated Titanic as 10). Here is the format of the dataset:
-user_id::movie_id::rating::timestamp  In this assignment, for each pair of movies A and B, you need to find all the users who rated both movie A and B.</description>
+user_id::movie_id::rating::timestampIn this assignment, for each pair of movies A and B, you need to find all the users who rated both movie A and B. For example, given the following dataset (for the sake of illustration we have used U and M to represent users and movies respectively in the example):</description>
     </item>
     
     <item>
